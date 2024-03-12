@@ -19,8 +19,14 @@
                     <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.admin')">
                         {{ __('Category') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('author.index')" :active="request()->routeIs('category.admin')">
+                    <x-nav-link :href="route('author.index')" :active="request()->routeIs('author.admin')">
                         {{ __('Authors') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tag.admin')">
+                        {{ __('Tags') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.admin')">
+                        {{ __('Publications') }}
                     </x-nav-link>
                 </div>
             </div>
