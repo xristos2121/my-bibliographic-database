@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('publications', function (Blueprint $table) {
+        Schema::create('publication_types', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('abstract')->nullable();
-            $table->date('publication_date')->nullable();
-            $table->text('keywords')->nullable();
-            $table->timestamps();
+            $table->string('name'); // This will store the type name, e.g., Journal, PhD Thesis, etc.
+            $table->timestamps(); // Optional, but useful for recording when types are created or updated
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('publications');
+        Schema::dropIfExists('publication_types');
     }
 };

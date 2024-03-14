@@ -3,8 +3,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200 flex justify-between">
-                    <span class="text-2xl font-bold">Authors</span>
-                    <a href="{{ route('author.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">Add New Author</a>
+                    <span class="text-2xl font-bold">Types</span>
+                    <a href="{{ route('publications_types.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">Add New Type</a>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
                     @if(session('success'))
@@ -21,14 +21,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($authors as $author)
+                        @foreach($types as $type)
                             <tr>
-                                <td class="border px-4 py-2">{{ $author->id }}</td>
-                                <td class="border px-4 py-2">{{ $author->first_name }} {{ $author->last_name }}</td>
+                                <td class="border px-4 py-2">{{ $type->id }}</td>
+                                <td class="border px-4 py-2">{{ $type->name }}</td>
                                 <td class="border px-4 py-2">
                                     <div class="flex items-center space-x-2">
-                                        <a href="{{ route('author.edit', $author->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring ring-blue-200 transition ease-in-out duration-150">Edit</a>
-                                        <form action="{{ route('author.destroy', $author->id) }}" method="POST" class="inline-flex">
+                                        <a href="{{ route('publications_types.edit', $type->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring ring-blue-200 transition ease-in-out duration-150">Edit</a>
+                                        <form action="{{ route('publications_types.destroy', $type->id) }}" method="POST" class="inline-flex">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center px-3 py-1 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-600 active:bg-red-700 focus:outline-none focus:border-red-800 focus:ring ring-red-300 transition ease-in-out duration-150" onclick="return confirm('Are you sure?')">Delete</button>

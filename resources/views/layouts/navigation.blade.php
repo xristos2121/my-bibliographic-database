@@ -16,17 +16,23 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.admin')">
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
                         {{ __('Category') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('author.index')" :active="request()->routeIs('author.admin')">
+                    <x-nav-link :href="route('author.index')" :active="request()->routeIs('author.*')">
                         {{ __('Authors') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tag.admin')">
+                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">
                         {{ __('Tags') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.admin')">
+                    <x-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
                         {{ __('Publications') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('publications_types.index')" :active="request()->routeIs('publications_types.*')">
+                        {{ __('Types') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('keywords.index')" :active="request()->routeIs('keywords.*')">
+                        {{ __('Keywords') }}
                     </x-nav-link>
                 </div>
             </div>

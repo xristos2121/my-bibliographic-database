@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('publications', function (Blueprint $table) {
+        Schema::create('keywords', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('abstract')->nullable();
-            $table->date('publication_date')->nullable();
-            $table->text('keywords')->nullable();
+            $table->string('keyword')->unique(); // Ensuring keyword uniqueness
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('publications');
+        Schema::dropIfExists('keywords');
     }
 };

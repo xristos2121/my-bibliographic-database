@@ -1,56 +1,44 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Category') }}
-        </h2>
-    </x-slot>
-
     <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                <div class="overflow-hidden overflow-x-auto border-b border-gray-200 bg-white p-6">
-
-                    <a href="{{ route('category.create') }}"
-                       class="mb-4 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
-                        Create
-                    </a>
-
-                    <div class="min-w-full align-middle">
-                        <table class="min-w-full border divide-y divide-gray-200">
-                            <thead>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200 flex justify-between">
+                    <span class="text-2xl font-bold">Categories</span>
+                    <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">Add New Category</a>
+                </div>
+                <div class="p-6 bg-white border-b border-gray-200">
+                    @if(session('success'))
+                        <div class="mb-4 font-medium text-sm text-green-600">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <table class="table-auto w-full">
+                        <thead>
+                        <tr>
+                            <th class="px-4 py-2">#</th>
+                            <th class="px-4 py-2">Name</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($categories as $category)
                             <tr>
-                                <th class="bg-gray-50 px-6 py-3 text-left">
-                                    <span class="text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Name</span>
-                                </th>
-                                <th class="w-56 bg-gray-50 px-6 py-3 text-left">
-                                </th>
-                            </tr>
-                            </thead>
-
-                            <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                            @foreach($categories as $category)
-                            <tr class="bg-white">
-                                <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                    {{ $category->name }}
-                                </td>
-                                <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                    <a href="{{ route('category.edit', $category) }}"
-                                       class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('category.destroy', $category) }}" method="POST" onsubmit="return confirm('Are you sure?')" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <x-danger-button>
-                                            Delete
-                                        </x-danger-button>
-                                    </form>
+                                <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="border px-4 py-2">{{ $category->name }}</td>
+                                <td class="border px-4 py-2">
+                                    <div class="flex items-center space-x-2">
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring ring-blue-200 transition ease-in-out duration-150">Edit</a>
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline-flex">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center px-3 py-1 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-600 active:bg-red-700 focus:outline-none focus:border-red-800 focus:ring ring-red-300 transition ease-in-out duration-150" onclick="return confirm('Are you sure?')">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

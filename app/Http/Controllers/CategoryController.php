@@ -27,7 +27,7 @@ class CategoryController extends Controller
     {
         Category::create($request->validated());
 
-        return to_route('category.index')->with('status', 'Category created successfully!');
+        return to_route('categories.index')->with('status', 'Category created successfully!');
     }
 
     public function edit(Category $category): View
@@ -38,7 +38,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
         $category->update($request->validated());
-        return to_route('category.index')->with('status', 'Category updated successfully!');
+        return to_route('categories.index')->with('status', 'Category updated successfully!');
     }
 
     public function destroy(Category $category): RedirectResponse
@@ -49,7 +49,7 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             $message = 'Failed to delete the category. It might be in use.';
         }
-        return to_route('category.index')->with('status', $message);
+        return to_route('categories.index')->with('status', $message);
     }
 
 }

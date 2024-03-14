@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\PublicationTypeController;
+use App\Http\Controllers\KeywordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('category', CategoryController::class);
+    Route::resource('categories', CategoryController::class);
     Route::resource('author', AuthorController::class);
     Route::resource('tags', TagsController::class);
     Route::resource('publications', PublicationController::class);
+    Route::resource('publications_types', PublicationTypeController::class)->parameters([
+        'publications_types' => 'type'
+    ]);
+    Route::resource('keywords', KeywordController::class);
+
 
 });
 
