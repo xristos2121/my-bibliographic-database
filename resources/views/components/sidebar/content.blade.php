@@ -52,13 +52,4 @@
     <x-sidebar.link title="Publications Types" href="{{ route('publications_types.index') }}"  :isActive="request()->routeIs('publications_types.*')"/>
     <x-sidebar.link title="Tags" href="{{ route('tags.index') }}"  :isActive="request()->routeIs('tags.*')"/>
     <x-sidebar.link title="Authors" href="{{ route('author.index') }}"  :isActive="request()->routeIs('author.*')"/>
-
-    @php
-        $links = array_fill(0, 20, '');
-    @endphp
-
-    @foreach ($links as $index => $link)
-        <x-sidebar.link title="Dummy link {{ $index + 1 }}" href="#" />
-    @endforeach
-
 </x-perfect-scrollbar>
