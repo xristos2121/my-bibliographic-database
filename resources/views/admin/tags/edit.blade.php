@@ -14,15 +14,15 @@
                         @method('PUT')
 
                         <div class="mt-4">
-                            <x-input-label for="name" :value="__('Tag Name')" />
+                            <x-form.label for="name" :value="__('Tag Name')" />
 
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ old('name', $tag->name) }}" required autofocus />
+                            <x-form.input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ old('name', $tag->name) }}" required autofocus />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <x-primary-button class="ml-4">
+                            <x-button class="ml-4">
                                 {{ __('Update') }}
-                            </x-primary-button>
+                            </x-button>
                         </div>
 
                         @if ($errors->any())

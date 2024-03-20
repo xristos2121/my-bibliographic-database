@@ -13,15 +13,15 @@
                         @csrf
 
                         <div>
-                            <x-input-label for="name" value="Name" />
-                            <x-text-input id="name" name="name" value="{{ old('name') }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                            <x-form.label for="name" value="Name" />
+                            <x-form.input id="name" name="name" value="{{ old('name') }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <x-primary-button>
+                            <x-button>
                                 Save
-                            </x-primary-button>
+                            </x-button>
                         </div>
                     </form>
                 </div>

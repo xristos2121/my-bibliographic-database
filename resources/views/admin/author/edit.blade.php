@@ -14,69 +14,69 @@
                         @method('PUT')
 
                         <div>
-                            <x-input-label for="first_name" value="First Name" />
-                            <x-text-input id="first_name" name="first_name" value="{{ old('first_name', $author->first_name) }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+                            <x-form.label for="first_name" value="First Name" />
+                            <x-form.input id="first_name" name="first_name" value="{{ old('first_name', $author->first_name) }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('first_name')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="last_name" value="Last Name" />
-                            <x-text-input id="last_name" name="last_name" value="{{ old('last_name', $author->last_name) }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+                            <x-form.label for="last_name" value="Last Name" />
+                            <x-form.input id="last_name" name="last_name" value="{{ old('last_name', $author->last_name) }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('last_name')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="email" value="Email" />
-                            <x-text-input id="email" name="email" value="{{ old('email', $author->email) }}" type="email" class="block mt-1 w-full" required/>
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                            <x-form.label for="email" value="Email" />
+                            <x-form.input id="email" name="email" value="{{ old('email', $author->email) }}" type="email" class="block mt-1 w-full" required/>
+                            <x-form.error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="affiliation" value="Affiliation" />
-                            <x-text-input id="affiliation" name="affiliation" value="{{ old('affiliation', $author->affiliation) }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('affiliation')" class="mt-2" />
+                            <x-form.label for="affiliation" value="Affiliation" />
+                            <x-form.input id="affiliation" name="affiliation" value="{{ old('affiliation', $author->affiliation) }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('affiliation')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="department" value="Department" />
-                            <x-text-input id="department" name="department" value="{{ old('department', $author->department) }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('department')" class="mt-2" />
+                            <x-form.label for="department" value="Department" />
+                            <x-form.input id="department" name="department" value="{{ old('department', $author->department) }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('department')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="position" value="Position" />
-                            <x-text-input id="position" name="position" value="{{ old('position', $author->position) }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('position')" class="mt-2" />
+                            <x-form.label for="position" value="Position" />
+                            <x-form.input id="position" name="position" value="{{ old('position', $author->position) }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('position')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="orcid_id" value="ORCID ID" />
-                            <x-text-input id="orcid_id" name="orcid_id" value="{{ old('orcid_id', $author->orcid_id) }}" type="text" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('orcid_id')" class="mt-2" />
+                            <x-form.label for="orcid_id" value="ORCID ID" />
+                            <x-form.input id="orcid_id" name="orcid_id" value="{{ old('orcid_id', $author->orcid_id) }}" type="text" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('orcid_id')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="profile_picture" value="Profile Picture" />
-                            <x-text-input id="profile_picture" name="profile_picture" value="{{ old('profile_picture', $author->profile_picture) }}" type="file" class="block mt-1 w-full" />
-                            <x-input-error :messages="$errors->get('profile_picture')" class="mt-2" />
+                            <x-form.label for="profile_picture" value="Profile Picture" />
+                            <x-form.input id="profile_picture" name="profile_picture" value="{{ old('profile_picture', $author->profile_picture) }}" type="file" class="block mt-1 w-full" />
+                            <x-form.error :messages="$errors->get('profile_picture')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="biography" value="Biography" />
+                            <x-form.label for="biography" value="Biography" />
                             <textarea id="biography" name="biography" class="block mt-1 w-full">{{ old('biography', $author->biography) }}</textarea>
-                            <x-input-error :messages="$errors->get('biography')" class="mt-2" />
+                            <x-form.error :messages="$errors->get('biography')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="research_interests" value="Research Interests" />
+                            <x-form.label for="research_interests" value="Research Interests" />
                             <textarea id="research_interests" name="research_interests" class="block mt-1 w-full">{{ old('research_interests', $author->research_interests) }}</textarea>
-                            <x-input-error :messages="$errors->get('research_interests')" class="mt-2" />
+                            <x-form.error :messages="$errors->get('research_interests')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <x-primary-button>
+                            <x-button>
                                 Save
-                            </x-primary-button>
+                            </x-button>
                         </div>
                     </form>
                 </div>

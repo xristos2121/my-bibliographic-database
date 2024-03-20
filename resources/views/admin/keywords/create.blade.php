@@ -13,15 +13,14 @@
                         @csrf
 
                         <div class="mt-4">
-                            <x-input-label for="name" :value="__('Type Name')" />
-
-                            <x-text-input id="keyword" class="block mt-1 w-full" type="text" name="keyword" :value="old('name')" required autofocus />
+                            <x-form.label for="keyword" :value="__('Keyword')" />
+                            <x-form.input id="keyword" class="block mt-1 w-full" type="text" name="keyword" :value="old('name')" required autofocus />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <x-primary-button class="ml-4">
+                            <x-button class="ml-4">
                                 {{ __('Create') }}
-                            </x-primary-button>
+                            </x-button>
                         </div>
 
                         @if ($errors->any())
