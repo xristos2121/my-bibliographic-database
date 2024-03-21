@@ -51,7 +51,6 @@
                         </div>
 
 
-
                         <div class="flex items-center justify-end mt-4">
                             <x-button class="ml-4">
                                 {{ __('Save') }}
@@ -65,7 +64,7 @@
 </x-app-layout>
 
 <script>
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         $('#authors').select2({
             placeholder: "Select authors",
             tags: true, // Enable the tagging system
@@ -73,4 +72,5 @@
             allowClear: true
         });
     });
+
 </script>

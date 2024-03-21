@@ -5,6 +5,11 @@ import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
 
 window.PerfectScrollbar = PerfectScrollbar
+import jQuery from 'jquery';
+import select2 from "select2"
+select2();
+window.$ = jQuery;
+
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('mainState', () => {
