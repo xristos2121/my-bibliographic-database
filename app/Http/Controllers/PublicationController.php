@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Publication;
 use App\Models\Category;
+use App\Models\Author;
 
 // Make sure to use your Category model if you are going to reference categories
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class PublicationController extends Controller
 
     public function create(): View
     {
-        return view('admin.publications.create');
+        $authors = Author::all();
+        return view('admin.publications.create', compact('authors'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -45,7 +47,7 @@ class PublicationController extends Controller
     public function edit(Publication $publication): View
     {
         $categories = Category::all();
-        return view('publications.edit', compact('publication', 'categories'));
+        return view('admin.publications.edit', compact('publication', 'categories'));
     }
 
     public function update(Request $request, Publication $publication): RedirectResponse

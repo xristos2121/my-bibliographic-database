@@ -50,4 +50,9 @@ class Publication extends Model
         return $this->belongsTo(Type::class);
     }
 
+    public function authors()
+    {
+        return $this->belongsToMany(Author::class);
+    }
+
 }

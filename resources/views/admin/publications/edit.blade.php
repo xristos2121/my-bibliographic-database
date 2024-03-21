@@ -40,18 +40,6 @@
                             <x-form.input id="keywords" class="block mt-1 w-full" type="text" name="keywords" :value="old('keywords')" />
                         </div>
 
-                        <div class="mt-4">
-                            <x-form.label for="authors" :value="__('Authors')" />
-
-                            <select id="authors" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="authors[]" multiple="multiple">
-                                @foreach($authors as $author)
-                                    <option value="{{ $author->id }}">{{ $author->first_name }} {{ $author->last_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-
-
                         <div class="flex items-center justify-end mt-4">
                             <x-button class="ml-4">
                                 {{ __('Save') }}
@@ -63,14 +51,3 @@
         </div>
     </div>
 </x-app-layout>
-
-<script>
-    $(document).ready(function() {
-        $('#authors').select2({
-            placeholder: "Select authors",
-            tags: true, // Enable the tagging system
-            tokenSeparators: [',', ' '], // Defines characters that automatically separate tags
-            allowClear: true
-        });
-    });
-</script>
