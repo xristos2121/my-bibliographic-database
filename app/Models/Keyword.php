@@ -14,8 +14,9 @@ class Keyword extends Model
         'keyword',
     ];
 
-    public function publications()
+    public function keywords()
     {
-        return $this->belongsToMany(Publication::class, 'publication_keywords');
+        return $this->belongsToMany(Keyword::class, 'publication_keyword');
     }
+
 }

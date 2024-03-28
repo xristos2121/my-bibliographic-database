@@ -10,15 +10,15 @@ class Publication extends Model
     use HasFactory;
 
     // The table associated with the model.
-    protected $table = 'publication_types';
+    protected $table = 'publications';
 
     // The attributes that are mass assignable.
     protected $fillable = [
         'title',
         'abstract',
         'publication_date',
-        'category_id',
-        'keywords',
+        'type_id',
+        'category_id'
     ];
 
     // The attributes that should be cast.
@@ -52,7 +52,12 @@ class Publication extends Model
 
     public function authors()
     {
-        return $this->belongsToMany(Author::class);
+        return $this->belongsToMany(Author::class, 'author_publications');
+    }
+
+    public function keywords()
+    {
+        return $this->belongsToMany(Keyword::class, 'publication_keyword');
     }
 
 }

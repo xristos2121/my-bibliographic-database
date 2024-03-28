@@ -2,40 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePublicationRequest;
+use App\Http\Requests\UpdatePublicationRequest;
 use App\Models\Publication;
-use App\Models\Category;
 use App\Models\Author;
-
-// Make sure to use your Category model if you are going to reference categories
-use Illuminate\Http\Request;
+use App\Models\Type;
+use App\Models\Keyword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-
+use Illuminate\Foundation\Http\FormRequest;
 class PublicationController extends Controller
 {
     public function index(): View
     {
-        $publications = Publication::all();
+        // Consider using eager loading if you're displaying related data
+        $publications = Publication::with(['authors', 'types', 'keywords'])->get();
         return view('admin.publications.index', compact('publications'));
     }
 
     public function create(): View
     {
         $authors = Author::all();
-        return view('admin.publications.create', compact('authors'));
+        $types = Type::all();
+        $keywords = Keyword::all();
+        return view('admin.publications.create', compact('authors', 'types', 'keywords'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StorePublicationRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'abstract' => 'nullable|string',
-            'publication_date' => 'nullable|date',
-            'category_id' => 'nullable|exists:categories,id',
-            'keywords' => 'nullable|string'
-        ]);
-
-        Publication::create($validated);
+        $publication = Publication::create($request->validated());
+        $this->syncRelations($publication, $request);
         return to_route('publications.index')->with('success', 'Publication created successfully.');
     }
 
@@ -46,21 +42,16 @@ class PublicationController extends Controller
 
     public function edit(Publication $publication): View
     {
-        $categories = Category::all();
-        return view('admin.publications.edit', compact('publication', 'categories'));
+        $authors = Author::all();
+        $types = Type::all();
+        $keywords = Keyword::all();
+        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords'));
     }
 
-    public function update(Request $request, Publication $publication): RedirectResponse
+    public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'abstract' => 'nullable|string',
-            'publication_date' => 'nullable|date',
-            'category_id' => 'nullable|exists:categories,id',
-            'keywords' => 'nullable|string'
-        ]);
-
-        $publication->update($validated);
+        $publication->update($request->validated());
+        $this->syncRelations($publication, $request);
         return to_route('publications.index')->with('success', 'Publication updated successfully.');
     }
 
@@ -69,4 +60,22 @@ class PublicationController extends Controller
         $publication->delete();
         return to_route('publications.index')->with('success', 'Publication deleted successfully.');
     }
+
+    /**
+     * Syncs authors and keywords relations for a publication.
+     *
+     * @param  \App\Models\Publication  $publication
+     * @param  \Illuminate\Foundation\Http\FormRequest  $request
+     */
+
+    private function syncRelations(Publication $publication, FormRequest $request): void
+    {
+        $authors = $request->input('authors', []);
+        $publication->authors()->sync($authors);
+
+        $keywords = $request->input('keywords', []);
+        $publication->keywords()->sync($keywords);
+    }
+
+
 }
