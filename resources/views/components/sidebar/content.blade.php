@@ -22,4 +22,5 @@
     <x-sidebar.link title="Publications Types" href="{{ route('publications_types.index') }}"  :isActive="request()->routeIs('publications_types.*')"/>
     <x-sidebar.link title="Tags" href="{{ route('tags.index') }}"  :isActive="request()->routeIs('tags.*')"/>
     <x-sidebar.link title="Authors" href="{{ route('author.index') }}"  :isActive="request()->routeIs('author.*')"/>
+    <x-sidebar.link title="Publisher" href="{{ route('publisher.index') }}"  :isActive="request()->routeIs('publisher.*')"/>
 </x-perfect-scrollbar>

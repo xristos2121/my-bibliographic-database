@@ -60,4 +60,9 @@ class Publication extends Model
         return $this->belongsToMany(Keyword::class, 'publication_keyword');
     }
 
+    public function publisher()
+    {
+        return $this->belongsTo(Publisher::class);
+    }
+
 }

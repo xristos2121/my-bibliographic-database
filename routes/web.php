@@ -8,6 +8,7 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationTypeController;
 use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\PublisherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
         'publications_types' => 'type'
     ]);
     Route::resource('keywords', KeywordController::class);
+    Route::resource('publisher', PublisherController::class);
 
 
 });

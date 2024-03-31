@@ -8,6 +8,7 @@ use App\Models\Publication;
 use App\Models\Author;
 use App\Models\Type;
 use App\Models\Keyword;
+use App\Models\Publisher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,7 +26,8 @@ class PublicationController extends Controller
         $authors = Author::all();
         $types = Type::all();
         $keywords = Keyword::all();
-        return view('admin.publications.create', compact('authors', 'types', 'keywords'));
+        $publishers = Publisher::all();
+        return view('admin.publications.create', compact('authors', 'types', 'keywords','publishers'));
     }
 
     public function store(StorePublicationRequest $request): RedirectResponse
