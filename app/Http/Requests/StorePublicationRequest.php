@@ -27,10 +27,13 @@ class StorePublicationRequest extends FormRequest
             'publication_date' => 'nullable|date',
             'type_id' => 'required|exists:publication_types,id',
             'category_id' => 'nullable|exists:categories,id',
+            'publisher_id' => 'nullable|exists:publishers,id',
             'authors' => 'required|array',
             'authors.*' => 'integer|exists:authors,id',
             'keywords' => 'nullable|array',
-            'keywords.*' => 'integer|exists:keywords,id'
+            'keywords.*' => 'integer|exists:keywords,id',
+            'category_publication' => 'nullable|array',
+            'category_publication.*' => 'integer|exists:categories,id'
         ];
     }
 }

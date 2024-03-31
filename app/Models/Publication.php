@@ -18,7 +18,8 @@ class Publication extends Model
         'abstract',
         'publication_date',
         'type_id',
-        'category_id'
+        'category_id',
+        'publisher_id'
     ];
 
     // The attributes that should be cast.
@@ -63,6 +64,11 @@ class Publication extends Model
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_publication');
     }
 
 }

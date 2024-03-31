@@ -30,7 +30,10 @@ class UpdatePublicationRequest extends FormRequest
             'authors' => 'required|array',
             'authors.*' => 'integer|exists:authors,id',
             'keywords' => 'nullable|array',
-            'keywords.*' => 'integer|exists:keywords,id'
+            'keywords.*' => 'integer|exists:keywords,id',
+            'publisher_id' => 'nullable|exists:publishers,id',
+            'category_publication' => 'nullable|array',
+            'category_publication.*' => 'integer|exists:categories,id'
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Author;
 use App\Models\Type;
 use App\Models\Keyword;
 use App\Models\Publisher;
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,7 +28,8 @@ class PublicationController extends Controller
         $types = Type::all();
         $keywords = Keyword::all();
         $publishers = Publisher::all();
-        return view('admin.publications.create', compact('authors', 'types', 'keywords','publishers'));
+        $categories = Category::all();
+        return view('admin.publications.create', compact('authors', 'types', 'keywords','publishers','categories'));
     }
 
     public function store(StorePublicationRequest $request): RedirectResponse
@@ -47,7 +49,9 @@ class PublicationController extends Controller
         $authors = Author::all();
         $types = Type::all();
         $keywords = Keyword::all();
-        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords'));
+        $publishers = Publisher::all();
+        $categories = Category::all();
+        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories'));
     }
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
@@ -77,6 +81,9 @@ class PublicationController extends Controller
 
         $keywords = $request->input('keywords', []);
         $publication->keywords()->sync($keywords);
+
+        $categories = $request->input('categories', []);
+        $publication->categories()->sync($categories);
     }
 
 

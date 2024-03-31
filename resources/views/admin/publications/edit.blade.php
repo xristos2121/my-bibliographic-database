@@ -44,21 +44,25 @@
 
                         </div>
 
+                        <div class="mt-4">
+                            <label for="enable_publisher" class="inline-flex items-center">
+                                <input type="checkbox" id="enable_publisher" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" {{ $publication->publisher_id != null ? 'checked' : '' }}>
+                                <span class="ml-2">Publication Has Publisher</span>
+                            </label>
+                        </div>
 
                         <div class="mt-4">
-                            <x-form.label for="keywords" :value="__('Keywords')" />
+                            <x-form.label for="publisher" :value="__('Publisher')" />
+                            <input type="hidden" name="publisher_id" value="" id="hidden_publisher_id">
 
-                            <select id="keywords" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="keywords[]" multiple="multiple">
-                                @foreach($keywords as $keyword)
-                                    <option value="{{ $keyword->id }}"
-                                        {{ $publication->keywords->contains($keyword->id) ? 'selected' : '' }}>
-                                        {{ $keyword->keyword }}
-                                    </option>
+                            <select id="publisher_select" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" disabled>
+                                @foreach($publishers as $publisher)
+                                    <option value="{{ $publisher->id }}" {{ old('publisher_id', $publication->publisher_id) == $publisher->id ? 'selected' : '' }}>{{ $publisher->name }}</option>
                                 @endforeach
                             </select>
-
-                            <x-form.error :messages="$errors->get('keywords')" class="mt-2" />
+                            <x-form.error :messages="$errors->get('publisher_id')" class="mt-2" />
                         </div>
+
                         <div class="mt-4">
                             <x-form.label for="type" :value="__('Type')" />
 
@@ -69,6 +73,17 @@
                             </x-form.select>
                             <x-form.error :messages="$errors->get('type_id')" class="mt-2" />
 
+                        </div>
+
+                        <div class="mt-4">
+                            <x-form.label for="categories" :value="__('Categories')" />
+
+                            <select id="categories" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="categories[]" multiple="multiple">
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ $publication->categories->contains($category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-form.error :messages="$errors->get('categories')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
@@ -86,6 +101,21 @@
                             <x-form.error :messages="$errors->get('authors')" class="mt-2" />
                         </div>
 
+                        <div class="mt-4">
+                            <x-form.label for="keywords" :value="__('Keywords')" />
+
+                            <select id="keywords" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="keywords[]" multiple="multiple">
+                                @foreach($keywords as $keyword)
+                                    <option value="{{ $keyword->id }}"
+                                        {{ $publication->keywords->contains($keyword->id) ? 'selected' : '' }}>
+                                        {{ $keyword->keyword }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <x-form.error :messages="$errors->get('keywords')" class="mt-2" />
+                        </div>
+
 
                         <div class="flex items-center justify-end mt-4">
                             <x-button class="ml-4">
@@ -101,19 +131,34 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $('#authors').select2({
-            placeholder: "Select authors",
-            tags: true, // Enable the tagging system
-            tokenSeparators: [',', ' '], // Defines characters that automatically separate tags
+        // Initialize Select2 and other elements
+        $('#authors, #keywords, #categories').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true});
+
+        const enablePublisherCheckbox = document.getElementById('enable_publisher');
+        const publisherSelect = document.getElementById('publisher_select');
+        const hiddenPublisherId = document.getElementById('hidden_publisher_id');
+
+        function togglePublisherSelect() {
+            publisherSelect.disabled = !enablePublisherCheckbox.checked;
+
+            if (enablePublisherCheckbox.checked) {
+                publisherSelect.name = 'publisher_id'; // Add the name attribute when checked
+                hiddenPublisherId.disabled = true; // Disable hidden input to prevent it from being submitted
+            } else {
+                publisherSelect.name = ''; // Remove the name attribute when unchecked
+                hiddenPublisherId.disabled = false; // Enable hidden input to submit null value
+            }
+        }
+
+        enablePublisherCheckbox.addEventListener('change', togglePublisherSelect);
+
+        $('#publisher_select').select2({
+            placeholder: "Select Publisher",
             allowClear: true
         });
 
-        $('#keywords').select2({
-            placeholder: "Select keywords",
-            tags: true, // Enable the tagging system
-            tokenSeparators: [',', ' '], // Defines characters that automatically separate tags
-            allowClear: true
-        });
+        togglePublisherSelect(); // Call on load to set the initial state
     });
+
 
 </script>

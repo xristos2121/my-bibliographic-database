@@ -33,6 +33,11 @@
                                 <td class="border px-4 py-2">{{ $publication->publication_date ? $publication->publication_date->toFormattedDateString() : 'N/A' }}</td>
                                 <td class="border px-4 py-2">
                                     <a href="{{ route('publications.edit', $publication) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                    <form action="{{ route('publications.destroy', $publication->id) }}" method="POST" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-600 active:bg-red-700 focus:outline-none focus:border-red-800 focus:ring ring-red-300 transition ease-in-out duration-150" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
