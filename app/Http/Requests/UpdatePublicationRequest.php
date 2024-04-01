@@ -33,7 +33,8 @@ class UpdatePublicationRequest extends FormRequest
             'keywords.*' => 'integer|exists:keywords,id',
             'publisher_id' => 'nullable|exists:publishers,id',
             'category_publication' => 'nullable|array',
-            'category_publication.*' => 'integer|exists:categories,id'
+            'category_publication.*' => 'integer|exists:categories,id',
+            'file' => 'nullable|file|mimes:pdf',
         ];
     }
 }

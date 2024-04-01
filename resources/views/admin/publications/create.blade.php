@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('publications.store') }}">
+                    <form method="POST" action="{{ route('publications.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Title -->
@@ -42,6 +42,12 @@
                             <x-form.input id="publication_date" class="block mt-1 w-full" type="date" name="publication_date" :value="old('publication_date')" />
                             <x-form.error :messages="$errors->get('publication_date')" class="mt-2" />
 
+                        </div>
+
+                        <div class="mt-4">
+                            <x-form.label for="file" :value="__('Upload File')" />
+                            <input id="file" class="block mt-1 w-full" type="file" name="file" accept="application/pdf">
+                            <x-form.error :messages="$errors->get('file')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">

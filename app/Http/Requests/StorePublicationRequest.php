@@ -33,7 +33,8 @@ class StorePublicationRequest extends FormRequest
             'keywords' => 'nullable|array',
             'keywords.*' => 'integer|exists:keywords,id',
             'category_publication' => 'nullable|array',
-            'category_publication.*' => 'integer|exists:categories,id'
+            'category_publication.*' => 'integer|exists:categories,id',
+            'file' => 'required|file|mimes:pdf',
         ];
     }
 }

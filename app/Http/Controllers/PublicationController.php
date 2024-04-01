@@ -13,6 +13,8 @@ use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
+
 class PublicationController extends Controller
 {
     public function index(): View
@@ -34,8 +36,29 @@ class PublicationController extends Controller
 
     public function store(StorePublicationRequest $request): RedirectResponse
     {
-        $publication = Publication::create($request->validated());
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+
+            $name = $originalName;
+            $counter = 1;
+
+            // Check if the file exists and append a number if it does
+            while (Storage::disk('public')->exists("publications/{$name}.{$extension}")) {
+                $name = $originalName . '_' . $counter;
+                $counter++;
+            }
+
+            $filePath = $file->storeAs('publications', "{$name}.{$extension}", 'public');
+            $validatedData['file'] = $filePath;
+        }
+
+        $publication = Publication::create($validatedData);
         $this->syncRelations($publication, $request);
+
         return to_route('publications.index')->with('success', 'Publication created successfully.');
     }
 
@@ -56,13 +79,44 @@ class PublicationController extends Controller
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
     {
-        $publication->update($request->validated());
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+
+            $name = $originalName;
+            $counter = 1;
+
+            while (Storage::disk('public')->exists("publications/{$name}.{$extension}")) {
+                if ("publications/{$name}.{$extension}" != $publication->file) {
+                    $name = $originalName . '_' . $counter;
+                    $counter++;
+                } else {
+                    break;
+                }
+            }
+
+            $filePath = $file->storeAs('publications', "{$name}.{$extension}", 'public');
+            $validatedData['file'] = $filePath;
+
+            if ($publication->file && $publication->file !== $filePath) {
+                Storage::disk('public')->delete($publication->file);
+            }
+        }
+
+        $publication->update($validatedData);
         $this->syncRelations($publication, $request);
+
         return to_route('publications.index')->with('success', 'Publication updated successfully.');
     }
 
     public function destroy(Publication $publication): RedirectResponse
     {
+        if ($publication->file) {
+            Storage::disk('public')->delete($publication->file);
+        }
         $publication->delete();
         return to_route('publications.index')->with('success', 'Publication deleted successfully.');
     }

@@ -19,7 +19,8 @@ class Publication extends Model
         'publication_date',
         'type_id',
         'category_id',
-        'publisher_id'
+        'publisher_id',
+        'file'
     ];
 
     // The attributes that should be cast.
