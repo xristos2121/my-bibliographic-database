@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePublisherRequest;
 use App\Http\Requests\UpdatePublisherRequest;
 use App\Models\Publisher;
-use App\Models\Type;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class PublisherController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $publishers = Publisher::all();
-        return view('admin.publisher.index', compact('publishers'));
+        $search = $request->query('search');
+        $publishers = Publisher::search($search)->get();
+        return view('admin.publisher.index', compact('publishers', 'search'));
     }
 
     public function create(): View

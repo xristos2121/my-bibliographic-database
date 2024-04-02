@@ -7,14 +7,18 @@ use App\Http\Requests\UpdateKeywordRequest;
 use App\Models\Keyword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class KeywordController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $keywords = Keyword::all();
-        return view('admin.keywords.index', compact('keywords'));
+        $search = $request->query('search');
+        $keywords = Keyword::search($search)->get();
+
+        return view('admin.keywords.index', compact('keywords', 'search'));
     }
+
 
     public function create(): View
     {

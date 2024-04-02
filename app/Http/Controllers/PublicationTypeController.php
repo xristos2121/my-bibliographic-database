@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
-use App\Models\Tag;
 use App\Models\Type;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,10 +11,12 @@ use Illuminate\View\View;
 
 class PublicationTypeController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $types = Type::all();
-        return view('admin.types.index', compact('types'));
+        $search = $request->query('search');
+        $types = Type::search($search)->get();
+
+        return view('admin.types.index', compact('types', 'search'));
     }
 
     public function create(): View

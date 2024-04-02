@@ -11,10 +11,12 @@ use App\Http\Requests\UpdateTagRequest;
 
 class TagsController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $tags = Tag::all();
-        return view('admin.tags.index', compact('tags'));
+        $search = $request->query('search');
+        $tags = Tag::search($search)->get();
+
+        return view('admin.tags.index', compact('tags', 'search'));
     }
 
     public function create(): View

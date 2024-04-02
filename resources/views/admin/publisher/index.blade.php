@@ -2,9 +2,20 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200 flex justify-between">
-                    <span class="text-2xl font-bold">Publishers</span>
-                    <a href="{{ route('publisher.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">Add New Publisher</a>
+                <div class="px-6 py-4 bg-white border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="flex-1 min-w-0">
+                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Publishers</h2>
+                        </div>
+                        <div class="flex gap-4">
+                            <form action="{{ route('publisher.index') }}" method="GET" class="flex items-center">
+                                <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search publishers..." class="px-4 py-2 border rounded-md" />
+                                <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Search</button>
+                            </form>
+                            <a href="{{ route('publisher.index') }}" class="inline-flex items-center px-4 py-2 bg-white text-black rounded-md  shadow">Clear all</a>
+                            <a href="{{ route('publisher.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Add New Publisher</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
                     @if(session('success'))
@@ -21,7 +32,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($publishers as $publisher)
+                        @forelse($publishers as $publisher)
                             <tr>
                                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                 <td class="border px-4 py-2">{{ $publisher->name }}</td>
@@ -36,7 +47,17 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            @if($search)
+                                <tr>
+                                    <td class="px-4 py-2" colspan="3">Nothing found for "{{ $search }}".</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td class="px-4 py-2" colspan="3">No publishers available.</td>
+                                </tr>
+                            @endif
+                        @endforelse
                         </tbody>
                     </table>
                 </div>

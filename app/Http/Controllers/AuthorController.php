@@ -7,13 +7,24 @@ use App\Http\Requests\UpdateAuthorRequest;
 use App\Models\Author;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $authors = Author::all();
-        return view('admin.author.index', compact('authors'));
+        $searchTerms = [
+            'first_name' => $request->query('first_name'),
+            'last_name' => $request->query('last_name'),
+            'email' => $request->query('email'),
+            'affiliation' => $request->query('affiliation'),
+            'department' => $request->query('department'),
+            'position' => $request->query('position'),
+            'orcid_id' => $request->query('orcid_id'),
+        ];
+        $authors = Author::search($searchTerms)->get();
+
+        return view('admin.author.index', compact('authors', 'searchTerms'));
     }
 
     public function create(): View
