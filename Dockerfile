@@ -22,18 +22,23 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Add user for laravel application
-RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
+# Add user for Laravel application
+RUN groupadd -g 1000 www && \
+    useradd -u 1000 -ms /bin/bash -g www www
 
-# Copy existing application directory contents
-COPY . /var/www
-
-# Copy existing application directory permissions
+# Change ownership of the working directory to the www user
+# This is done before running composer to ensure that the composer cache and vendor directories
+# are owned by the www user
 COPY --chown=www:www . /var/www
 
 # Change current user to www
 USER www
 
+# Install Composer dependencies including smalot/pdfparser
+RUN composer require smalot/pdfparser
+
+# Expose port 9000
 EXPOSE 9000
+
+# Start PHP-FPM
 CMD ["php-fpm"]
