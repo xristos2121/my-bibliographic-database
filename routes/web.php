@@ -9,6 +9,10 @@ use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationTypeController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
+
+use Smalot\PdfParser\Parser;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,9 +24,14 @@ use App\Http\Controllers\PublisherController;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/search', [SearchController::class, 'index']);
+Route::get('/search/results', [SearchController::class, 'search']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -41,8 +50,19 @@ Route::middleware('auth')->group(function () {
     ]);
     Route::resource('keywords', KeywordController::class);
     Route::resource('publisher', PublisherController::class);
+});
 
+Route::get('/test-pdf', function () {
+    $parser = new Parser();
+    $pdf = $parser->parseFile(public_path('test.pdf'));
 
+    // Extract text from the PDF
+    $text = $pdf->getText();
+
+    // Remove line breaks from the text
+    $textWithoutBr = nl2br($text);
+
+    return $textWithoutBr;
 });
 
 // useless routes

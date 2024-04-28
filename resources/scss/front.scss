@@ -1,0 +1,171 @@
+
+.dark .ps__rail-y,
+.dark .ps__rail-x {
+    background-color: transparent !important;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Lora', serif;
+    background-color: #f5f5f5;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.header {
+    text-align: center;
+    padding: 20px 20px 0;
+    background-color: #004785;
+    color: white;
+    position: relative;
+}
+
+.menu {
+    text-align: left;
+    padding: 10px 20px 20px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 16px;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+.search-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+input[type="text"], input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    background-color: #0075A2;
+    color: white;
+    border: none;
+}
+
+input[type="submit"]:hover {
+    background-color: #005577;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #004785;
+    color: white;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .menu a {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .search-container {
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+
+.container {
+    background: white;
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.advanced-search-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+
+            label {
+                margin-right: 10px;
+                flex: 0 0 20%; // Adjust the width as per requirement
+                text-align: right;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            select {
+                flex: 1; // Takes up the remaining space
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            .form-control {
+                width: 100%; // Ensures the input/select fills the space
+            }
+        }
+
+        .form-group-inline {
+            .form-control {
+                width: auto; // Allows inline elements to only take up as much space as they need
+            }
+        }
+
+        button[type="submit"] {
+            width: auto;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            &:hover {
+                background-color: darken(#007bff, 5%);
+            }
+        }
+    }
+}
+
