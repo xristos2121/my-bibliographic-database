@@ -30,8 +30,8 @@ use Smalot\PdfParser\Parser;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/search', [SearchController::class, 'index']);
-Route::get('/search/results', [SearchController::class, 'search']);
+Route::get('/advanced-search', [SearchController::class, 'index']);
+Route::get('/advanced-search/results', [SearchController::class, 'search']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
