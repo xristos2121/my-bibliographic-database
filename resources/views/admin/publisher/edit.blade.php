@@ -20,7 +20,7 @@
                         </div>
 
                         <div>
-                            <x-form.label for="site_url" value="Publisher" />
+                            <x-form.label for="site_url" value="Url(optional)" />
                             <x-form.input id="site_url" name="site_url" value="{{ old('site_url', $publisher->site_url) }}" type="text" class="block mt-1 w-full" />
                             <x-form.error :messages="$errors->get('site_url')" class="mt-2" />
                         </div>

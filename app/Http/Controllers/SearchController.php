@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AdvancedSearchRequest;
 use App\Models\Publication;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -13,42 +15,64 @@ class SearchController extends Controller
         return view('front.advanced-search');
     }
 
-    public function search(Request $request)
+    public function search(AdvancedSearchRequest $request)
     {
+
         $query = Publication::query();
 
-        if ($request->filled('title')) {
-            $query->where('title', 'like', '%' . $request->title . '%');
+        foreach ($request->type as $key => $type) {
+            $lookfor = $request->lookfor[$key];
+
+            if (!empty($lookfor)) {
+                switch ($type) {
+                    case 'title':
+                        $query->orWhere('title', 'like', "%$lookfor%");
+                        break;
+                    case 'author':
+                        $query->orWhereHas('authors', function ($query) use ($lookfor) {
+                            $query->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%$lookfor%");
+                        });
+                        break;
+                    case 'abstract':
+                        $query->orWhere('abstract', 'like', "%$lookfor%");
+                        break;
+                        case 'keyword':
+                        $query->orWhereHas('keywords', function ($query) use ($lookfor) {
+                            $query->where('keyword', 'like', "%$lookfor%");
+                        });
+                        case 'publisher':
+                        $query->orWhereHas('publisher', function ($query) use ($lookfor) {
+                            $query->where('name', 'like', "%$lookfor%");
+                        });
+                    case 'entire_document':
+                        // Handle 'entire_document' if needed
+                        break;
+                    // Handle other types if needed
+                }
+            }
         }
 
-        if ($request->filled('abstract')) {
-            $query->where('abstract', 'like', '%' . $request->abstract . '%');
+
+        if ($request->filled('fromMonthYear')) {
+            $fromDate = Carbon::parse($request->fromMonthYear)->startOfMonth();
+            $query->where('publication_date', '>=', $fromDate);
         }
 
-        if ($request->filled('publication_date')) {
-            $query->whereDate('publication_date', '=', Carbon::parse($request->publication_date));
+        if ($request->filled('untilMonthYear')) {
+            $untilDate = Carbon::parse($request->untilMonthYear)->endOfMonth();
+            $query->where('publication_date', '<=', $untilDate);
         }
 
-        if ($request->filled('keyword_id')) {
-            $query->whereHas('keywords', function ($q) use ($request) {
-                $q->where('keywords.id', $request->keyword_id);
-            });
-        }
-
-        if ($request->has('author_ids')) {
-            $query->whereHas('authors', function ($q) use ($request) {
-                $q->whereIn('authors.id', $request->author_ids);
-            });
-        }
-
-        if ($request->has('category_ids')) {
-            $query->whereHas('categories', function ($q) use ($request) {
-                $q->whereIn('categories.id', $request->category_ids);
-            });
-        }
 
         $results = $query->get();
 
-        return view('search-results', compact('results')); // Ensure you have a 'search-results.blade.php' to display the results
+
+        foreach ($results as $result) {
+            echo $result->title . '<br>';
+        }
+exit;
+        return view('search-results', compact('results'));
     }
+
+
 }
