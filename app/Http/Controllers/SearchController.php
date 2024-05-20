@@ -45,9 +45,7 @@ class SearchController extends Controller
                             $query->where('name', 'like', "%$lookfor%");
                         });
                     case 'entire_document':
-                        // Handle 'entire_document' if needed
                         break;
-                    // Handle other types if needed
                 }
             }
         }
@@ -67,11 +65,7 @@ class SearchController extends Controller
         $results = $query->get();
 
 
-        foreach ($results as $result) {
-            echo $result->title . '<br>';
-        }
-exit;
-        return view('search-results', compact('results'));
+        return view('front.results', compact('results'));
     }
 
 

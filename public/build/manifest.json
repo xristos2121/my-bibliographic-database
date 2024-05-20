@@ -3,12 +3,12 @@
     "file": "assets/bootstrap-CifqVuM1.js"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DKuP788C.css",
+    "file": "assets/app-C2c9Aa-r.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-2icrgtG7.js",
+    "file": "assets/app-CGmAFxAC.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
@@ -16,18 +16,18 @@
     ]
   },
   "resources/js/front.js": {
-    "file": "assets/front-DTnQxsF6.js",
+    "file": "assets/front-CHTN8ozU.js",
     "src": "resources/js/front.js",
     "isEntry": true,
     "imports": [
       "_bootstrap-CifqVuM1.js"
     ],
     "css": [
-      "assets/front-ee_ZoEII.css"
+      "assets/front-CmV1VMtX.css"
     ]
   },
   "resources/scss/front.scss": {
-    "file": "assets/front-ee_ZoEII.css",
+    "file": "assets/front-CmV1VMtX.css",
     "src": "resources/js/front.js"
   }
 }
