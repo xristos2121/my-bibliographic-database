@@ -189,3 +189,38 @@ body, html {
     flex: 0 0 66.6%;
     max-width: 66.6%;
 }
+
+.search-results-section{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+        .search-results-wrapper{
+            .search-results{
+                display: grid;
+                grid-auto-flow: row;
+                grid-gap: 20px;
+                .search-results-item{
+                    background: #efefef;
+                    border-radius: 10px;
+                    h3{
+                        margin-top: 0;
+                        border-bottom: 1px solid #ffffff;
+                        padding-bottom: 10px;
+                        background: #dddada;
+                        border-top-left-radius: 10px;
+                        border-top-right-radius: 10px;
+                        padding-top: 10px;
+                        padding-left: 20px;
+                    }
+                    .publication-data-wrapper{
+                        padding: 0 20px;
+                        .publication-data-row{
+                            display: grid;
+                            grid-template-columns: 2fr 10fr;
+                            gap: 16px;
+                        }
+                    }
+                }
+            }
+        }
+}
+

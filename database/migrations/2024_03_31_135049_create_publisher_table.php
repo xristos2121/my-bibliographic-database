@@ -24,6 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Drop foreign key constraints that reference the publishers table
+        Schema::table('publications', function (Blueprint $table) {
+            $table->dropForeign(['publisher_id']);
+        });
+
         Schema::dropIfExists('publishers');
     }
 };

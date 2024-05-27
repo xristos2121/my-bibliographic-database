@@ -18,7 +18,7 @@ class PublicationsTypesTableSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             DB::table('publication_types')->insert([
-                'name' => $faker->word,
+                'name' => $faker->unique()->word,
             ]);
         }
     }

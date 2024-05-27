@@ -9,21 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('publications', function (Blueprint $table) {
-            $table->string('file')->nullable();
+            $table->string('slug')->unique()->after('title');
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
         Schema::table('publications', function (Blueprint $table) {
-            $table->dropColumn('file');
-
+            $table->dropColumn('slug');
         });
     }
 };

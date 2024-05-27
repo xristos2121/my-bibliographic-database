@@ -22,7 +22,9 @@ class PublicationsTableSeeder extends Seeder
                 'abstract' => $faker->paragraph,
                 'publication_date' => $faker->date,
                 // Assuming you want to store just a file name or path as a string
-                'file' => 'path/to/file/' . $faker->word . '.pdf'
+                'type_id' => Type::inRandomOrder()->first()->id,
+                'file' => 'publications/' . $faker->word . '.pdf',
+                'slug' => $faker->slug,
             ]);
         }
     }

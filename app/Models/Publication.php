@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Publication extends Model
 {
@@ -20,7 +23,8 @@ class Publication extends Model
         'type_id',
         'category_id',
         'publisher_id',
-        'file'
+        'file',
+        'slug',
     ];
 
     // The attributes that should be cast.
@@ -31,7 +35,7 @@ class Publication extends Model
     /**
      * Get the category associated with the publication.
      */
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -39,7 +43,7 @@ class Publication extends Model
     /**
      * The tags that belong to the publication.
      */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'publication_tags'); // assuming you have a Tag model and publication_tags pivot table
     }
@@ -47,29 +51,68 @@ class Publication extends Model
     /**
      * Get the type associated with the publication.
      */
-    public function types()
+    public function types(): BelongsTo
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsTo(Type::class, 'type_id'); // Ensure the foreign key is specified correctly
     }
 
-    public function authors()
+    public function authors(): BelongsToMany
     {
         return $this->belongsToMany(Author::class, 'author_publications');
     }
 
-    public function keywords()
+    public function keywords(): BelongsToMany
     {
         return $this->belongsToMany(Keyword::class, 'publication_keyword');
     }
 
-    public function publisher()
+    public function publisher(): BelongsTo
     {
         return $this->belongsTo(Publisher::class);
     }
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'category_publication');
+    }
+
+    public function hasPublisher(): bool
+    {
+        return !empty($this->publisher_id);
+    }
+
+    public function hasKeywords()
+    {
+        return $this->keywords->isNotEmpty();
+    }
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($publication) {
+            $publication->slug = $publication->generateUniqueSlug($publication->title);
+        });
+
+        static::updating(function ($publication) {
+            if ($publication->isDirty('title')) {
+                $publication->slug = $publication->generateUniqueSlug($publication->title);
+            }
+        });
+    }
+
+    public function generateUniqueSlug($title): string
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (self::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
     }
 
 }

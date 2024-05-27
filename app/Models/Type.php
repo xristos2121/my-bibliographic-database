@@ -15,7 +15,7 @@ class Type extends Model
 
     public function publications()
     {
-        return $this->hasMany(Publication::class);
+        return $this->hasMany(Publication::class, 'type_id');
     }
 
     /**

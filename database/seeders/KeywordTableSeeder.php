@@ -19,7 +19,7 @@ class KeywordTableSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             DB::table('keywords')->insert([
-                'keyword' => $faker->word,
+                'keyword' => $faker->unique()->word,
             ]);
         }
     }

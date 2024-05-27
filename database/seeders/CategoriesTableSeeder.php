@@ -18,7 +18,7 @@ class CategoriesTableSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             DB::table('categories')->insert([
-                'name' => $faker->word,
+                'name' => $faker->unique()->word,
             ]);
         }
     }
