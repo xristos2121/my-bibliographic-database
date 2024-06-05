@@ -3,7 +3,7 @@
     "file": "assets/bootstrap-CifqVuM1.js"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C2c9Aa-r.css",
+    "file": "assets/app-DRl0lrgk.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -16,18 +16,18 @@
     ]
   },
   "resources/js/front.js": {
-    "file": "assets/front-p9eYhUxi.js",
+    "file": "assets/front-shjipPHz.js",
     "src": "resources/js/front.js",
     "isEntry": true,
     "imports": [
       "_bootstrap-CifqVuM1.js"
     ],
     "css": [
-      "assets/front-C_yLOuyU.css"
+      "assets/front-CvfVsy5M.css"
     ]
   },
   "resources/scss/front.scss": {
-    "file": "assets/front-C_yLOuyU.css",
+    "file": "assets/front-CvfVsy5M.css",
     "src": "resources/js/front.js"
   }
 }
