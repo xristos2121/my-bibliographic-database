@@ -86,6 +86,11 @@ class Publication extends Model
         return $this->keywords->isNotEmpty();
     }
 
+    public function hasCategories()
+    {
+        return $this->categories->isNotEmpty();
+    }
+
     public static function boot(): void
     {
         parent::boot();

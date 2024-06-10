@@ -1,6 +1,6 @@
 <x-front-layout>
     <div class="container">
-        <h1>Advanced Publication Search</h1>
+        <h1>{{ __('messages.advanced_search.title') }}</h1>
         <form id="advanced-search-form" action="{{ url('/advanced-search/results') }}" method="GET" class="col-sm-8">
             <div id="filters-container">
                 @if(isset($searchParameters['type']) && isset($searchParameters['lookfor']))
@@ -8,13 +8,22 @@
                         <div class="form-group filter-group d-flex align-items-center">
                             <select name="type[]" class="form-control mr-2">
                                 <option value="entire_document" {{ $type === 'entire_document' ? 'selected' : '' }}>
-                                    Entire Document
+                                    {{ __('messages.filters.entire_document') }}
                                 </option>
-                                <option value="title" {{ $type === 'title' ? 'selected' : '' }}>Title</option>
-                                <option value="author" {{ $type === 'author' ? 'selected' : '' }}>Author</option>
-                                <option value="abstract" {{ $type === 'abstract' ? 'selected' : '' }}>Abstract</option>
-                                <option value="keyword" {{ $type === 'keyword' ? 'selected' : '' }}>Keyword</option>
-                                <option value="publisher" {{ $type === 'publisher' ? 'selected' : '' }}>Publisher
+                                <option value="title" {{ $type === 'title' ? 'selected' : '' }}>
+                                    {{ __('messages.filters.title') }}
+                                </option>
+                                <option value="author" {{ $type === 'author' ? 'selected' : '' }}>
+                                    {{ __('messages.filters.author') }}
+                                </option>
+                                <option value="abstract" {{ $type === 'abstract' ? 'selected' : '' }}>
+                                    {{ __('messages.filters.abstract') }}
+                                </option>
+                                <option value="keyword" {{ $type === 'keyword' ? 'selected' : '' }}>
+                                    {{ __('messages.filters.keyword') }}
+                                </option>
+                                <option value="publisher" {{ $type === 'publisher' ? 'selected' : '' }}>
+                                    {{ __('messages.filters.publisher') }}
                                 </option>
                             </select>
                             <input type="text" name="lookfor[]" class="form-control mr-2"
@@ -33,19 +42,19 @@
                     @endforeach
                 @endif
             </div>
-            <button type="button" class="addFilterBtn" onclick="addFilter()">Add Filter</button>
+            <button type="button" class="addFilterBtn" onclick="addFilter()">{{ __('messages.filters.add') }}</button>
             <div class="form-group">
-                <label for="fromMonthYear">From</label>
+                <label for="fromMonthYear">{{ __('messages.form.from') }}</label>
                 <input type="month" id="fromMonthYear" name="fromMonthYear" class="form-control"
                        value="{{ $searchParameters['fromMonthYear'] ?? '' }}">
             </div>
             <div class="form-group">
-                <label for="untilMonthYear">Until</label>
+                <label for="untilMonthYear">{{ __('messages.form.until') }}</label>
                 <input type="month" id="untilMonthYear" name="untilMonthYear" class="form-control"
                        value="{{ $searchParameters['untilMonthYear'] ?? '' }}">
             </div>
             <div class="form-group">
-                <label for="hits_per_page">Hits per page</label>
+                <label for="hits_per_page">{{ __('messages.form.hits_per_page') }}</label>
                 <select name="hits_per_page" class="form-control">
                     <option value="10" {{ ($searchParameters['hits_per_page'] ?? '') == '10' ? 'selected' : '' }}>10
                     </option>
@@ -58,22 +67,22 @@
                     </option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary">{{ __('messages.form.search') }}</button>
         </form>
 
         <div class="search-results-section">
             <div class="search-results-wrapper">
-                <h2>Search Results</h2>
+                <h2>{{ __('messages.results.title') }}</h2>
                 @if ($results->count() > 0)
                     <div class="search-results">
                         @foreach ($results as $result)
                             <div class="search-results-item">
-                                <a href="{{ url('/publication/' . $result->id) }}">
+                                <a href="{{ url('/record/' . $result->slug) }}">
                                     <h3>{{ $result->title }}</h3>
                                 </a>
                                 <div class="publication-data-wrapper">
                                     <div class="publication-data-row">
-                                        <span class="publication-data-label">Author:</span>
+                                        <span class="publication-data-label">{{ __('messages.results.author') }}</span>
                                         <span class="publication-data-value">
                                             @foreach ($result->authors as $author)
                                                 {{ $author->first_name }} {{ $author->last_name }}{{ !$loop->last ? ', ' : '' }}
@@ -81,7 +90,7 @@
                                         </span>
                                     </div>
                                     <div class="publication-data-row">
-                                        <span class="publication-data-label">Date:</span>
+                                        <span class="publication-data-label">{{ __('messages.results.date') }}</span>
                                         <span class="publication-data-value">
                                              @php
                                                  $date = new DateTime($result->publication_date);
@@ -91,7 +100,7 @@
                                         </span>
                                     </div>
                                     <div class="publication-data-row">
-                                        <span class="publication-data-label">Document Type:</span>
+                                        <span class="publication-data-label">{{ __('messages.results.document_type') }}</span>
                                         <span class="publication-data-value">
                                             @if($result->types)
                                                 <span>{{ $result->types->name }}</span>
@@ -102,7 +111,7 @@
                                     </div>
                                     @if ($result->hasPublisher())
                                         <div class="publication-data-row">
-                                            <span class="publication-data-label">Publisher:</span>
+                                            <span class="publication-data-label">{{ __('messages.results.publisher') }}</span>
                                             <span class="publication-data-value">
                                                 {{ $result->publisher->name }}
                                         </span>
@@ -110,7 +119,7 @@
                                     @endif
                                     @if ($result->hasKeywords())
                                         <div class="publication-data-row">
-                                            <span class="publication-data-label">Keywords:</span>
+                                            <span class="publication-data-label">{{ __('messages.results.keywords') }}</span>
                                             <span class="publication-data-value">
                                                 @foreach ($result->keywords as $keyword)
                                                     {{ $keyword->keyword }}{{ !$loop->last ? ', ' : '' }}
@@ -120,25 +129,25 @@
                                     @endif
                                     @if ($result->file)
                                         <div class="publication-data-row">
-                                            <span class="publication-data-label">File:</span>
+                                            <span class="publication-data-label">{{ __('messages.results.file') }}</span>
                                             <span class="publication-data-value">
                                                 <a href="{{ Storage::url($result->file) }}" class="preview-publication"
                                                    target="_blank">
-                                                    Preview Publication
+                                                    {{ __('messages.results.preview_publication') }}
                                                 </a>
                                             </span>
                                         </div>
                                     @endif
                                     <p>{{ $result->abstract }}</p>
                                     <div>
-                                        <a href="{{ url('/publication/' . $result->id) }}">View Publication</a>
+                                        <a href="{{ url('/record/' . $result->slug) }}">{{ __('messages.results.view_more') }}</a>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 @else
-                    <p>No results found.</p>
+                    <p>{{ __('messages.results.no_results') }}</p>
                 @endif
             </div>
         </div>
@@ -151,12 +160,12 @@
             newFilter.className = 'form-group filter-group d-flex align-items-center';
             newFilter.innerHTML = `
                 <select name="type[]" class="form-control mr-2">
-                    <option value="entire_document">Entire Document</option>
-                    <option value="title">Title</option>
-                    <option value="author">Author</option>
-                    <option value="abstract">Abstract</option>
-                    <option value="keyword">Keyword</option>
-                    <option value="publisher">Publisher</option>
+                    <option value="entire_document">{{ __('messages.filters.entire_document') }}</option>
+                    <option value="title">{{ __('messages.filters.title') }}</option>
+                    <option value="author">{{ __('messages.filters.author') }}</option>
+                    <option value="abstract">{{ __('messages.filters.abstract') }}</option>
+                    <option value="keyword">{{ __('messages.filters.keyword') }}</option>
+                    <option value="publisher">{{ __('messages.filters.publisher') }}</option>
                 </select>
                 <input type="text" name="lookfor[]" class="form-control mr-2">
                 <div onclick="removeFilter(this)">

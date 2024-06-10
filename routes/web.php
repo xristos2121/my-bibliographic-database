@@ -11,6 +11,7 @@ use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\RecordController;
 
 use Smalot\PdfParser\Parser;
 /*
@@ -33,6 +34,8 @@ Route::get('/search', [SearchController::class, 'search']);
 
 Route::get('/advanced-search', [SearchController::class, 'index']);
 Route::get('/advanced-search/results', [SearchController::class, 'advanced_search']);
+Route::get('/record/{slug}', [RecordController::class, 'viewResult']);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

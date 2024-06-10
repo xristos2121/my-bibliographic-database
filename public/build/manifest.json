@@ -8,7 +8,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-2icrgtG7.js",
+    "file": "assets/app-CGmAFxAC.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
@@ -16,18 +16,18 @@
     ]
   },
   "resources/js/front.js": {
-    "file": "assets/front-shjipPHz.js",
+    "file": "assets/front-BAI0e7d-.js",
     "src": "resources/js/front.js",
     "isEntry": true,
     "imports": [
       "_bootstrap-CifqVuM1.js"
     ],
     "css": [
-      "assets/front-CvfVsy5M.css"
+      "assets/front-DE-_uBPo.css"
     ]
   },
   "resources/scss/front.scss": {
-    "file": "assets/front-CvfVsy5M.css",
+    "file": "assets/front-DE-_uBPo.css",
     "src": "resources/js/front.js"
   }
 }
