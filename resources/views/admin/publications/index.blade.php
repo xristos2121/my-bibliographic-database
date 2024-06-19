@@ -30,7 +30,7 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $publication->title }}</td>
                                 <td class="border px-4 py-2">{{ $publication->abstract }}</td>
-                                <td class="border px-4 py-2">{{ $publication->publication_date ? $publication->publication_date->toFormattedDateString() : 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $publication->publication_date ?: 'N/A' }}</td>
                                 <td class="border px-4 py-2">
                                     <a href="{{ route('publications.edit', $publication) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                     <form action="{{ route('publications.destroy', $publication->id) }}" method="POST" class="inline-flex">

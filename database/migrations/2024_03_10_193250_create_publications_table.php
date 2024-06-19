@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('abstract')->nullable();
-            $table->date('publication_date')->nullable();
+            $table->integer('publication_date')->nullable();
             $table->text('keywords')->nullable();
             $table->timestamps();
         });

@@ -31,17 +31,42 @@
                             @if($index > 0)
                                 <div type="button" onclick="removeFilter(this)">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="20" viewBox="0 0 256 256" xml:space="preserve">
-                                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                                            <path d="M 11 90 c -2.815 0 -5.63 -1.074 -7.778 -3.222 c -4.295 -4.296 -4.295 -11.261 0 -15.557 l 68 -68 c 4.297 -4.296 11.26 -4.296 15.557 0 c 4.296 4.296 4.296 11.261 0 15.557 l -68 68 C 16.63 88.926 13.815 90 11 90 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(214,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
-                                            <path d="M 79 90 c -2.815 0 -5.63 -1.074 -7.778 -3.222 l -68 -68 c -4.295 -4.296 -4.295 -11.261 0 -15.557 c 4.296 -4.296 11.261 -4.296 15.557 0 l 68 68 c 4.296 4.296 4.296 11.261 0 15.557 C 84.63 88.926 81.815 90 79 90 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(214,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
-                                        </g>
-                                    </svg>
+                            <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                                <path d="M 11 90 c -2.815 0 -5.63 -1.074 -7.778 -3.222 c -4.295 -4.296 -4.295 -11.261 0 -15.557 l 68 -68 c 4.297 -4.296 11.26 -4.296 15.557 0 c 4.296 4.296 4.296 11.261 0 15.557 l -68 68 C 16.63 88.926 13.815 90 11 90 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(214,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                                <path d="M 79 90 c -2.815 0 -5.63 -1.074 -7.778 -3.222 l -68 -68 c -4.295 -4.296 -4.295 -11.261 0 -15.557 c 4.296 -4.296 11.261 -4.296 15.557 0 l 68 68 c 4.296 4.296 4.296 11.261 0 15.557 C 84.63 88.926 81.815 90 79 90 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(214,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                            </g>
+                        </svg>
                                 </div>
                             @endif
                         </div>
                     @endforeach
+                @else
+                    <div class="form-group filter-group d-flex align-items-center">
+                        <select name="type[]" class="form-control mr-2">
+                            <option value="entire_document">
+                                {{ __('messages.filters.entire_document') }}
+                            </option>
+                            <option value="title">
+                                {{ __('messages.filters.title') }}
+                            </option>
+                            <option value="author">
+                                {{ __('messages.filters.author') }}
+                            </option>
+                            <option value="abstract">
+                                {{ __('messages.filters.abstract') }}
+                            </option>
+                            <option value="keyword">
+                                {{ __('messages.filters.keyword') }}
+                            </option>
+                            <option value="publisher">
+                                {{ __('messages.filters.publisher') }}
+                            </option>
+                        </select>
+                        <input type="text" name="lookfor[]" class="form-control mr-2" value="">
+                    </div>
                 @endif
             </div>
+
             <button type="button" class="addFilterBtn" onclick="addFilter()">{{ __('messages.filters.add') }}</button>
             <div class="form-group">
                 <label for="hits_per_page">{{ __('messages.search.type') }}</label>
@@ -59,13 +84,13 @@
 
             <div class="form-group">
                 <label for="fromMonthYear">{{ __('messages.form.from') }}</label>
-                <input type="month" id="fromMonthYear" name="fromMonthYear" class="form-control"
-                       value="{{ $searchParameters['fromMonthYear'] ?? '' }}">
+                <input type="number" id="fromYear" name="fromYear" class="form-control"
+                       value="{{ $searchParameters['fromYear'] ?? '' }}">
             </div>
             <div class="form-group">
                 <label for="untilMonthYear">{{ __('messages.form.until') }}</label>
-                <input type="month" id="untilMonthYear" name="untilMonthYear" class="form-control"
-                       value="{{ $searchParameters['untilMonthYear'] ?? '' }}">
+                <input type="number" id="untilYear" name="untilYear" class="form-control"
+                       value="{{ $searchParameters['untilYear'] ?? '' }}">
             </div>
             <div class="form-group">
                 <label for="hits_per_page">{{ __('messages.form.hits_per_page') }}</label>
@@ -106,11 +131,7 @@
                                     <div class="publication-data-row">
                                         <span class="publication-data-label">{{ __('messages.results.date') }}</span>
                                         <span class="publication-data-value">
-                                             @php
-                                                 $date = new DateTime($result->publication_date);
-                                                 $formattedDate = $date->format('d F Y');
-                                             @endphp
-                                            <span>{{ $formattedDate }}</span>
+                                            <span>{{ $result->publication_date }}</span>
                                         </span>
                                     </div>
                                     <div class="publication-data-row">

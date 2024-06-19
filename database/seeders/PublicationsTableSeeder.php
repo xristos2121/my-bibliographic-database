@@ -20,7 +20,7 @@ class PublicationsTableSeeder extends Seeder
             DB::table('publications')->insert([
                 'title' => $faker->sentence,
                 'abstract' => $faker->paragraph,
-                'publication_date' => $faker->date,
+                'publication_date' => $faker->numberBetween(2000, 2024),
                 // Assuming you want to store just a file name or path as a string
                 'type_id' => Type::inRandomOrder()->first()->id,
                 'file' => 'publications/' . $faker->word . '.pdf',

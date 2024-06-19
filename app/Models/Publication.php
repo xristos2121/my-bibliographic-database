@@ -27,11 +27,6 @@ class Publication extends Model
         'slug',
     ];
 
-    // The attributes that should be cast.
-    protected $casts = [
-        'publication_date' => 'date',
-    ];
-
     /**
      * Get the category associated with the publication.
      */

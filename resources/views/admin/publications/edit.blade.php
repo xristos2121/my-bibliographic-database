@@ -39,7 +39,7 @@
                         <!-- Publication Date -->
                         <div class="mt-4">
                             <x-form.label for="publication_date" :value="__('Publication Date')" />
-                            <x-form.input id="publication_date" class="block mt-1 w-full" type="date" name="publication_date" :value="old('publication_date', optional($publication->publication_date)->format('Y-m-d'))" />
+                            <x-form.input id="publication_date" class="block mt-1 w-full" type="text" name="publication_date" :value="old('publication_date', $publication->publication_date)" />
                             <x-form.error :messages="$errors->get('publication_date')" class="mt-2" />
 
                         </div>

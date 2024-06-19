@@ -1,6 +1,13 @@
 {
-  "_bootstrap-CifqVuM1.js": {
-    "file": "assets/bootstrap-CifqVuM1.js"
+  "_select2-!~{005}~.js": {
+    "file": "assets/select2-5eEUGUV5.css",
+    "src": "_select2-!~{005}~.js"
+  },
+  "_select2-DQSiMoTO.js": {
+    "file": "assets/select2-DQSiMoTO.js",
+    "css": [
+      "assets/select2-5eEUGUV5.css"
+    ]
   },
   "resources/css/app.css": {
     "file": "assets/app-DRl0lrgk.css",
@@ -8,26 +15,26 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CGmAFxAC.js",
+    "file": "assets/app-Dcj1qr9D.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_bootstrap-CifqVuM1.js"
+      "_select2-DQSiMoTO.js"
     ]
   },
   "resources/js/front.js": {
-    "file": "assets/front-BAI0e7d-.js",
+    "file": "assets/front-DokzSwbJ.js",
     "src": "resources/js/front.js",
     "isEntry": true,
     "imports": [
-      "_bootstrap-CifqVuM1.js"
+      "_select2-DQSiMoTO.js"
     ],
     "css": [
-      "assets/front-DE-_uBPo.css"
+      "assets/front-DgxM1U0_.css"
     ]
   },
   "resources/scss/front.scss": {
-    "file": "assets/front-DE-_uBPo.css",
+    "file": "assets/front-DgxM1U0_.css",
     "src": "resources/js/front.js"
   }
 }

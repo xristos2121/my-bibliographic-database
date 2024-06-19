@@ -32,14 +32,13 @@ class SearchController extends Controller
             }
         }
 
-        if ($request->filled('fromMonthYear')) {
-            $fromDate = Carbon::parse($request->fromMonthYear)->startOfMonth();
-            $query->where('publication_date', '>=', $fromDate);
+        if ($request->filled('fromYear')) {
+            $query->where('publication_date', '>=', $request->fromYear);
         }
 
-        if ($request->filled('untilMonthYear')) {
-            $untilDate = Carbon::parse($request->untilMonthYear)->endOfMonth();
-            $query->where('publication_date', '<=', $untilDate);
+        if ($request->filled('untilYear')) {
+
+            $query->where('publication_date', '<=', $request->untilYear);
         }
 
         if ($request->document_type !== 'all') { // Check if document_type is not 'all'

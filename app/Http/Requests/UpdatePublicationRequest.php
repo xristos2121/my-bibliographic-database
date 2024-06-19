@@ -24,7 +24,7 @@ class UpdatePublicationRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'abstract' => 'nullable|string',
-            'publication_date' => 'nullable|date',
+            'publication_date' => 'nullable|int',
             'type_id' => 'required|exists:publication_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'authors' => 'required|array',

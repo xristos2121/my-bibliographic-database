@@ -79,13 +79,14 @@
             </div>
 
             <div class="form-group">
-                <label for="date">From</label>
-                <input type="month" id="monthYear" name="fromMonthYear" class="form-control">
+                <label for="fromYear">From</label>
+                <input type="text" name="fromYear" id="fromYear" class="form-control">
             </div>
             <div class="form-group">
-                <label for="date">Until</label>
-                <input type="month" id="monthYear" name="untilMonthYear" class="form-control">
+                <label for="toYear">Until</label>
+                <input type="text" name="untilYear" id="untilYear" class="form-control">
             </div>
+
             <div class="form-group">
                 <label for="date">Hits per page</label>
                 <select name="hits_per_page" class="form-control">
@@ -95,6 +96,7 @@
                     <option value="100">100</option>
                 </select>
             </div>
+
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>

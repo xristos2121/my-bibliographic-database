@@ -3,6 +3,9 @@ import './bootstrap'
 import Alpine from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
+import 'vanillajs-datepicker/css/datepicker.css';
+
+import { Datepicker } from 'vanillajs-datepicker';
 
 window.PerfectScrollbar = PerfectScrollbar
 import jQuery from 'jquery';
@@ -10,7 +13,35 @@ import select2 from "select2"
 select2();
 window.$ = jQuery;
 
+document.addEventListener('DOMContentLoaded', () => {
+    const fromYearInput = document.querySelector('input[name="fromYear"]');
+    const untilYearInput = document.querySelector('input[name="untilYear"]');
+    const publicationDate = document.querySelector('input[name="publication_date"]');
 
+    if (fromYearInput) {
+        new Datepicker(fromYearInput, {
+            pickLevel: 2,
+            format: 'yyyy',
+            autohide: true
+        });
+    }
+
+    if (untilYearInput) {
+        new Datepicker(untilYearInput, {
+            pickLevel: 2,
+            format: 'yyyy',
+            autohide: true
+        });
+    }
+
+    if (publicationDate) {
+        new Datepicker(publicationDate, {
+            pickLevel: 2,
+            format: 'yyyy',
+            autohide: true
+        });
+    }
+});
 document.addEventListener('alpine:init', () => {
     Alpine.data('mainState', () => {
         let lastScrollTop = 0
