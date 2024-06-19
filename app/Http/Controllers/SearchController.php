@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdvancedSearchRequest;
 use App\Models\Publication;
+use App\Models\Type;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -13,17 +14,21 @@ class SearchController extends Controller
 {
     public function index(): View
     {
-        return view('front.advanced-search');
+        $types = Type::all();
+        return view('front.advanced-search', compact('types'));
     }
 
     public function advanced_search(AdvancedSearchRequest $request): View
     {
         $query = Publication::query();
+        $types = Type::all();
 
-        foreach ($request->type as $key => $type) {
-            $lookfor = $request->lookfor[$key];
-            if (!empty($lookfor)) {
-                $this->applyFilter($query, $type, $lookfor);
+        if($request->type) {
+            foreach ($request->type as $key => $type) {
+                $lookfor = $request->lookfor[$key];
+                if (!empty($lookfor)) {
+                    $this->applyFilter($query, $type, $lookfor);
+                }
             }
         }
 
@@ -37,16 +42,19 @@ class SearchController extends Controller
             $query->where('publication_date', '<=', $untilDate);
         }
 
+        if ($request->document_type !== 'all') { // Check if document_type is not 'all'
+            $query->where('type_id', $request->document_type);
+        }
+
         $results = $query->get();
 
         // Pass the search parameters to the view
         return view('front.results', [
             'results' => $results,
-            'searchParameters' => $request->all()
+            'searchParameters' => $request->all(),
+            'types' => $types
         ]);
     }
-
-
 
     private function applyFilter($query, $type, $lookfor)
     {
@@ -95,6 +103,7 @@ class SearchController extends Controller
     {
         $query = Publication::query();
 
+        $types = Type::all();
         $searchTerm = $request->search;
         $this->applySearchFilters($query, $searchTerm);
 
@@ -108,7 +117,8 @@ class SearchController extends Controller
 
         return view('front.results', [
             'results' => $results,
-            'searchParameters' => $searchParameters
+            'searchParameters' => $searchParameters,
+            'types' => $types
         ]);
 
     }

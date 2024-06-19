@@ -28,4 +28,6 @@ return [
     'record.details' => 'Details',
     'record.abstract' => 'Abstract',
     'record.categories' => 'Categories',
+    'search.type' => 'Type',
+    'search.all' => 'All',
 ];

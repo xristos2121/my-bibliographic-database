@@ -26,6 +26,7 @@ class AdvancedSearchRequest extends FormRequest
         return [
             'type.*' => 'required|in:entire_document,title,author,abstract,keyword,publisher',
             'lookfor.*' => 'nullable|string',
+            'document_type' => 'required',
             'fromMonthYear' => 'nullable|date_format:Y-m',
             'untilMonthYear' => 'nullable|date_format:Y-m'
         ];

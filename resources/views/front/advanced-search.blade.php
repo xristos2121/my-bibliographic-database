@@ -69,6 +69,16 @@
                 <input type="text" name="lookfor[]" class="form-control">
             </div>
             <div class="form-group">
+                <label for="date">{{__('messages.search.type')}}</label>
+                <select name="document_type" class="form-control">
+                    <option value="all">{{__('messages.search.all')}}</option> <!-- Add the 'All' option -->
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="date">From</label>
                 <input type="month" id="monthYear" name="fromMonthYear" class="form-control">
             </div>
@@ -100,7 +110,7 @@
                 if ((element.tagName === 'INPUT' && element.type === 'text' && element.value) ||
                     (element.tagName === 'SELECT' && element.name.startsWith('type') && element.nextElementSibling.value) ||
                     (element.tagName === 'INPUT' && element.type === 'month' && element.value) ||
-                    (element.tagName === 'SELECT' && element.name === 'hits_per_page')) {
+                    (element.tagName === 'SELECT' && (element.name === 'hits_per_page' || element.name === 'document_type'))) {
                     const newElement = element.cloneNode(true);
                     newElement.value = element.value;
                     newForm.appendChild(newElement);

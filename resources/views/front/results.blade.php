@@ -44,6 +44,20 @@
             </div>
             <button type="button" class="addFilterBtn" onclick="addFilter()">{{ __('messages.filters.add') }}</button>
             <div class="form-group">
+                <label for="hits_per_page">{{ __('messages.search.type') }}</label>
+                <select name="document_type" class="form-control">
+                    <option value="all" {{ ($searchParameters['document_type'] ?? '') == 'all' ? 'selected' : '' }}>
+                        {{ __('All') }}
+                    </option>
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}" {{ ($searchParameters['document_type'] ?? '') == $type->id ? 'selected' : '' }}>
+                            {{ $type->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="fromMonthYear">{{ __('messages.form.from') }}</label>
                 <input type="month" id="fromMonthYear" name="fromMonthYear" class="form-control"
                        value="{{ $searchParameters['fromMonthYear'] ?? '' }}">
@@ -154,6 +168,36 @@
     </div>
 
     <script>
+        document.getElementById('advanced-search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const originalForm = event.target;
+            const newForm = document.createElement('form');
+            newForm.action = originalForm.action;
+            newForm.method = originalForm.method;
+
+            Array.from(originalForm.elements).forEach(element => {
+                if ((element.tagName === 'INPUT' && element.type === 'text' && element.value) ||
+                    (element.tagName === 'SELECT' && element.name.startsWith('type') && element.nextElementSibling && element.nextElementSibling.value) ||
+                    (element.tagName === 'INPUT' && element.type === 'month' && element.value) ||
+                    (element.tagName === 'SELECT' && (element.name === 'hits_per_page' || element.name === 'document_type'))) {
+
+                    const newElement = element.cloneNode(true);
+                    newElement.value = element.value;
+                    newForm.appendChild(newElement);
+
+                    if (element.name.startsWith('type')) {
+                        const newInput = element.nextElementSibling.cloneNode(true);
+                        newInput.value = element.nextElementSibling.value;
+                        newForm.appendChild(newInput);
+                    }
+                }
+            });
+
+            newForm.style.display = 'none';
+            document.body.appendChild(newForm);
+            console.log(newForm);
+            newForm.submit();
+        });
         function addFilter() {
             const filterContainer = document.getElementById('filters-container');
             const newFilter = document.createElement('div');
