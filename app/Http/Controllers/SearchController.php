@@ -45,13 +45,16 @@ class SearchController extends Controller
             $query->where('type_id', $request->document_type);
         }
 
-        $results = $query->get();
+        $hitsPerPage = $request->input('hits_per_page', 10);
+
+        $results = $query->paginate($hitsPerPage);
 
         // Pass the search parameters to the view
         return view('front.results', [
             'results' => $results,
             'searchParameters' => $request->all(),
-            'types' => $types
+            'types' => $types,
+            'hits_per_page' => $hitsPerPage
         ]);
     }
 

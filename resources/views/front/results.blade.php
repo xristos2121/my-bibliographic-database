@@ -69,7 +69,7 @@
 
             <button type="button" class="addFilterBtn" onclick="addFilter()">{{ __('messages.filters.add') }}</button>
             <div class="form-group">
-                <label for="hits_per_page">{{ __('messages.search.type') }}</label>
+                <label for="document_type">{{ __('messages.search.type') }}</label>
                 <select name="document_type" class="form-control">
                     <option value="all" {{ ($searchParameters['document_type'] ?? '') == 'all' ? 'selected' : '' }}>
                         {{ __('All') }}
@@ -83,12 +83,12 @@
             </div>
 
             <div class="form-group">
-                <label for="fromMonthYear">{{ __('messages.form.from') }}</label>
+                <label for="fromYear">{{ __('messages.form.from') }}</label>
                 <input type="number" id="fromYear" name="fromYear" class="form-control"
                        value="{{ $searchParameters['fromYear'] ?? '' }}">
             </div>
             <div class="form-group">
-                <label for="untilMonthYear">{{ __('messages.form.until') }}</label>
+                <label for="untilYear">{{ __('messages.form.until') }}</label>
                 <input type="number" id="untilYear" name="untilYear" class="form-control"
                        value="{{ $searchParameters['untilYear'] ?? '' }}">
             </div>
@@ -181,6 +181,8 @@
                             </div>
                         @endforeach
                     </div>
+                    <!-- Pagination links -->
+                    {{ $results->appends(request()->input())->links('vendor.pagination.default') }}
                 @else
                     <p>{{ __('messages.results.no_results') }}</p>
                 @endif
@@ -219,6 +221,7 @@
             console.log(newForm);
             newForm.submit();
         });
+
         function addFilter() {
             const filterContainer = document.getElementById('filters-container');
             const newFilter = document.createElement('div');

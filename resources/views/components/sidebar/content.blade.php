@@ -20,6 +20,7 @@
     <x-sidebar.link title="Categories" href="{{ route('categories.index') }}"  :isActive="request()->routeIs('categories.*')"/>
     <x-sidebar.link title="Publications" href="{{ route('publications.index') }}"  :isActive="request()->routeIs('publications.*')"/>
     <x-sidebar.link title="Publications Types" href="{{ route('publications_types.index') }}"  :isActive="request()->routeIs('publications_types.*')"/>
+    <x-sidebar.link title="Custom Fields" href="{{ route('custom_fields.index') }}"  :isActive="request()->routeIs('custom_fields.*')"/>
     <x-sidebar.link title="Tags" href="{{ route('tags.index') }}"  :isActive="request()->routeIs('tags.*')"/>
     <x-sidebar.link title="Authors" href="{{ route('author.index') }}"  :isActive="request()->routeIs('author.*')"/>
     <x-sidebar.link title="Publisher" href="{{ route('publisher.index') }}"  :isActive="request()->routeIs('publisher.*')"/>

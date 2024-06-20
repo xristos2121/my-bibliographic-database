@@ -12,7 +12,7 @@
                     @if($errors->any())
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <strong class="font-bold">Whoops! Something went wrong.</strong>
-                            <ul>
+                            <ul class="mt-2">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -39,17 +39,18 @@
                         <!-- Publication Date -->
                         <div class="mt-4">
                             <x-form.label for="publication_date" :value="__('Publication Date')" />
-                            <x-form.input id="publication_date" class="block mt-1 w-full" type="date" name="publication_date" :value="old('publication_date')" />
+                            <x-form.input id="publication_date" class="block mt-1 w-full" type="text" name="publication_date" :value="old('publication_date')" />
                             <x-form.error :messages="$errors->get('publication_date')" class="mt-2" />
-
                         </div>
 
+                        <!-- File Upload -->
                         <div class="mt-4">
                             <x-form.label for="file" :value="__('Upload File')" />
                             <input id="file" class="block mt-1 w-full" type="file" name="file" accept="application/pdf">
                             <x-form.error :messages="$errors->get('file')" class="mt-2" />
                         </div>
 
+                        <!-- Publisher -->
                         <div class="mt-4">
                             <label for="enable_publisher" class="inline-flex items-center">
                                 <input type="checkbox" id="enable_publisher" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -59,7 +60,6 @@
 
                         <div class="mt-4">
                             <x-form.label for="publisher" :value="__('Publisher')" />
-
                             <select name="publisher_id" id="publisher_select" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" disabled>
                                 @foreach($publishers as $publisher)
                                     <option value="{{ $publisher->id }}">{{ $publisher->name }}</option>
@@ -68,21 +68,20 @@
                             <x-form.error :messages="$errors->get('publisher_id')" class="mt-2" />
                         </div>
 
+                        <!-- Type -->
                         <div class="mt-4">
                             <x-form.label for="type" :value="__('Type')" />
-
                             <x-form.select name="type_id">
                                 @foreach($types as $type)
-                                <option value="{{$type->id}}">{{$type->name}}</option>
+                                    <option value="{{$type->id}}">{{$type->name}}</option>
                                 @endforeach
                             </x-form.select>
                             <x-form.error :messages="$errors->get('type_id')" class="mt-2" />
-
                         </div>
 
+                        <!-- Categories -->
                         <div class="mt-4">
                             <x-form.label for="categories" :value="__('Categories')" />
-
                             <select id="categories" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="categories[]" multiple="multiple">
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -91,9 +90,9 @@
                             <x-form.error :messages="$errors->get('categories')" class="mt-2" />
                         </div>
 
+                        <!-- Authors -->
                         <div class="mt-4">
                             <x-form.label for="authors" :value="__('Authors')" />
-
                             <select id="authors" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="authors[]" multiple="multiple">
                                 @foreach($authors as $author)
                                     <option value="{{ $author->id }}">{{ $author->first_name }} {{ $author->last_name }}</option>
@@ -102,9 +101,9 @@
                             <x-form.error :messages="$errors->get('authors')" class="mt-2" />
                         </div>
 
+                        <!-- Keywords -->
                         <div class="mt-4">
-                            <x-form.label for="keywords" :value="__('Authors')" />
-
+                            <x-form.label for="keywords" :value="__('Keywords')" />
                             <select id="keywords" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="keywords[]" multiple="multiple">
                                 @foreach($keywords as $keyword)
                                     <option value="{{ $keyword->id }}">{{ $keyword->keyword }}</option>
@@ -112,10 +111,30 @@
                             </select>
                             <x-form.error :messages="$errors->get('keywords')" class="mt-2" />
                         </div>
-                        <div class="flex items-center justify-end mt-4">
+
+                        <!-- Custom Fields -->
+                        <div class="mt-6">
+                            <x-form.label :value="__('Custom Fields')" />
+                            <div id="custom-fields-container" class="space-y-4">
+                                <!-- Custom fields will be appended here -->
+                            </div>
+                            <div class="mt-4 flex items-center space-x-4">
+                                <select id="custom-field-select" class="block w-full rounded-md shadow-sm border-gray-300">
+                                    <option value="" disabled selected>Select Custom Field</option>
+                                    @foreach($customFields as $customField)
+                                        <option value="{{ $customField->name }}" data-type="{{ $customField->type }}">{{ $customField->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="button" id="add-custom-field" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">+ Add Custom Field</button>
+                                <a href="{{ route('custom_fields.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Create Custom Field</a>
+                            </div>
+                        </div>
+
+                        <!-- Save Button -->
+                        <div class="flex items-center justify-end mt-6">
                             <x-button class="ml-4">
                                 {{ __('Save') }}
-                            </x-button >
+                            </x-button>
                         </div>
                     </form>
                 </div>
@@ -142,7 +161,38 @@
             allowClear: true
         }).prop("disabled", true); // Ensure it's disabled by default
 
+        // Handle dynamic custom fields
+        const customFieldsContainer = document.getElementById('custom-fields-container');
+        const customFieldSelect = document.getElementById('custom-field-select');
+        document.getElementById('add-custom-field').addEventListener('click', function () {
+            const selectedOption = customFieldSelect.options[customFieldSelect.selectedIndex];
+            if (selectedOption && selectedOption.value) {
+                const fieldName = selectedOption.value;
+                const fieldType = selectedOption.getAttribute('data-type');
 
+                const fieldWrapper = document.createElement('div');
+                fieldWrapper.classList.add('custom-field-wrapper', 'p-4', 'bg-gray-100', 'rounded-md', 'shadow-sm');
+                fieldWrapper.innerHTML = `
+                    <label class="block font-medium text-sm text-gray-700">${fieldName}</label>
+                    <input type="hidden" name="custom_fields[${fieldName}][type]" value="${fieldType}">
+                <input type="text" name="custom_fields[${fieldName}][value]" placeholder="Enter ${fieldName}" class="block w-full mt-1 rounded-md shadow-sm border-gray-300">
+                <button type="button" class="remove-custom-field mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
+                `;
+                customFieldsContainer.appendChild(fieldWrapper);
+
+                // Disable the selected option
+                selectedOption.disabled = true;
+
+                // Handle removal of custom fields
+                fieldWrapper.querySelector('.remove-custom-field').addEventListener('click', function () {
+                    fieldWrapper.remove();
+                    selectedOption.disabled = false; // Re-enable the option
+                });
+
+                // Reset the custom field select
+                customFieldSelect.selectedIndex = 0;
+            }
+        });
     });
-
 </script>
+

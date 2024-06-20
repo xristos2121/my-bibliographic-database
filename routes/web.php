@@ -12,6 +12,7 @@ use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\FieldDefinitionController;
 
 use Smalot\PdfParser\Parser;
 /*
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
     ]);
     Route::resource('keywords', KeywordController::class);
     Route::resource('publisher', PublisherController::class);
+    Route::resource('custom_fields', FieldDefinitionController::class);
 });
 
 Route::get('/test-pdf', function () {

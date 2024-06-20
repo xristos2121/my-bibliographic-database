@@ -10,6 +10,7 @@ use App\Models\Type;
 use App\Models\Keyword;
 use App\Models\Publisher;
 use App\Models\Category;
+use App\Models\FieldDefinition;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
@@ -19,7 +20,6 @@ class PublicationController extends Controller
 {
     public function index(): View
     {
-        // Consider using eager loading if you're displaying related data
         $publications = Publication::with(['authors', 'types', 'keywords'])->get();
         return view('admin.publications.index', compact('publications'));
     }
@@ -31,7 +31,8 @@ class PublicationController extends Controller
         $keywords = Keyword::all();
         $publishers = Publisher::all();
         $categories = Category::all();
-        return view('admin.publications.create', compact('authors', 'types', 'keywords','publishers','categories'));
+        $customFields = FieldDefinition::all();
+        return view('admin.publications.create', compact('authors', 'types', 'keywords', 'publishers', 'categories', 'customFields'));
     }
 
     public function store(StorePublicationRequest $request): RedirectResponse
@@ -140,5 +141,20 @@ class PublicationController extends Controller
         $publication->categories()->sync($categories);
     }
 
+
+    public function storeCustomFields(Request $request, $publicationId)
+    {
+        $publication = Publication::findOrFail($publicationId);
+
+        foreach ($request->custom_fields as $field) {
+            CustomField::create([
+                'publication_id' => $publication->id,
+                'field_name' => $field['field_name'],
+                'field_value' => $field['field_value'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Custom fields added successfully.');
+    }
 
 }

@@ -86,6 +86,11 @@ class Publication extends Model
         return $this->categories->isNotEmpty();
     }
 
+    public function customFields()
+    {
+        return $this->hasMany(CustomField::class);
+    }
+
     public static function boot(): void
     {
         parent::boot();
