@@ -1,6 +1,6 @@
 <x-front-layout>
     <style>
-
+        /* Add your styles here */
     </style>
     <div class="container">
         <h1>{{ $result->title }}</h1>
@@ -63,6 +63,14 @@
                                 @endforeach
                             </span>
                         </div>
+                    @endif
+                    @if ($result->customFields->isNotEmpty())
+                        @foreach ($result->customFields as $customField)
+                            <div class="record-data-row">
+                                <span class="record-data-label">{{ $customField->definition->name }}</span>
+                                <span class="record-data-value">{{ $customField->value }}</span>
+                            </div>
+                        @endforeach
                     @endif
                     @if ($result->file)
                         <div class="record-data-row">

@@ -35,6 +35,9 @@ class UpdatePublicationRequest extends FormRequest
             'category_publication' => 'nullable|array',
             'category_publication.*' => 'integer|exists:categories,id',
             'file' => 'nullable|file|mimes:pdf',
+            'custom_fields' => 'nullable|array',
+            'custom_fields.*.field_definition_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
+            'custom_fields.*.value' => 'required_with:custom_fields|string',
         ];
     }
 }

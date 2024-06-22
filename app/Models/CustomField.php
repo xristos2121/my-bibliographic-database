@@ -20,4 +20,9 @@ class CustomField extends Model
     {
         return $this->belongsTo(FieldDefinition::class);
     }
+
+    public function definition()
+    {
+        return $this->belongsTo(FieldDefinition::class, 'field_definition_id');
+    }
 }

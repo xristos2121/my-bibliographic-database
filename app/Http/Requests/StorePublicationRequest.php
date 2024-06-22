@@ -35,6 +35,9 @@ class StorePublicationRequest extends FormRequest
             'category_publication' => 'nullable|array',
             'category_publication.*' => 'integer|exists:categories,id',
             'file' => 'required|file|mimes:pdf',
+            'custom_fields' => 'nullable|array',
+            'custom_fields.*.type_id' => 'required_with:custom_fields|int',
+            'custom_fields.*.value' => 'required_with:custom_fields',
         ];
     }
 }

@@ -122,7 +122,7 @@
                                 <select id="custom-field-select" class="block w-full rounded-md shadow-sm border-gray-300">
                                     <option value="" disabled selected>Select Custom Field</option>
                                     @foreach($customFields as $customField)
-                                        <option value="{{ $customField->name }}" data-type="{{ $customField->type }}">{{ $customField->name }}</option>
+                                        <option value="{{ $customField->name }}" data-type="{{ $customField->type }}" data-id="{{ $customField->id }}">{{ $customField->name }}</option>
                                     @endforeach
                                 </select>
                                 <button type="button" id="add-custom-field" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">+ Add Custom Field</button>
@@ -169,12 +169,13 @@
             if (selectedOption && selectedOption.value) {
                 const fieldName = selectedOption.value;
                 const fieldType = selectedOption.getAttribute('data-type');
+                const fieldId = selectedOption.getAttribute('data-id');
 
                 const fieldWrapper = document.createElement('div');
                 fieldWrapper.classList.add('custom-field-wrapper', 'p-4', 'bg-gray-100', 'rounded-md', 'shadow-sm');
                 fieldWrapper.innerHTML = `
                     <label class="block font-medium text-sm text-gray-700">${fieldName}</label>
-                    <input type="hidden" name="custom_fields[${fieldName}][type]" value="${fieldType}">
+                    <input type="hidden" name="custom_fields[${fieldName}][type_id]" value="${fieldId}">
                 <input type="text" name="custom_fields[${fieldName}][value]" placeholder="Enter ${fieldName}" class="block w-full mt-1 rounded-md shadow-sm border-gray-300">
                 <button type="button" class="remove-custom-field mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
                 `;

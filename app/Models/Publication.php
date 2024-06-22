@@ -104,6 +104,10 @@ class Publication extends Model
                 $publication->slug = $publication->generateUniqueSlug($publication->title);
             }
         });
+
+        static::deleting(function ($publication) {
+            $publication->customFields()->delete();
+        });
     }
 
     public function generateUniqueSlug($title): string

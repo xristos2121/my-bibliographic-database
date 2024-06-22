@@ -60,8 +60,18 @@ class PublicationController extends Controller
         $publication = Publication::create($validatedData);
         $this->syncRelations($publication, $request);
 
+        if ($request->has('custom_fields')) {
+            foreach ($request->input('custom_fields') as $fieldName => $fieldData) {
+                $publication->customFields()->create([
+                    'field_definition_id' => $fieldData['type_id'],
+                    'value' => $fieldData['value'],
+                ]);
+            }
+        }
+
         return to_route('publications.index')->with('success', 'Publication created successfully.');
     }
+
 
     public function show(Publication $publication): View
     {
@@ -75,7 +85,9 @@ class PublicationController extends Controller
         $keywords = Keyword::all();
         $publishers = Publisher::all();
         $categories = Category::all();
-        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories'));
+        $customFields = FieldDefinition::all();
+        $publicationCustomFields = $publication->customFields;
+        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields'));
     }
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
@@ -109,6 +121,32 @@ class PublicationController extends Controller
 
         $publication->update($validatedData);
         $this->syncRelations($publication, $request);
+
+        $customFields = $request->input('custom_fields', []);
+        $existingCustomFields = $publication->customFields->keyBy('field_definition_id');
+
+        // Update or create custom fields
+        foreach ($customFields as $fieldData) {
+            $fieldDefinitionId = $fieldData['field_definition_id'];
+            $value = $fieldData['value'];
+
+            if ($existingCustomFields->has($fieldDefinitionId)) {
+                $existingCustomField = $existingCustomFields->get($fieldDefinitionId);
+                $existingCustomField->update(['value' => $value]);
+            } else {
+                $publication->customFields()->create([
+                    'field_definition_id' => $fieldDefinitionId,
+                    'value' => $value,
+                ]);
+            }
+        }
+
+        // Delete custom fields that were removed
+        foreach ($existingCustomFields as $fieldDefinitionId => $existingCustomField) {
+            if (!isset($customFields[$fieldDefinitionId])) {
+                $existingCustomField->delete();
+            }
+        }
 
         return to_route('publications.index')->with('success', 'Publication updated successfully.');
     }

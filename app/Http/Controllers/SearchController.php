@@ -103,13 +103,14 @@ class SearchController extends Controller
 
     public function search(Request $request): View
     {
+        $hitsPerPage = 10;
         $query = Publication::query();
 
         $types = Type::all();
         $searchTerm = $request->search;
         $this->applySearchFilters($query, $searchTerm);
 
-        $results = $query->get();
+        $results = $query->paginate($hitsPerPage);
 
         $searchParameters = [
             'type' => ['entire_document'],
