@@ -38,6 +38,8 @@ class StorePublicationRequest extends FormRequest
             'custom_fields' => 'nullable|array',
             'custom_fields.*.type_id' => 'required_with:custom_fields|int',
             'custom_fields.*.value' => 'required_with:custom_fields',
+            'uris' => 'nullable|array',
+            'uris.*' => 'url',
         ];
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Keyword;
 use App\Models\Publisher;
 use App\Models\Category;
 use App\Models\FieldDefinition;
+use App\Models\PublicationUri;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
@@ -69,6 +70,13 @@ class PublicationController extends Controller
             }
         }
 
+        if ($request->has('uris')) {
+            $uris = $request->input('uris');
+            foreach ($uris as $uri) {
+                PublicationUri::create(['publication_id' => $publication->id, 'uri' => $uri]);
+            }
+        }
+
         return to_route('publications.index')->with('success', 'Publication created successfully.');
     }
 
@@ -87,7 +95,8 @@ class PublicationController extends Controller
         $categories = Category::all();
         $customFields = FieldDefinition::all();
         $publicationCustomFields = $publication->customFields;
-        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields'));
+        $uris = $publication->uris;
+        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields', 'uris'));
     }
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
@@ -141,10 +150,20 @@ class PublicationController extends Controller
             }
         }
 
-        // Delete custom fields that were removed
         foreach ($existingCustomFields as $fieldDefinitionId => $existingCustomField) {
             if (!isset($customFields[$fieldDefinitionId])) {
                 $existingCustomField->delete();
+            }
+        }
+
+        $uris = $request->input('uris', []);
+        $uriModels = [];
+
+        if ($request->has('uris')) {
+            $uris = $request->input('uris');
+            PublicationUri::where('publication_id', $publication->id)->delete();
+            foreach ($uris as $uri) {
+                PublicationUri::create(['publication_id' => $publication->id, 'uri' => $uri]);
             }
         }
 
@@ -153,9 +172,6 @@ class PublicationController extends Controller
 
     public function destroy(Publication $publication): RedirectResponse
     {
-        if ($publication->file) {
-            Storage::disk('public')->delete($publication->file);
-        }
         $publication->delete();
         return to_route('publications.index')->with('success', 'Publication deleted successfully.');
     }

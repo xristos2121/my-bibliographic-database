@@ -38,6 +38,8 @@ class UpdatePublicationRequest extends FormRequest
             'custom_fields' => 'nullable|array',
             'custom_fields.*.field_definition_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
             'custom_fields.*.value' => 'required_with:custom_fields|string',
+            'uris' => 'nullable|array',
+            'uris.*' => 'url',
         ];
     }
 }

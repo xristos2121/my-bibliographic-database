@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Publication extends Model
 {
@@ -71,6 +72,11 @@ class Publication extends Model
         return $this->belongsToMany(Category::class, 'category_publication');
     }
 
+    public function uris()
+    {
+        return $this->hasMany(PublicationUri::class);
+    }
+
     public function hasPublisher(): bool
     {
         return !empty($this->publisher_id);
@@ -107,6 +113,11 @@ class Publication extends Model
 
         static::deleting(function ($publication) {
             $publication->customFields()->delete();
+            $publication->uris()->delete();
+
+            if ($publication->file) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($publication->file);
+            }
         });
     }
 

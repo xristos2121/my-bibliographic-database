@@ -112,6 +112,18 @@
                             <x-form.error :messages="$errors->get('keywords')" class="mt-2" />
                         </div>
 
+                        <!-- URIs -->
+                        <div class="mt-4">
+                            <x-form.label for="uris" :value="__('URIs')" />
+                            <div id="uris-container">
+                                <div class="uri-field">
+                                    <x-form.input class="block mt-1 w-full" type="text" name="uris[]" placeholder="Enter URI" />
+                                </div>
+                            </div>
+                            <button type="button" id="add-uri" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">+ Add URI</button>
+                            <x-form.error :messages="$errors->get('uris')" class="mt-2" />
+                        </div>
+
                         <!-- Custom Fields -->
                         <div class="mt-6">
                             <x-form.label :value="__('Custom Fields')" />
@@ -194,6 +206,22 @@
                 customFieldSelect.selectedIndex = 0;
             }
         });
+
+        // Handle dynamic URI fields
+        const urisContainer = document.getElementById('uris-container');
+        document.getElementById('add-uri').addEventListener('click', function () {
+            const uriFieldWrapper = document.createElement('div');
+            uriFieldWrapper.classList.add('uri-field', 'mt-2');
+            uriFieldWrapper.innerHTML = `
+                <x-form.input class="block mt-1 w-full" type="text" name="uris[]" placeholder="Enter URI" />
+                <button type="button" class="remove-uri mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
+            `;
+            urisContainer.appendChild(uriFieldWrapper);
+
+            // Handle removal of URI fields
+            uriFieldWrapper.querySelector('.remove-uri').addEventListener('click', function () {
+                uriFieldWrapper.remove();
+            });
+        });
     });
 </script>
-
