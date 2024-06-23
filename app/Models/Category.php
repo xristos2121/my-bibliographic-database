@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -12,13 +13,21 @@ class Category extends Model
 
     protected $table = 'categories';
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $fillable = ['name', 'slug', 'description', 'parent_id'];
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
 
     public function publications()
     {
-        return $this->hasMany(Publication::class);
+        return $this->belongsToMany(Publication::class, 'category_publication');
     }
 
     /**
@@ -43,4 +52,26 @@ class Category extends Model
         return $query;
     }
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($category) {
+            $category->slug = $category->generateUniqueSlug($category->name);
+        });
+    }
+
+    public function generateUniqueSlug($title): string
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (self::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
+    }
 }

@@ -116,7 +116,7 @@ class Publication extends Model
             $publication->uris()->delete();
 
             if ($publication->file) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($publication->file);
+                Storage::disk('public')->delete($publication->file);
             }
         });
     }

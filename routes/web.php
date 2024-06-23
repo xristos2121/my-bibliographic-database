@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('categories', CategoryController::class);
+    Route::get('categories/{category}/children', [CategoryController::class, 'children'])->name('categories.children');
     Route::resource('author', AuthorController::class);
     Route::resource('tags', TagsController::class);
     Route::resource('publications', PublicationController::class);

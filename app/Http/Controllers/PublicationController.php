@@ -16,13 +16,54 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class PublicationController extends Controller
 {
-    public function index(): View
+    public function index(Request $request)
     {
-        $publications = Publication::with(['authors', 'types', 'keywords'])->get();
-        return view('admin.publications.index', compact('publications'));
+        $authors = Author::all();
+        $types = Type::all();
+        $keywords = Keyword::all();
+        $publishers = Publisher::all();
+        $categories = Category::all();
+        $categoriesWithPath = $this->buildCategoryPaths($categories);
+
+        $publications = Publication::query()
+            ->when($request->input('search'), function ($query, $search) {
+                return $query->where('id', $search)
+                    ->orWhere('title', 'like', "%{$search}%");
+            })
+            ->when($request->input('publication_date_from'), function ($query, $publication_date_from) {
+                return $query->where('publication_date', '>=', $publication_date_from);
+            })
+            ->when($request->input('publication_date_to'), function ($query, $publication_date_to) {
+                return $query->where('publication_date', '<=', $publication_date_to);
+            })
+            ->when($request->input('publisher_id'), function ($query, $publisher_id) {
+                return $query->where('publisher_id', $publisher_id);
+            })
+            ->when($request->input('type_id'), function ($query, $type_id) {
+                return $query->where('type_id', $type_id);
+            })
+            ->when($request->input('categories'), function ($query, $categories) {
+                return $query->whereHas('categories', function ($query) use ($categories) {
+                    $query->whereIn('categories.id', $categories);
+                });
+            })
+            ->when($request->input('authors'), function ($query, $authors) {
+                return $query->whereHas('authors', function ($query) use ($authors) {
+                    $query->whereIn('authors.id', $authors);
+                });
+            })
+            ->when($request->input('keywords'), function ($query, $keywords) {
+                return $query->whereHas('keywords', function ($query) use ($keywords) {
+                    $query->whereIn('keywords.id', $keywords);
+                });
+            })
+            ->paginate(10);
+
+        return view('admin.publications.index', compact('publications', 'authors', 'types', 'keywords', 'publishers', 'categories', 'categoriesWithPath'));
     }
 
     public function create(): View
@@ -96,7 +137,8 @@ class PublicationController extends Controller
         $customFields = FieldDefinition::all();
         $publicationCustomFields = $publication->customFields;
         $uris = $publication->uris;
-        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields', 'uris'));
+        $categoriesWithPath = $this->buildCategoryPaths($categories);
+        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields', 'uris', 'categoriesWithPath'));
     }
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
@@ -211,4 +253,14 @@ class PublicationController extends Controller
         return redirect()->back()->with('success', 'Custom fields added successfully.');
     }
 
+    private function buildCategoryPaths($categories, $parentId = null, $prefix = '')
+    {
+        $result = [];
+        foreach ($categories->where('parent_id', $parentId) as $category) {
+            $category->full_path = $prefix . $category->name;
+            $result[] = $category;
+            $result = array_merge($result, $this->buildCategoryPaths($categories, $category->id, $category->full_path . ' > '));
+        }
+        return $result;
+    }
 }

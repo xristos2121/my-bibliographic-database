@@ -90,8 +90,10 @@
                         <div class="mt-4">
                             <x-form.label for="categories" :value="__('Categories')" />
                             <select id="categories" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="categories[]" multiple="multiple">
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ $publication->categories->contains($category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @foreach($categoriesWithPath as $category)
+                                    <option value="{{ $category->id }}" {{ $publication->categories->contains($category->id) ? 'selected' : '' }}>
+                                        {{ $category->full_path }}
+                                    </option>
                                 @endforeach
                             </select>
                             <x-form.error :messages="$errors->get('categories')" class="mt-2" />

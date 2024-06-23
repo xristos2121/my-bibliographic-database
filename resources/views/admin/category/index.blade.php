@@ -12,16 +12,15 @@
                                 <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search categories..." class="px-4 py-2 border rounded-md" />
                                 <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Search</button>
                             </form>
-                            <a href="{{ route('categories.index') }}" class="inline-flex items-center px-4 py-2 bg-white text-black rounded-md  shadow">Clear all</a>
+                            <a href="{{ route('categories.index') }}" class="inline-flex items-center px-4 py-2 bg-white text-black rounded-md shadow">Clear all</a>
                             <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Add New Category</a>
                         </div>
                     </div>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    @if(session('success'))
+                    @if(session('status'))
                         <div class="mb-4 font-medium text-sm text-green-600">
-                            {{ session('success') }}
+                            {{ session('status') }}
                         </div>
                     @endif
                     <table class="table-auto w-full">
@@ -39,6 +38,7 @@
                                 <td class="border px-4 py-2">{{ $category->name }}</td>
                                 <td class="border px-4 py-2">
                                     <div class="flex items-center space-x-2">
+                                        <a href="{{ route('categories.children', $category->id) }}" class="inline-flex items-center px-3 py-1 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-600 focus:outline-none focus:border-green-700 focus:ring ring-green-200 transition ease-in-out duration-150">View Children</a>
                                         <a href="{{ route('categories.edit', $category->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring ring-blue-200 transition ease-in-out duration-150">Edit</a>
                                         <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline-flex">
                                             @csrf
