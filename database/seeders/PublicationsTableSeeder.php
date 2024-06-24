@@ -16,12 +16,14 @@ class PublicationsTableSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 20) as $index) {
+            $publicationDate = $faker->date('Y-m-d');
+
+
             DB::table('publications')->insert([
                 'title' => $faker->sentence,
                 'abstract' => $faker->paragraph,
-                'publication_date' => $faker->numberBetween(2000, 2024),
-                // Assuming you want to store just a file name or path as a string
+                'publication_date' => $publicationDate,
                 'type_id' => Type::inRandomOrder()->first()->id,
                 'file' => 'publications/' . $faker->word . '.pdf',
                 'slug' => $faker->slug,

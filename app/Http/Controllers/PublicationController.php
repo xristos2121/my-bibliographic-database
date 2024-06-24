@@ -17,6 +17,8 @@ use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View as TitleView;
+
 
 class PublicationController extends Controller
 {
@@ -29,10 +31,12 @@ class PublicationController extends Controller
         $categories = Category::all();
         $categoriesWithPath = $this->buildCategoryPaths($categories);
 
-        $publications = Publication::query()
+        $publicationsQuery = Publication::query()
             ->when($request->input('search'), function ($query, $search) {
-                return $query->where('id', $search)
-                    ->orWhere('title', 'like', "%{$search}%");
+                return $query->where(function ($query) use ($search) {
+                    $query->where('id', $search)
+                        ->orWhere('title', 'like', "%{$search}%");
+                });
             })
             ->when($request->input('publication_date_from'), function ($query, $publication_date_from) {
                 return $query->where('publication_date', '>=', $publication_date_from);
@@ -61,9 +65,15 @@ class PublicationController extends Controller
                     $query->whereIn('keywords.id', $keywords);
                 });
             })
-            ->paginate(10);
+            ->when($request->filled('active'), function ($query) use ($request) {
+                return $query->where('active', $request->input('active'));
+            });
 
-        return view('admin.publications.index', compact('publications', 'authors', 'types', 'keywords', 'publishers', 'categories', 'categoriesWithPath'));
+        $totalPublications = $publicationsQuery->count();
+        $publications = $publicationsQuery->paginate(10);
+        TitleView::share('pageTitle', 'Publications');
+
+        return view('admin.publications.index', compact('publications', 'authors', 'types', 'keywords', 'publishers', 'categories', 'categoriesWithPath', 'totalPublications'));
     }
 
     public function create(): View
@@ -74,6 +84,7 @@ class PublicationController extends Controller
         $publishers = Publisher::all();
         $categories = Category::all();
         $customFields = FieldDefinition::all();
+        TitleView::share('pageTitle', 'Create Publication');
         return view('admin.publications.create', compact('authors', 'types', 'keywords', 'publishers', 'categories', 'customFields'));
     }
 
@@ -138,12 +149,16 @@ class PublicationController extends Controller
         $publicationCustomFields = $publication->customFields;
         $uris = $publication->uris;
         $categoriesWithPath = $this->buildCategoryPaths($categories);
+
+        TitleView::share('pageTitle', 'Edit Publication');
         return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields', 'uris', 'categoriesWithPath'));
     }
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
     {
+
         $validatedData = $request->validated();
+
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');

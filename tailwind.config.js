@@ -25,6 +25,9 @@ module.exports = {
                     'eval-3': '#2C3142',
                 },
             },
+            height: {
+                '50px': '50px',
+            }
         },
     },
 

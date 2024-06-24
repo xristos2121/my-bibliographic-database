@@ -14,6 +14,13 @@ class UpdatePublicationRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->has('active')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +31,8 @@ class UpdatePublicationRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'abstract' => 'nullable|string',
-            'publication_date' => 'nullable|int',
+            'active' => 'boolean',
+            'publication_date' => 'nullable|date_format:Y-m',
             'type_id' => 'required|exists:publication_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'authors' => 'required|array',

@@ -43,6 +43,15 @@
                             <x-form.error :messages="$errors->get('publication_date')" class="mt-2" />
                         </div>
 
+                        <div class="mt-4">
+                            <label for="active" class="inline-flex items-center">
+                                <input type="checkbox" id="active" name="active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" checked>
+                                <span class="ml-2">Active</span>
+                            </label>
+                            <x-form.error :messages="$errors->get('active')" class="mt-2" />
+                        </div>
+
+
                         <!-- File Upload -->
                         <div class="mt-4">
                             <x-form.label for="file" :value="__('Upload File')" />
@@ -54,7 +63,7 @@
                         <div class="mt-4">
                             <label for="enable_publisher" class="inline-flex items-center">
                                 <input type="checkbox" id="enable_publisher" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                <span class="ml-2">Publication Has Publisher</span>
+                                <span class="ml-2 text-sm text-gray-600">Publication Has Publisher</span>
                             </label>
                         </div>
 

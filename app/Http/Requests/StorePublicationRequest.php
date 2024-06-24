@@ -14,6 +14,13 @@ class StorePublicationRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->has('active')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +31,8 @@ class StorePublicationRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'abstract' => 'nullable|string',
-            'publication_date' => 'nullable|int',
+            'publication_date' => 'nullable|date_format:Y-m',
+            'active' => 'nullable|boolean',
             'type_id' => 'required|exists:publication_types,id',
             'category_id' => 'nullable|exists:categories,id',
             'publisher_id' => 'nullable|exists:publishers,id',

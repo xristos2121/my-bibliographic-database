@@ -18,29 +18,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const untilYearInput = document.querySelector('input[name="untilYear"]');
     const publicationDate = document.querySelector('input[name="publication_date"]');
 
+    const publicationFromDateInput = document.querySelector('input[name="publication_date_from"]');
+    const publicationUntilDateInput = document.querySelector('input[name="publication_date_to"]');
     if (fromYearInput) {
         new Datepicker(fromYearInput, {
-            pickLevel: 2,
-            format: 'yyyy',
+            pickLevel: 1,
+            format: 'yyyy-mm',
             autohide: true
         });
     }
 
     if (untilYearInput) {
         new Datepicker(untilYearInput, {
-            pickLevel: 2,
-            format: 'yyyy',
+            pickLevel: 1,
+            format: 'yyyy-mm',
             autohide: true
         });
     }
 
     if (publicationDate) {
         new Datepicker(publicationDate, {
-            pickLevel: 2,
-            format: 'yyyy',
+            pickLevel: 1,
+            format: 'yyyy-mm',
             autohide: true
         });
     }
+
+    if (publicationFromDateInput) {
+        new Datepicker(publicationFromDateInput, {
+            pickLevel: 1,
+            format: 'yyyy-mm',
+            autohide: true
+        });
+    }
+
+    if (publicationUntilDateInput) {
+        new Datepicker(publicationUntilDateInput, {
+            pickLevel: 1,
+            format: 'yyyy-mm',
+            autohide: true
+        });
+    }
+
 });
 document.addEventListener('alpine:init', () => {
     Alpine.data('mainState', () => {

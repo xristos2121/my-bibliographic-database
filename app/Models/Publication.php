@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class Publication extends Model
 {
@@ -26,7 +27,26 @@ class Publication extends Model
         'publisher_id',
         'file',
         'slug',
+        'active',
     ];
+
+    protected $dates = [
+        'publication_date',
+    ];
+
+    protected $attributes = [
+        'active' => true,
+    ];
+
+    public function getPublicationDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m');
+    }
+
+    public function setPublicationDateAttribute($value)
+    {
+        $this->attributes['publication_date'] = Carbon::createFromFormat('Y-m', $value)->startOfMonth();
+    }
 
     /**
      * Get the category associated with the publication.

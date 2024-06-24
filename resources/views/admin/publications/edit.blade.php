@@ -12,16 +12,18 @@
                     @if($errors->any())
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <strong class="font-bold">Whoops! Something went wrong.</strong>
-                            <ul>
+                            <ul class="mt-1 ml-2 list-disc list-inside">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('publications.update', $publication) }}" enctype="multipart/form-data">
+
+                    <form method="POST" action="{{ route('publications.update', $publication) }}" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         @method('PUT')
+
                         <!-- Title -->
                         <div>
                             <x-form.label for="title" :value="__('Title')" />
@@ -30,43 +32,51 @@
                         </div>
 
                         <!-- Abstract -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="abstract" :value="__('Abstract')" />
-                            <textarea id="abstract" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="abstract">{{ old('abstract', $publication->abstract) }}</textarea>
+                            <textarea id="abstract" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="abstract" rows="4">{{ old('abstract', $publication->abstract) }}</textarea>
                             <x-form.error :messages="$errors->get('abstract')" class="mt-2" />
                         </div>
 
                         <!-- Publication Date -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="publication_date" :value="__('Publication Date')" />
                             <x-form.input id="publication_date" class="block mt-1 w-full" type="text" name="publication_date" :value="old('publication_date', $publication->publication_date)" />
                             <x-form.error :messages="$errors->get('publication_date')" class="mt-2" />
                         </div>
 
+                        <!-- Active -->
+                        <div>
+                            <label for="active" class="inline-flex items-center">
+                                <input type="checkbox" id="active" name="active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" {{ old('active', $publication->active) ? 'checked' : '' }}>
+                                <span class="ml-2 text-sm text-gray-600">Active</span>
+                            </label>
+                            <x-form.error :messages="$errors->get('active')" class="mt-2" />
+                        </div>
+
                         <!-- File Upload -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="file" :value="__('Upload File')" />
                             <input id="file" class="block mt-1 w-full" type="file" name="file" accept="application/pdf">
                             <x-form.error :messages="$errors->get('file')" class="mt-2" />
                             @if($publication->file)
-                                <div>
-                                    <a href="{{ Storage::url($publication->file) }}" target="_blank">View file</a>
+                                <div class="mt-2">
+                                    <a href="{{ Storage::url($publication->file) }}" target="_blank" class="text-blue-500 hover:underline">View file</a>
                                 </div>
                             @endif
                         </div>
 
                         <!-- Publisher -->
-                        <div class="mt-4">
+                        <div>
                             <label for="enable_publisher" class="inline-flex items-center">
                                 <input type="checkbox" id="enable_publisher" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" {{ $publication->publisher_id != null ? 'checked' : '' }}>
-                                <span class="ml-2">Publication Has Publisher</span>
+                                <span class="ml-2 text-sm text-gray-600">Publication Has Publisher</span>
                             </label>
                         </div>
 
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="publisher" :value="__('Publisher')" />
                             <input type="hidden" name="publisher_id" value="" id="hidden_publisher_id">
-
                             <select id="publisher_select" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" disabled>
                                 @foreach($publishers as $publisher)
                                     <option value="{{ $publisher->id }}" {{ old('publisher_id', $publication->publisher_id) == $publisher->id ? 'selected' : '' }}>{{ $publisher->name }}</option>
@@ -76,7 +86,7 @@
                         </div>
 
                         <!-- Type -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="type" :value="__('Type')" />
                             <x-form.select name="type_id">
                                 @foreach($types as $type)
@@ -87,7 +97,7 @@
                         </div>
 
                         <!-- Categories -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="categories" :value="__('Categories')" />
                             <select id="categories" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="categories[]" multiple="multiple">
                                 @foreach($categoriesWithPath as $category)
@@ -100,7 +110,7 @@
                         </div>
 
                         <!-- Authors -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="authors" :value="__('Authors')" />
                             <select id="authors" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="authors[]" multiple="multiple">
                                 @foreach($authors as $author)
@@ -113,7 +123,7 @@
                         </div>
 
                         <!-- Keywords -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="keywords" :value="__('Keywords')" />
                             <select id="keywords" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="keywords[]" multiple="multiple">
                                 @foreach($keywords as $keyword)
@@ -126,11 +136,11 @@
                         </div>
 
                         <!-- URIs -->
-                        <div class="mt-4">
+                        <div>
                             <x-form.label for="uris" :value="__('URIs')" />
                             <div id="uris-container">
                                 @foreach ($uris as $uri)
-                                    <div class="uri-field">
+                                    <div class="uri-field mt-2">
                                         <x-form.input class="block mt-1 w-full" type="text" name="uris[]" value="{{ $uri->uri }}" placeholder="Enter URI" />
                                         <button type="button" class="remove-uri mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
                                     </div>
@@ -141,7 +151,7 @@
                         </div>
 
                         <!-- Custom Fields -->
-                        <div class="mt-6">
+                        <div>
                             <x-form.label :value="__('Custom Fields')" />
                             <div id="custom-fields-container" class="space-y-4">
                                 @foreach($publicationCustomFields as $customField)
@@ -229,12 +239,12 @@
                 const fieldType = selectedOption.getAttribute('data-type');
 
                 const fieldWrapper = document.createElement('div');
-                fieldWrapper.classList.add('custom-field-wrapper', 'p-4', 'bg-gray-100', 'rounded-md', 'shadow-sm');
+                fieldWrapper.classList.add('custom-field-wrapper', 'p-4', 'bg-gray-100', 'rounded-md', 'shadow-sm', 'space-y-2');
                 fieldWrapper.innerHTML = `
                     <label class="block font-medium text-sm text-gray-700">${fieldName} (${fieldType})</label>
                     <input type="hidden" name="custom_fields[${fieldId}][field_definition_id]" value="${fieldId}">
                     <input type="${fieldType}" name="custom_fields[${fieldId}][value]" placeholder="Enter ${fieldName}" class="block w-full mt-1 rounded-md shadow-sm border-gray-300">
-                    <button type="button" class="remove-custom-field mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
+                    <button type="button" class="remove-custom-field bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
                 `;
                 customFieldsContainer.appendChild(fieldWrapper);
 
@@ -267,7 +277,7 @@
             const uriFieldWrapper = document.createElement('div');
             uriFieldWrapper.classList.add('uri-field', 'mt-2');
             uriFieldWrapper.innerHTML = `
-                <input class="block mt-1 w-full" type="text" name="uris[]" placeholder="Enter URI" />
+                <input class="block mt-1 w-full rounded-md shadow-sm border-gray-300" type="text" name="uris[]" placeholder="Enter URI" />
                 <button type="button" class="remove-uri mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
             `;
             urisContainer.appendChild(uriFieldWrapper);

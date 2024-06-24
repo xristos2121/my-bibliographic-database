@@ -17,19 +17,19 @@
                             <!-- ID and Title -->
                             <div>
                                 <x-form.label for="search" :value="__('ID or Title')" />
-                                <x-form.input id="search" class="block mt-1 w-full" type="text" name="search" :value="request('search')" placeholder="Search by ID or Title" />
+                                <x-form.input id="search" class="block mt-1 w-full h-50px" type="text" name="search" :value="request('search')" placeholder="Search by ID or Title" />
                             </div>
 
                             <!-- Publication Date From -->
                             <div>
                                 <x-form.label for="publication_date_from" :value="__('Publication Date From')" />
-                                <x-form.input id="publication_date_from" class="block mt-1 w-full" type="date" name="publication_date_from" :value="request('publication_date_from')" />
+                                <x-form.input id="publication_date_from" class="block mt-1 w-full h-50px" type="text" name="publication_date_from" :value="request('publication_date_from')" />
                             </div>
 
                             <!-- Publication Date To -->
                             <div>
                                 <x-form.label for="publication_date_to" :value="__('Publication Date To')" />
-                                <x-form.input id="publication_date_to" class="block mt-1 w-full" type="date" name="publication_date_to" :value="request('publication_date_to')" />
+                                <x-form.input id="publication_date_to" class="block mt-1 w-full h-50px" type="text" name="publication_date_to" :value="request('publication_date_to')" />
                             </div>
 
                             <!-- Publisher -->
@@ -87,6 +87,16 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <!-- Active Status -->
+                            <div>
+                                <x-form.label for="active" :value="__('Active')" />
+                                <select id="active" name="active" class="block mt-1 w-full rounded-md shadow-sm border-gray-300">
+                                    <option value="">{{ __('Select Status') }}</option>
+                                    <option value="1" {{ request('active') == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ request('active') == '0' ? 'selected' : '' }}>Inactive</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mt-4 flex justify-end gap-2">
                             <x-button>{{ __('Search') }}</x-button>
@@ -96,19 +106,28 @@
                         </div>
                     </form>
 
+                    <!-- Display Total Results -->
+                    @if(isset($totalPublications))
+                        <div class="mt-4 text-gray-600 font-bold text-lg">
+                            {{ __('Total Publications Found:') }} {{ $totalPublications }}
+                        </div>
+                    @endif
+
                     @if(session('success'))
                         <div class="mb-4 font-medium text-sm text-green-600">
                             {{ session('success') }}
                         </div>
                     @endif
+
                     <!-- Publications Table -->
                     <table class="table-auto w-full">
                         <thead>
                         <tr>
                             <th class="px-4 py-2">ID</th>
                             <th class="px-4 py-2">Title</th>
-                            <th class="px-4 py-2">Abstract</th>
                             <th class="px-4 py-2">Publication Date</th>
+                            <th class="px-4 py-2">Type</th>
+                            <th class="px-4 py-2">Active</th>
                             <th class="px-4 py-2">Actions</th>
                         </tr>
                         </thead>
@@ -117,10 +136,11 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $publication->id }}</td>
                                 <td class="border px-4 py-2">{{ $publication->title }}</td>
-                                <td class="border px-4 py-2">{{ $publication->abstract }}</td>
                                 <td class="border px-4 py-2">{{ $publication->publication_date ?: 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $publication->types->name ?: 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $publication->active ? 'Yes' : 'No' }}</td>
                                 <td class="border px-4 py-2">
-                                    <a href="{{ route('publications.edit', $publication) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                    <a href="{{ route('publications.edit', $publication) }}" class="inline-flex items-center px-3 py-1 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-800 focus:ring ring-blue-300 transition ease-in-out duration-150">{{ __('Edit') }}</a>
                                     <form action="{{ route('publications.destroy', $publication->id) }}" method="POST" class="inline-flex">
                                         @csrf
                                         @method('DELETE')
@@ -130,7 +150,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="border px-4 py-2 text-center">No publications found</td>
+                                <td colspan="6" class="border px-4 py-2 text-center">No publications found</td>
                             </tr>
                         @endforelse
                         </tbody>
@@ -147,8 +167,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            $('#authors, #keywords, #categories, #type_id').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true});
-
+            $('#authors, #keywords, #categories, #type_id, #publisher_id').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true, width: '100%'});
         });
     </script>
 </x-app-layout>
