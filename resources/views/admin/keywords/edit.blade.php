@@ -14,10 +14,18 @@
                         @method('PUT')
 
                         <div class="mt-4">
-                            <x-form.label for="name" :value="__('Type Name')"/>
+                            <x-form.label for="name" :value="__('Keyword')"/>
 
-                            <x-form.input id="name" class="block mt-1 w-full" type="text" name="name"
+                            <x-form.input id="name" class="block mt-1 w-full" type="text" name="keyword"
                                           value="{{ old('name', $keyword->keyword) }}" required autofocus/>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="active" class="inline-flex items-center">
+                                <input type="checkbox" id="active" name="active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" {{ old('active', $keyword->active ?? true) ? 'checked' : '' }}>
+                                <span class="ml-2">Active</span>
+                            </label>
+                            <x-form.error :messages="$errors->get('active')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

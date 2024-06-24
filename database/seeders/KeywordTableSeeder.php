@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
-
+use Illuminate\Support\Str;
 
 class KeywordTableSeeder extends Seeder
 {
@@ -18,8 +18,10 @@ class KeywordTableSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (range(1, 10) as $index) {
+            $keyword = $faker->unique()->word;
             DB::table('keywords')->insert([
-                'keyword' => $faker->unique()->word,
+                'keyword' => $keyword,
+                'slug' => Str::slug($keyword),
             ]);
         }
     }

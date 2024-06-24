@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('keywords', function (Blueprint $table) {
             $table->id();
-            $table->string('keyword')->unique(); // Ensuring keyword uniqueness
+            $table->string('keyword')->unique();
+            $table->string('slug')->unique();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

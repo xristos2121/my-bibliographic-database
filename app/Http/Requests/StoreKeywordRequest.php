@@ -14,6 +14,13 @@ class StoreKeywordRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->has('active')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -21,6 +28,9 @@ class StoreKeywordRequest extends FormRequest
      */
     public function rules(): array
     {
-        return ['keyword' => 'required|unique:keywords'];
+        return [
+            'keyword' => 'required|unique:keywords,keyword',
+            'active' => 'boolean'
+        ];
     }
 }

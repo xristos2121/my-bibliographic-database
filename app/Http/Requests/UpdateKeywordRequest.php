@@ -14,6 +14,13 @@ class UpdateKeywordRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->has('active')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -21,7 +28,10 @@ class UpdateKeywordRequest extends FormRequest
      */
     public function rules(): array
     {
-        $keywordId = $this->keyword->id;
-        return ['name' => 'required|unique:publication_types,name,' . $keywordId];
+        $keywordId = $this->route('keyword')->id;
+        return [
+            'keyword' => 'required|unique:publication_types,name,' . $keywordId,
+            'active' => 'boolean'
+        ];
     }
 }

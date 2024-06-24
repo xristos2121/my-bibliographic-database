@@ -5,19 +5,38 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Keyword extends Model
 {
     use HasFactory;
     protected $table = 'keywords';
 
-    protected $fillable = [
-        'keyword',
-    ];
+    protected $fillable = ['keyword', 'slug', 'active'];
 
     public function keywords()
     {
         return $this->belongsToMany(Keyword::class, 'publication_keyword');
+    }
+
+    public function publications()
+    {
+        return $this->belongsToMany(Publication::class, 'publication_keyword');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($keyword) {
+            $keyword->slug = Str::slug($keyword->keyword);
+        });
+
+        static::updating(function ($keyword) {
+            if ($keyword->isDirty('keyword')) {
+                $keyword->slug = Str::slug($keyword->keyword);
+            }
+        });
     }
 
     /**
