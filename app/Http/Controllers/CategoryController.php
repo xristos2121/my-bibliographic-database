@@ -8,6 +8,8 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View as TitleView;
+
 class CategoryController extends Controller
 {
 
@@ -18,9 +20,11 @@ class CategoryController extends Controller
         $categories = Category::with('children')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%");
+            }, function ($query) {
+                return $query->whereNull('parent_id');
             })
-            ->whereNull('parent_id')
-            ->get();
+            ->paginate(10);
+        TitleView::share('pageTitle', 'Categories');
 
         return view('admin.category.index', compact('categories', 'search'));
     }
@@ -28,6 +32,7 @@ class CategoryController extends Controller
     public function children(Category $category)
     {
         $children = $category->children;
+        TitleView::share('pageTitle', 'Children of ' . $category->name);
         return view('admin.category.children', compact('category', 'children'));
     }
 
@@ -35,6 +40,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $categoriesWithPath = $this->buildCategoryPaths($categories);
+        TitleView::share('pageTitle', 'Create Category');
         return view('admin.category.create', compact('categories', 'categoriesWithPath'));
     }
 
@@ -49,6 +55,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $categoriesWithPath = $this->buildCategoryPaths($categories);
+        TitleView::share('pageTitle', 'Edit Category');
         return view('admin.category.edit', compact('category', 'categories', 'categoriesWithPath'));
     }
 
@@ -62,14 +69,14 @@ class CategoryController extends Controller
     {
         try {
             if ($category->publications()->exists()) {
-                return redirect()->route('categories.index')->with('status', 'Category cannot be deleted because it is associated with publications.');
+                return redirect()->route('categories.index')->with('error', 'Category cannot be deleted because it is associated with publications.');
             }
 
             $category->delete();
 
             return redirect()->route('categories.index')->with('status', 'Category deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('categories.index')->with('status', 'Failed to delete the category. It might be in use.');
+            return redirect()->route('categories.index')->with('error', 'Failed to delete the category. It might be in use.');
         }
     }
 
