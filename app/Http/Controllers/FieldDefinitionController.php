@@ -12,10 +12,21 @@ use App\Http\Requests\UpdateFieldDefinitionRequest;
 use Illuminate\Support\Facades\DB;
 class FieldDefinitionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $fieldDefinitions = FieldDefinition::all();
-        return view('admin.custom_fields.index', compact('fieldDefinitions'));
+        $search = $request->input('search');
+        $type = $request->input('type');
+
+        $fieldDefinitions = FieldDefinition::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->when(isset($type), function ($query) use ($type) {
+                return $query->where('type', $type);
+            })
+            ->paginate(10);
+
+        return view('admin.custom_fields.index', compact('fieldDefinitions', 'search'));
     }
 
     public function create()
