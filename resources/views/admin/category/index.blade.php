@@ -7,7 +7,7 @@
                         <div class="flex-1 min-w-0">
                             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Categories</h2>
                         </div>
-                        <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Add New Category</a>
+                        <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">Add New Category</a>
                     </div>
                 </div>
                 <div class="px-6 py-4 bg-white border-b border-gray-200">
@@ -16,7 +16,7 @@
                                placeholder="Search categories..."
                                class="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                         <button type="submit"
-                                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Search
+                                class="px-4 ml-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Search
                         </button>
                         <a href="{{ route('categories.index') }}"
                            class="ml-2 px-4 py-2 bg-white text-black rounded-md shadow hover:bg-gray-200">Clear
@@ -24,17 +24,26 @@
                     </form>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if(session('status'))
-                        <div class="p-4 mb-4 text-sm text-dark-600 rounded-lg bg-green-400 dark:bg-gray-800 dark:text-green-500" role="alert">
-                            {{ session('status') }}
+                    @if(session('success'))
+                        <div
+                            class="p-4 mb-4 text-sm text-white rounded-lg bg-green-400 dark:bg-gray-800 dark:text-green-500"
+                            role="alert">
+                            {{ session('success') }}
                         </div>
                     @endif
 
-                        @if(session('error'))
-                            <div class="p-4 mb-4 text-sm text-red-500 rounded-lg bg-red-50 dark:bg-gray-600 dark:text-red-500" role="alert">
-                                {{ session('error') }}
-                            </div>
-                        @endif
+                    @if(session('error'))
+                        <div
+                            class="p-4 mb-4 text-sm text-red-500 rounded-lg bg-red-50 dark:bg-gray-600 dark:text-red-500"
+                            role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    @if(isset($totalResults))
+                        <div class="mt-4 text-gray-600 font-bold text-lg">
+                            {{ __('Total Results:') }} {{ $totalResults }}
+                        </div>
+                    @endif
                     <table class="table-auto w-full">
                         <thead>
                         <tr>

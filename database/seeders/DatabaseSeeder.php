@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             KeywordTableSeeder::class,
             PublicationsTypesTableSeeder::class,
             PublisherTableSeeder::class,
-            TagsTableSeeder::class,
             PublicationsTableSeeder::class,
         ]);
     }

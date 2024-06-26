@@ -57,14 +57,6 @@ class Publication extends Model
     }
 
     /**
-     * The tags that belong to the publication.
-     */
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class, 'publication_tags'); // assuming you have a Tag model and publication_tags pivot table
-    }
-
-    /**
      * Get the type associated with the publication.
      */
     public function types(): BelongsTo

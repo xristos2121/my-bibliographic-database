@@ -34,13 +34,23 @@
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
                     @if(session('success'))
-                        <div class="mb-4 font-medium text-base text-green-600">
+                        <div
+                            class="p-4 mb-4 text-sm text-white rounded-lg bg-green-400 dark:bg-gray-800 dark:text-green-500"
+                            role="alert">
                             {{ session('success') }}
                         </div>
                     @endif
+
                     @if(session('error'))
-                        <div class="mb-4 font-medium text-base text-red-600">
+                        <div
+                            class="p-4 mb-4 text-sm text-red-500 rounded-lg bg-red-50 dark:bg-gray-600 dark:text-red-500"
+                            role="alert">
                             {{ session('error') }}
+                        </div>
+                    @endif
+                    @if(isset($totalResults))
+                        <div class="mt-4 text-gray-600 font-bold text-lg">
+                            {{ __('Total Results:') }} {{ $totalResults }}
                         </div>
                     @endif
                         <table class="table-auto w-full">

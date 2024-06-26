@@ -22,11 +22,12 @@ class CategoryController extends Controller
                 return $query->where('name', 'like', "%{$search}%");
             }, function ($query) {
                 return $query->whereNull('parent_id');
-            })
-            ->paginate(10);
+            });
+        $totalResults = $categories->count();
+        $categories = $categories->paginate(10);
         TitleView::share('pageTitle', 'Categories');
 
-        return view('admin.category.index', compact('categories', 'search'));
+        return view('admin.category.index', compact('categories', 'search', 'totalResults'));
     }
 
     public function children(Category $category)
@@ -48,7 +49,7 @@ class CategoryController extends Controller
     {
         Category::create($request->validated());
 
-        return to_route('categories.index')->with('status', 'Category created successfully!');
+        return to_route('categories.index')->with('success', 'Category created successfully!');
     }
 
     public function edit(Category $category): View
@@ -62,7 +63,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
         $category->update($request->validated());
-        return to_route('categories.index')->with('status', 'Category updated successfully!');
+        return to_route('categories.index')->with('success', 'Category updated successfully!');
     }
 
     public function destroy(Category $category): RedirectResponse
@@ -74,7 +75,7 @@ class CategoryController extends Controller
 
             $category->delete();
 
-            return redirect()->route('categories.index')->with('status', 'Category deleted successfully.');
+            return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->route('categories.index')->with('error', 'Failed to delete the category. It might be in use.');
         }

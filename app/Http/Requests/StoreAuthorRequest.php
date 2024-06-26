@@ -29,7 +29,7 @@ class StoreAuthorRequest extends FormRequest
             'department' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
             'orcid_id' => 'nullable|string|max:255|unique:authors', // Replace 'authors' with your actual table name
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048', // Adjust mime types and max size as necessary
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg', // Adjust mime types and max size as necessary
             'biography' => 'nullable|string',
             'research_interests' => 'nullable|string',
         ];

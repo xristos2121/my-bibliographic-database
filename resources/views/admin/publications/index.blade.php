@@ -107,18 +107,26 @@
                     </form>
 
                     <!-- Display Total Results -->
+                    @if(session('success'))
+                        <div
+                            class="p-4 mb-4 text-sm text-white rounded-lg bg-green-400 dark:bg-gray-800 dark:text-green-500"
+                            role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div
+                            class="p-4 mb-4 text-sm text-red-500 rounded-lg bg-red-50 dark:bg-gray-600 dark:text-red-500"
+                            role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     @if(isset($totalPublications))
                         <div class="mt-4 text-gray-600 font-bold text-lg">
                             {{ __('Total Publications Found:') }} {{ $totalPublications }}
                         </div>
                     @endif
-
-                    @if(session('success'))
-                        <div class="mb-4 font-medium text-sm text-green-600">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
                     <!-- Publications Table -->
                     <table class="table-auto w-full">
                         <thead>

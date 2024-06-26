@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationTypeController;
 use App\Http\Controllers\KeywordController;
@@ -49,7 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::get('categories/{category}/children', [CategoryController::class, 'children'])->name('categories.children');
     Route::resource('author', AuthorController::class);
-    Route::resource('tags', TagsController::class);
     Route::resource('publications', PublicationController::class);
     Route::resource('publications_types', PublicationTypeController::class)->parameters([
         'publications_types' => 'type'

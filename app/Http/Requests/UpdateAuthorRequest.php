@@ -34,7 +34,7 @@ class UpdateAuthorRequest extends FormRequest
             'position' => 'nullable|string|max:255',
             // Ensure 'orcid_id' is the correct column name, and 'authors' is the actual table name
             'orcid_id' => 'nullable|string|max:255|unique:authors,orcid_id,' . $authorId,
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg',
             'biography' => 'nullable|string',
             'research_interests' => 'nullable|string',
         ];

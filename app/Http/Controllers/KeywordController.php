@@ -15,21 +15,22 @@ class KeywordController extends Controller
     public function index(Request $request): View
     {
         $search = $request->query('search');
-        $active = $request->input('active');
+        $active = $request->query('active');
 
         $keywords = Keyword::query()
             ->when($search, function ($query, $search) {
-                return $query->where('keyword', 'like', "%{$search}%");
+                $query->where('keyword', 'like', "%{$search}%");
             })
             ->when(isset($active), function ($query) use ($active) {
-                return $query->where('active', $active);
+                $query->where('active', $active);
             })
             ->paginate(10);
 
-        TitleView::share('pageTitle', 'Keywords');
-        return view('admin.keywords.index', compact('keywords', 'search'));
-    }
+        $totalResults = $keywords->total();
 
+        TitleView::share('pageTitle', 'Keywords');
+        return view('admin.keywords.index', compact('keywords', 'search', 'active', 'totalResults'));
+    }
 
     public function create(): View
     {
@@ -40,7 +41,7 @@ class KeywordController extends Controller
     public function store(StoreKeywordRequest $request): RedirectResponse
     {
         Keyword::create($request->validated());
-        return to_route('keywords.index')->with('success', 'Type created successfully.');
+        return to_route('keywords.index')->with('success', 'Keyword created successfully.');
     }
 
     public function edit(Keyword $keyword): View

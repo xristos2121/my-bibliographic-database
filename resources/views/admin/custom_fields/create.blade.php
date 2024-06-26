@@ -12,13 +12,13 @@
                     <form action="{{ route('custom_fields.store') }}" method="POST">
                         @csrf
 
-                        <div>
+                        <div class="mt-4">
                             <x-form.label for="name" value="Name" />
                             <x-form.input id="name" name="name" value="{{ old('name') }}" type="text" class="block mt-1 w-full" required/>
                             <x-form.error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
-                        <div>
+                        <div class="mt-4">
                             <x-form.label for="type" value="Type" />
                             <x-form.select name="type" id="type" class="block mt-1 w-full" >
                                 <option value="text">Text</option>
@@ -27,7 +27,7 @@
                             </x-form.select>
                             <x-form.error :messages="$errors->get('type')" class="mt-2" />
                         </div>
-                        <div class="mt-4">
+                        <div class="flex flex-wrap justify-end mt-4">
                             <x-button>
                                 Save
                             </x-button>

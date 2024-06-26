@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreFieldDefinitionRequest;
 use App\Http\Requests\UpdateFieldDefinitionRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View as TitleView;
+
 class FieldDefinitionController extends Controller
 {
     public function index(Request $request)
@@ -23,14 +25,17 @@ class FieldDefinitionController extends Controller
             })
             ->when(isset($type), function ($query) use ($type) {
                 return $query->where('type', $type);
-            })
-            ->paginate(10);
+            });
+        $totalResults = $fieldDefinitions->count();
+        $fieldDefinitions = $fieldDefinitions->paginate(10);
 
-        return view('admin.custom_fields.index', compact('fieldDefinitions', 'search'));
+        TitleView::share('pageTitle', 'Custom Fields');
+        return view('admin.custom_fields.index', compact('fieldDefinitions', 'search', 'totalResults'));
     }
 
     public function create()
     {
+        TitleView::share('pageTitle', 'Create Custom Field');
         return view('admin.custom_fields.create');
     }
 
@@ -43,6 +48,7 @@ class FieldDefinitionController extends Controller
     public function edit($id)
     {
         $fieldDefinition = FieldDefinition::findOrFail($id);
+        TitleView::share('pageTitle', 'Edit Custom Field');
         return view('admin.custom_fields.edit', compact('fieldDefinition'));
     }
 

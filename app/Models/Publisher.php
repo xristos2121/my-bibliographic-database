@@ -19,7 +19,7 @@ class Publisher extends Model
 
     public function publications()
     {
-        return $this->hasMany(Publication::class);
+        return $this->hasMany(Publication::class, 'publisher_id');
     }
 
     /**

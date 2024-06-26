@@ -12,13 +12,13 @@
                     <form action="{{ route('publisher.store') }}" method="POST">
                         @csrf
 
-                        <div>
+                        <div class="mt-4">
                             <x-form.label for="name" value="Name" />
                             <x-form.input id="name" name="name" value="{{ old('name') }}" type="text" class="block mt-1 w-full" />
                             <x-form.error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
-                        <div>
+                        <div class="mt-4">
                             <x-form.label for="site_url" value="Site Url" />
                             <x-form.input id="site_url" name="site_url" value="{{ old('site_url') }}" type="text" class="block mt-1 w-full" />
                             <x-form.error :messages="$errors->get('name')" class="mt-2" />
