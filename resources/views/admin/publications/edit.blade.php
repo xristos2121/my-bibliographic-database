@@ -190,7 +190,26 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $('#authors, #keywords, #categories').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true});
+        $('#authors, #categories').select2({ allowClear: true });
+
+        $('#keywords').select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            allowClear: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                };
+            }
+        });
 
         const enablePublisherCheckbox = document.getElementById('enable_publisher');
         const publisherSelect = document.getElementById('publisher_select');
@@ -296,3 +315,4 @@
         });
     });
 </script>
+

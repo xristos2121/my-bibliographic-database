@@ -32,6 +32,9 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN groupadd -g 1000 www && \
     useradd -u 1000 -ms /bin/bash -g www www
 
+# Create necessary directory structure and set permissions
+RUN mkdir -p /var/www/vendor && chown -R www:www /var/www
+
 # Change ownership of the working directory to the www user
 COPY --chown=www:www . /var/www
 

@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\FieldDefinition;
 use App\Models\PublicationUri;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
@@ -156,9 +157,7 @@ class PublicationController extends Controller
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
     {
-
         $validatedData = $request->validated();
-
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -242,15 +241,34 @@ class PublicationController extends Controller
 
     private function syncRelations(Publication $publication, FormRequest $request): void
     {
+        // Sync authors
         $authors = $request->input('authors', []);
         $publication->authors()->sync($authors);
 
+        // Process keywords
         $keywords = $request->input('keywords', []);
-        $publication->keywords()->sync($keywords);
+        $keywordIds = [];
 
+        foreach ($keywords as $keyword) {
+            if (is_numeric($keyword)) {
+                $keywordIds[] = $keyword;
+            } else {
+                // Create new keyword
+                $newKeyword = Keyword::firstOrCreate(['keyword' => $keyword], [
+                    'slug' => Str::slug($keyword),
+                    'active' => 1
+                ]);
+                $keywordIds[] = $newKeyword->id;
+            }
+        }
+
+        $publication->keywords()->sync($keywordIds);
+
+        // Sync categories
         $categories = $request->input('categories', []);
         $publication->categories()->sync($categories);
     }
+
 
 
     public function storeCustomFields(Request $request, $publicationId)

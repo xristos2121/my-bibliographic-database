@@ -51,7 +51,6 @@
                             <x-form.error :messages="$errors->get('active')" class="mt-2" />
                         </div>
 
-
                         <!-- File Upload -->
                         <div class="mt-4">
                             <x-form.label for="file" :value="__('Upload File')" />
@@ -166,7 +165,26 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $('#authors, #keywords, #categories').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true});
+        $('#authors, #categories').select2({ allowClear: true });
+
+        $('#keywords').select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            allowClear: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                };
+            }
+        });
 
         const enablePublisherCheckbox = document.getElementById('enable_publisher');
         const publisherSelect = document.getElementById('publisher_select');
@@ -197,8 +215,8 @@
                 fieldWrapper.innerHTML = `
                     <label class="block font-medium text-sm text-gray-700">${fieldName}</label>
                     <input type="hidden" name="custom_fields[${fieldName}][type_id]" value="${fieldId}">
-                <input type="text" name="custom_fields[${fieldName}][value]" placeholder="Enter ${fieldName}" class="block w-full mt-1 rounded-md shadow-sm border-gray-300">
-                <button type="button" class="remove-custom-field mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
+                    <input type="text" name="custom_fields[${fieldName}][value]" placeholder="Enter ${fieldName}" class="block w-full mt-1 rounded-md shadow-sm border-gray-300">
+                    <button type="button" class="remove-custom-field mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
                 `;
                 customFieldsContainer.appendChild(fieldWrapper);
 
@@ -222,7 +240,7 @@
             const uriFieldWrapper = document.createElement('div');
             uriFieldWrapper.classList.add('uri-field', 'mt-2');
             uriFieldWrapper.innerHTML = `
-                <x-form.input class="block mt-1 w-full" type="text" name="uris[]" placeholder="Enter URI" />
+                <input class="block mt-1 w-full rounded-md shadow-sm border-gray-300" type="text" name="uris[]" placeholder="Enter URI" />
                 <button type="button" class="remove-uri mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove</button>
             `;
             urisContainer.appendChild(uriFieldWrapper);

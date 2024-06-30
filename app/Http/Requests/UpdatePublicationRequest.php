@@ -37,12 +37,12 @@ class UpdatePublicationRequest extends FormRequest
             'category_id' => 'nullable|exists:categories,id',
             'authors' => 'required|array',
             'authors.*' => 'integer|exists:authors,id',
-            'keywords' => 'nullable|array',
-            'keywords.*' => 'integer|exists:keywords,id',
+            'keywords' => 'array',
+            'keywords.*' => 'string|max:255',
             'publisher_id' => 'nullable|exists:publishers,id',
             'category_publication' => 'nullable|array',
             'category_publication.*' => 'integer|exists:categories,id',
-            'file' => 'nullable|file|mimes:pdf',
+            'file' => 'nullable|file|mimes:pdf|max:51200',
             'custom_fields' => 'nullable|array',
             'custom_fields.*.field_definition_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
             'custom_fields.*.value' => 'required_with:custom_fields|string',
@@ -50,4 +50,6 @@ class UpdatePublicationRequest extends FormRequest
             'uris.*' => 'url',
         ];
     }
+
+
 }

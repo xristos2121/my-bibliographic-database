@@ -58,14 +58,16 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/test-pdf', function () {
+
     $parser = new Parser();
-    $pdf = $parser->parseFile(public_path('test.pdf'));
+    $pdf = $parser->parseFile(storage_path('app/public/publications/Διπλωματική_Εργασία_Βασίλειος_Γιογουρτσόγλου_711141222_iv_ct.pdf'));
 
     // Extract text from the PDF
     $text = $pdf->getText();
+    $textWithoutNewLines = str_replace(["\r\n", "\r", "\n"], ' ', $text);
 
     // Remove line breaks from the text
-    $textWithoutBr = nl2br($text);
+    $textWithoutBr = nl2br($textWithoutNewLines);
 
     return $textWithoutBr;
 });
