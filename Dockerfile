@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     netcat-openbsd \
-    default-mysql-client
+    default-mysql-client \
+    supervisor
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
@@ -38,10 +39,13 @@ RUN mkdir -p /var/www/vendor && chown -R www:www /var/www
 # Change ownership of the working directory to the www user
 COPY --chown=www:www . /var/www
 
+# Copy Supervisor configuration file
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 # Copy entrypoint script before changing user to www
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Make entrypoint script executable
+# Make scripts executable before changing user to www
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Change current user to www

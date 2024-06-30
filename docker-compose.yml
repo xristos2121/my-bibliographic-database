@@ -3,7 +3,6 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        image: jurnals
         container_name: jurnals
         restart: unless-stopped
         tty: true
@@ -35,6 +34,8 @@ services:
             - ./nginx/conf.d/:/etc/nginx/conf.d/
         networks:
             - laravel
+        depends_on:
+            - app
 
     db:
         image: mysql:5.7

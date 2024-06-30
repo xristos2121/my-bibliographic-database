@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View as TitleView;
+use App\Jobs\ProcessPdf;
 
 
 class PublicationController extends Controller
@@ -130,9 +131,12 @@ class PublicationController extends Controller
             }
         }
 
+        if (isset($filePath) && config('app.store_pdf_contents')) {
+            ProcessPdf::dispatch(storage_path('app/public/' . $filePath), $publication->id);
+        }
+
         return to_route('publications.index')->with('success', 'Publication created successfully.');
     }
-
 
     public function show(Publication $publication): View
     {
@@ -164,6 +168,8 @@ class PublicationController extends Controller
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
 
+            $originalName  = Str::slug($originalName, '_');
+
             $name = $originalName;
             $counter = 1;
 
@@ -181,6 +187,10 @@ class PublicationController extends Controller
 
             if ($publication->file && $publication->file !== $filePath) {
                 Storage::disk('public')->delete($publication->file);
+            }
+
+            if (config('app.store_pdf_contents')) {
+            ProcessPdf::dispatch(storage_path('app/public/' . $filePath), $publication->id);
             }
         }
 
@@ -267,23 +277,6 @@ class PublicationController extends Controller
         // Sync categories
         $categories = $request->input('categories', []);
         $publication->categories()->sync($categories);
-    }
-
-
-
-    public function storeCustomFields(Request $request, $publicationId)
-    {
-        $publication = Publication::findOrFail($publicationId);
-
-        foreach ($request->custom_fields as $field) {
-            CustomField::create([
-                'publication_id' => $publication->id,
-                'field_name' => $field['field_name'],
-                'field_value' => $field['field_value'],
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Custom fields added successfully.');
     }
 
     private function buildCategoryPaths($categories, $parentId = null, $prefix = '')

@@ -17,7 +17,8 @@ fi
 
 # Run database migrations
 echo "Running migrations..."
+php artisan queue:table
 php artisan migrate --force
 
-# Start PHP-FPM
-php-fpm
+# Start Supervisor to manage PHP-FPM and Laravel Queue Worker
+exec supervisord -c /etc/supervisor/conf.d/supervisord.conf

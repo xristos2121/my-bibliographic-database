@@ -185,4 +185,6 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'store_pdf_contents' => env('STORE_PDF_CONTENTS', false),
+
 ];
