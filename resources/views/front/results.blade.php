@@ -174,6 +174,9 @@
                                         </div>
                                     @endif
                                     <p>{{ $result->abstract }}</p>
+                                    @if ($result->highlighted_text)
+                                        <p>Excerpt: {!! $result->highlighted_text !!}</p>
+                                    @endif
                                     <div>
                                         <a href="{{ url('/record/' . $result->slug) }}">{{ __('messages.results.view_more') }}</a>
                                     </div>

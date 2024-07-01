@@ -8,8 +8,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Smalot\PdfParser\Parser;
-use App\Models\Publication; // Assuming you have a Publication model
+use App\Models\Publication;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class ProcessPdf implements ShouldQueue
 {
@@ -26,20 +27,34 @@ class ProcessPdf implements ShouldQueue
 
     public function handle()
     {
+        ini_set('memory_limit', env('PHP_MEMORY_LIMIT', '1024M'));
 
-        $parser = new Parser();
-        $pdf = $parser->parseFile($this->filePath);
+        try {
+            $parser = new Parser();
+            $pdf = $parser->parseFile($this->filePath);
 
-        // Extract text from the PDF
-        $text = $pdf->getText();
+            $text = $pdf->getText();
 
-        $textWithoutNewLines = preg_replace('/\s+/', ' ', $text);
+            $textUtf8 = mb_convert_encoding($text, 'UTF-8', 'auto');
 
-        $publication = Publication::find($this->publicationId);
-        if ($publication) {
-            $publication->pdf_text = $textWithoutNewLines;
-            $publication->save();
+            $textWithoutNewLines = preg_replace('/\s+/', ' ', $textUtf8);
+
+            // First, strip HTML tags using strip_tags
+            $plainText = strip_tags($textWithoutNewLines);
+
+            // Further remove any remaining tags using a regex pattern
+            $plainText = preg_replace('/<[^>]*>/', '', $plainText);
+
+            Cache::put('publication_' . $this->publicationId . '_pdf_text', $plainText, now()->addDays(30));
+
+            $publication = Publication::find($this->publicationId);
+            if ($publication) {
+                $publication->pdf_text = $plainText;
+                $publication->save();
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error processing PDF: ' . $e->getMessage());
         }
     }
-
 }

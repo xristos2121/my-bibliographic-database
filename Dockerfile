@@ -15,10 +15,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     netcat-openbsd \
     default-mysql-client \
-    supervisor
+    supervisor \
+    libicu-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl
 
 # Set working directory
 WORKDIR /var/www
@@ -47,6 +48,9 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make scripts executable before changing user to www
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Copy PHP custom configuration
+COPY php/local.ini /usr/local/etc/php/conf.d/local.ini
 
 # Change current user to www
 USER www

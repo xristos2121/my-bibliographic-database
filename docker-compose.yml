@@ -13,6 +13,7 @@ services:
             DB_DATABASE: books
             DB_USERNAME: root
             DB_PASSWORD: ""
+            PHP_MEMORY_LIMIT: "1024M"
         working_dir: /var/www
         volumes:
             - ./:/var/www
@@ -21,6 +22,10 @@ services:
             - laravel
         depends_on:
             - db
+        deploy:
+            resources:
+                limits:
+                    memory: 2G
 
     nginx:
         image: nginx:alpine

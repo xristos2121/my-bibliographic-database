@@ -15,6 +15,14 @@ else
   echo "Database exists."
 fi
 
+# Ensure the memory limit is set
+if [ -n "$PHP_MEMORY_LIMIT" ]; then
+    echo "memory_limit = $PHP_MEMORY_LIMIT" > /usr/local/etc/php/conf.d/memory-limit.ini
+fi
+
+# Run the command passed as arguments
+exec "$@"
+
 # Run database migrations
 echo "Running migrations..."
 php artisan queue:table
