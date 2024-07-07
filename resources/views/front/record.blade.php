@@ -3,6 +3,7 @@
         /* Add your styles here */
     </style>
     <div class="container">
+        <div class="generic-container-border">
         <h1>{{ $result->title }}</h1>
         <div class="record-details">
             <div class="record-section">
@@ -88,6 +89,7 @@
                 <h2>{{ __('messages.record.abstract') }}</h2>
                 <p>{{ $result->abstract }}</p>
             </div>
+        </div>
         </div>
     </div>
 </x-front-layout>

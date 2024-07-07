@@ -52,7 +52,8 @@ class SearchController extends Controller
             'results' => $results,
             'searchParameters' => $request->all(),
             'types' => $types,
-            'hits_per_page' => $hitsPerPage
+            'hits_per_page' => $hitsPerPage,
+            'totalResults' => $results->total()
         ]);
     }
 
@@ -134,43 +135,31 @@ class SearchController extends Controller
     public function search(Request $request): View
     {
         $hitsPerPage = 10;
+        $searchTerm = $request->search;
+        $types = Type::all();
 
         $query = Publication::query();
-        $types = Type::all();
-        $searchTerm = $request->search;
-
         $this->applySearchFilters($query, $searchTerm);
 
         $results = $query->paginate($hitsPerPage);
 
-        foreach ($results as $result) {
+        $results->transform(function ($result) use ($searchTerm) {
             $cacheKey = 'publication_' . $result->id . '_pdf_text';
-            $pdfText = Cache::remember($cacheKey, now()->addDays(30), function () use ($result) {
-                return $result->pdf_text;
-            });
+            $pdfText = Cache::remember($cacheKey, now()->addDays(30), fn() => $result->pdf_text);
 
-            if ($request->type == 'entire_document' && $this->containsSearchTerm($pdfText, $searchTerm)) {
-                $result->highlighted_text = $this->getHighlightedSnippets($pdfText, $searchTerm);
-            } else {
-                $result->highlighted_text = null;
-            }
-        }
+            $result->highlighted_text = $this->containsSearchTerm($pdfText, $searchTerm)
+                ? $this->getHighlightedSnippets($pdfText, $searchTerm)
+                : null;
 
-        // Get the last executed query
-        $queries = DB::getQueryLog();
-        $lastQuery = end($queries);
-
-
+            return $result;
+        });
+        $totalResults = $results->total();
         $searchParameters = [
             'type' => ['entire_document'],
-            'lookfor' => [$searchTerm]
+            'lookfor' => [$searchTerm],
         ];
 
-        return view('front.results', [
-            'results' => $results,
-            'searchParameters' => $searchParameters,
-            'types' => $types
-        ]);
+        return view('front.results', compact('results', 'searchParameters', 'types', 'totalResults'));
     }
 
     private function applyExactMatchOrder($query, $searchTerm)

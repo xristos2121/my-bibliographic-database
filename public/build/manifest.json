@@ -1,40 +1,40 @@
 {
   "_select2-!~{005}~.js": {
-    "file": "assets/select2-5eEUGUV5.css",
+    "file": "assets/select2-D4UZKI9-.css",
     "src": "_select2-!~{005}~.js"
   },
-  "_select2-DQSiMoTO.js": {
-    "file": "assets/select2-DQSiMoTO.js",
+  "_select2-B257UcDV.js": {
+    "file": "assets/select2-B257UcDV.js",
     "css": [
-      "assets/select2-5eEUGUV5.css"
+      "assets/select2-D4UZKI9-.css"
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-CF86Wb--.css",
+    "file": "assets/app-CMFoQ_fw.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-fWsmxB8Z.js",
+    "file": "assets/app-xXlNfRoO.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_select2-DQSiMoTO.js"
+      "_select2-B257UcDV.js"
     ]
   },
   "resources/js/front.js": {
-    "file": "assets/front-BL13vQrx.js",
+    "file": "assets/front-DC8yRWLZ.js",
     "src": "resources/js/front.js",
     "isEntry": true,
     "imports": [
-      "_select2-DQSiMoTO.js"
+      "_select2-B257UcDV.js"
     ],
     "css": [
-      "assets/front-jyc-f1EF.css"
+      "assets/front-wbcNfgXx.css"
     ]
   },
   "resources/scss/front.scss": {
-    "file": "assets/front-jyc-f1EF.css",
+    "file": "assets/front-wbcNfgXx.css",
     "src": "resources/js/front.js"
   }
 }

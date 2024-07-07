@@ -1,5 +1,6 @@
 <x-front-layout>
-    <div class="advanced-search-section">
+    <div class="container">
+        <div class="advanced-search-section">
         <h1>Advanced Publication Search</h1>
         <form id="advanced-search-form" action="{{ url('/advanced-search/results') }}" method="GET">
             <div class="form-group">
@@ -99,6 +100,7 @@
 
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
+        </div>
     </div>
     <script>
         document.getElementById('advanced-search-form').addEventListener('submit', function(event) {

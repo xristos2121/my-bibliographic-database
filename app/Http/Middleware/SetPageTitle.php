@@ -10,7 +10,7 @@ class SetPageTitle
 {
     public function handle(Request $request, Closure $next)
     {
-        View::share('pageTitle', config('app.name', 'K UI'));
+        View::share('pageTitle', config('app.name', ''));
 
         return $next($request);
     }

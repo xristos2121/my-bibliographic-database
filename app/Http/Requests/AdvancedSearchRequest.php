@@ -27,8 +27,8 @@ class AdvancedSearchRequest extends FormRequest
             'type.*' => 'required|in:entire_document,title,author,abstract,keyword,publisher',
             'lookfor.*' => 'nullable|string',
             'document_type' => 'required',
-            'fromYear' => 'nullable|int',
-            'untilYear' => 'nullable|int'
+            'fromYear' => 'nullable|string',
+            'untilYear' => 'nullable|string'
         ];
     }
 }
