@@ -1,6 +1,3 @@
-// Import Bootstrap CSS and dependencies
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
 import 'vanillajs-datepicker/css/datepicker.css';
 
 // Import other libraries

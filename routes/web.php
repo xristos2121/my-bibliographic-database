@@ -57,20 +57,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('custom_fields', FieldDefinitionController::class);
 });
 
-Route::get('/test-pdf', function () {
-
-    $parser = new Parser();
-    $pdf = $parser->parseFile(storage_path('app/public/publications/Διπλωματική_Εργασία_Βασίλειος_Γιογουρτσόγλου_711141222_iv_ct.pdf'));
-
-    // Extract text from the PDF
-    $text = $pdf->getText();
-    $textWithoutNewLines = str_replace(["\r\n", "\r", "\n"], ' ', $text);
-
-    // Remove line breaks from the text
-    $textWithoutBr = nl2br($textWithoutNewLines);
-
-    return $textWithoutBr;
-});
 
 // useless routes
 // Just to demo sidebar dropdown links active states.

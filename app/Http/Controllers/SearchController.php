@@ -23,11 +23,13 @@ class SearchController extends Controller
         $query = Publication::query();
         $types = Type::all();
 
-
         $this->applyAdvancedSearchFilters($query, $request);
 
         $hitsPerPage = $request->input('hits_per_page', 10);
         $results = $query->paginate($hitsPerPage);
+
+        $searchTypes = $request->type ?? [];
+        $lookForTerms = $request->lookfor ?? [];
 
         foreach ($results as $result) {
             $cacheKey = 'publication_' . $result->id . '_pdf_text';
@@ -35,17 +37,19 @@ class SearchController extends Controller
                 return $result->pdf_text;
             });
 
-            if ($request->type && in_array('entire_document', $request->type)) {
-                foreach ($request->lookfor as $searchTerm) {
+            $highlightedSnippets = [];
+
+            foreach ($searchTypes as $index => $type) {
+                $searchTerm = $lookForTerms[$index] ?? '';
+
+                if ($type === 'entire_document' || $type === 'context') {
                     if ($this->containsSearchTerm($pdfText, $searchTerm)) {
-                        $result->highlighted_text = $this->getHighlightedSnippets($pdfText, $searchTerm);
-                    } else {
-                        $result->highlighted_text = null;
+                        $highlightedSnippets[] = $this->getHighlightedSnippets($pdfText, $searchTerm);
                     }
                 }
-            } else {
-                $result->highlighted_text = null;
             }
+
+            $result->highlighted_text = !empty($highlightedSnippets) ? implode(' ... ', $highlightedSnippets) : null;
         }
 
         return view('front.results', [
@@ -87,6 +91,7 @@ class SearchController extends Controller
 
     private function applyFilter($query, $type, $lookfor)
     {
+
         $terms = explode(' ', $this->removeDiacritics($lookfor));
         $query->where(function ($subQuery) use ($terms, $type) {
             foreach ($terms as $term) {
@@ -112,6 +117,9 @@ class SearchController extends Controller
                         $subQuery->orWhereHas('publisher', function ($query) use ($term, $searchPattern) {
                             $query->whereRaw("LOWER(REPLACE(name, ' ', '')) LIKE LOWER(REPLACE(?, ' ', ''))", [$searchPattern]);
                         });
+                        break;
+                    case 'context':
+                        $subQuery->orWhereRaw("LOWER(REPLACE(pdf_text, ' ', '')) LIKE LOWER(REPLACE(?, ' ', ''))", [$searchPattern]);
                         break;
                     case 'entire_document':
                         $subQuery->orWhereRaw("LOWER(REPLACE(title, ' ', '')) LIKE LOWER(REPLACE(?, ' ', ''))", [$searchPattern])

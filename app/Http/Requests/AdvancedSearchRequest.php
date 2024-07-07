@@ -24,7 +24,7 @@ class AdvancedSearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'type.*' => 'required|in:entire_document,title,author,abstract,keyword,publisher',
+            'type.*' => 'required|in:entire_document,title,author,abstract,keyword,publisher,context',
             'lookfor.*' => 'nullable|string',
             'document_type' => 'required',
             'fromYear' => 'nullable|string',

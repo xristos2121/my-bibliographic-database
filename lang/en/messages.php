@@ -9,6 +9,7 @@ return [
     'filters.abstract' => 'Abstract',
     'filters.keyword' => 'Keyword',
     'filters.publisher' => 'Publisher',
+    'filters.context' => 'Context',
     'filters.add' => 'Add Filter',
     'filters.remove' => 'Remove Filter',
     'form.from' => 'From',

@@ -27,6 +27,9 @@
                                         <option value="publisher" {{ $type === 'publisher' ? 'selected' : '' }}>
                                             {{ __('messages.filters.publisher') }}
                                         </option>
+                                        <option value="context" {{ $type === 'context' ? 'selected' : '' }}>
+                                            {{ __('messages.filters.context') }}
+                                        </option>
                                     </select>
                                     <input type="text" name="lookfor[]" class="form-control mr-2" value="{{ $searchParameters['lookfor'][$index] ?? '' }}">
                                     @if($index > 0)
@@ -61,6 +64,9 @@
                                     </option>
                                     <option value="publisher">
                                         {{ __('messages.filters.publisher') }}
+                                    </option>
+                                    <option value="context">
+                                        {{ __('messages.filters.context') }}
                                     </option>
                                 </select>
                                 <input type="text" name="lookfor[]" class="mr-2" value="">
@@ -192,37 +198,6 @@
     </div>
 
     <script>
-        document.getElementById('advanced-search-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const originalForm = event.target;
-            const newForm = document.createElement('form');
-            newForm.action = originalForm.action;
-            newForm.method = originalForm.method;
-
-            Array.from(originalForm.elements).forEach(element => {
-                if ((element.tagName === 'INPUT' && element.type === 'text' && element.value) ||
-                    (element.tagName === 'SELECT' && element.name.startsWith('type') && element.nextElementSibling && element.nextElementSibling.value) ||
-                    (element.tagName === 'INPUT' && element.type === 'month' && element.value) ||
-                    (element.tagName === 'SELECT' && (element.name === 'hits_per_page' || element.name === 'document_type'))) {
-
-                    const newElement = element.cloneNode(true);
-                    newElement.value = element.value;
-                    newForm.appendChild(newElement);
-
-                    if (element.name.startsWith('type')) {
-                        const newInput = element.nextElementSibling.cloneNode(true);
-                        newInput.value = element.nextElementSibling.value;
-                        newForm.appendChild(newInput);
-                    }
-                }
-            });
-
-            newForm.style.display = 'none';
-            document.body.appendChild(newForm);
-            console.log(newForm);
-            newForm.submit();
-        });
-
         function addFilter() {
             const filterContainer = document.getElementById('filters-container');
             const newFilter = document.createElement('div');
@@ -235,6 +210,7 @@
                     <option value="abstract">{{ __('messages.filters.abstract') }}</option>
                     <option value="keyword">{{ __('messages.filters.keyword') }}</option>
                     <option value="publisher">{{ __('messages.filters.publisher') }}</option>
+                    <option value="context">{{ __('messages.filters.context') }}</option>
                 </select>
                 <input type="text" name="lookfor[]" class="form-control mr-2">
                 <div onclick="removeFilter(this)">
