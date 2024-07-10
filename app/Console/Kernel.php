@@ -38,6 +38,7 @@ class Kernel extends ConsoleKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class, // Ensure this is present
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\UpdateUserPasswordFromEnv::class,
         ],
 
         'api' => [

@@ -21,7 +21,7 @@ class CreateUserFromEnv extends Command
         $username = config('custom_auth.user');
         $password = config('custom_auth.password');
 
-        $user = User::where('email', $username)->first();
+        $user = User::where('username', $username)->first();
 
         if ($user) {
             $user->password = Hash::make($password);
@@ -30,7 +30,7 @@ class CreateUserFromEnv extends Command
         } else {
             User::create([
                 'name' => $username,
-                'email' => $username,
+                'username' => $username,
                 'password' => Hash::make($password),
             ]);
             $this->info('User created successfully with username: ' . $username);
