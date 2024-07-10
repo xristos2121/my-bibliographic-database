@@ -1,7 +1,5 @@
 <x-front-layout>
-    <style>
-        /* Add your styles here */
-    </style>
+
     <div class="container">
         <div class="generic-container-border">
         <h1>{{ $result->title }}</h1>

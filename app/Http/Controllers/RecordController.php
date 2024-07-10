@@ -9,7 +9,6 @@ class RecordController extends Controller
 {
     public function viewResult($slug)
     {
-        // Fetch the individual result by its slug along with custom fields
         $result = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'categories'])
             ->where('slug', $slug)
             ->firstOrFail();

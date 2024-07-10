@@ -14,6 +14,7 @@
     <div class="menu">
         <a href="{{ url('/') }}">Simple Search</a>
         <a href="{{ url('/advanced-search') }}">Advanced Search</a>
+        <a href="{{ url('/browse') }}">Browse</a>
     </div>
 </div>
 

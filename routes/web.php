@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\FieldDefinitionController;
+use \App\Http\Controllers\BrowseController;
 
 use Smalot\PdfParser\Parser;
 /*
@@ -35,6 +36,7 @@ Route::get('/search', [SearchController::class, 'search']);
 Route::get('/advanced-search', [SearchController::class, 'index']);
 Route::get('/advanced-search/results', [SearchController::class, 'advanced_search']);
 Route::get('/record/{slug}', [RecordController::class, 'viewResult']);
+Route::resource('/browse', BrowseController::class);
 
 
 Route::get('/dashboard', function () {
