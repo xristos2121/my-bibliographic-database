@@ -30,14 +30,22 @@ use Smalot\PdfParser\Parser;
     return view('welcome');
 });*/
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [SearchController::class, 'search']);
 
-Route::get('/advanced-search', [SearchController::class, 'index']);
+Route::get('/advanced-search', [SearchController::class, 'index'])->name('advanced-search');
 Route::get('/advanced-search/results', [SearchController::class, 'advanced_search']);
 Route::get('/record/{slug}', [RecordController::class, 'viewResult']);
-Route::resource('/browse', BrowseController::class);
-
+Route::get('/browse', [BrowseController::class,'index'])->name('browse.index');
+Route::get('/browse/keywords', [BrowseController::class, 'keywords'])->name('browse.keywords');
+Route::get('/browse/keywords/{slug}', [BrowseController::class, 'publicationsByKeyword'])->name('browse.publicationsByKeyword');
+Route::get('/browse/authors', [BrowseController::class, 'authors'])->name('browse.authors');
+Route::get('/browse/authors/{id}', [BrowseController::class, 'publicationsByAuthor'])->name('browse.publicationsByAuthor');
+Route::get('/browse/publishers', [BrowseController::class, 'publishers'])->name('browse.publishers');
+Route::get('/browse/publishers/{id}', [BrowseController::class, 'publicationsByPublisher'])->name('browse.publicationsByPublisher');
+Route::get('/browse/categories', [BrowseController::class, 'categories'])->name('browse.categories');
+Route::get('/browse/categories/{slug}', [BrowseController::class, 'childCategories'])->name('browse.childCategories');
+Route::get('/browse/categories/{slug}/publications', [BrowseController::class, 'publicationsByCategory'])->name('browse.publicationsByCategory');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
