@@ -69,7 +69,8 @@ class PublicationController extends Controller
             })
             ->when($request->filled('active'), function ($query) use ($request) {
                 return $query->where('active', $request->input('active'));
-            });
+            })
+            ->orderBy('id', 'desc');;
 
         $totalPublications = $publicationsQuery->count();
         $publications = $publicationsQuery->paginate(10);
@@ -102,7 +103,6 @@ class PublicationController extends Controller
             $name = $originalName;
             $counter = 1;
 
-            // Check if the file exists and append a number if it does
             while (Storage::disk('public')->exists("publications/{$name}.{$extension}")) {
                 $name = $originalName . '_' . $counter;
                 $counter++;
@@ -127,7 +127,9 @@ class PublicationController extends Controller
         if ($request->has('uris')) {
             $uris = $request->input('uris');
             foreach ($uris as $uri) {
-                PublicationUri::create(['publication_id' => $publication->id, 'uri' => $uri]);
+                if (!is_null($uri) && $uri !== '') {
+                    PublicationUri::create(['publication_id' => $publication->id, 'uri' => $uri]);
+                }
             }
         }
 
@@ -137,6 +139,7 @@ class PublicationController extends Controller
 
         return to_route('publications.index')->with('success', 'Publication created successfully.');
     }
+
 
     public function show(Publication $publication): View
     {

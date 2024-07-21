@@ -46,6 +46,10 @@ Route::get('/browse/publishers/{id}', [BrowseController::class, 'publicationsByP
 Route::get('/browse/categories', [BrowseController::class, 'categories'])->name('browse.categories');
 Route::get('/browse/categories/{slug}', [BrowseController::class, 'childCategories'])->name('browse.childCategories');
 Route::get('/browse/categories/{slug}/publications', [BrowseController::class, 'publicationsByCategory'])->name('browse.publicationsByCategory');
+Route::get('/browse/years', [BrowseController::class, 'years'])->name('browse.years');
+Route::get('/browse/years/{year}', [BrowseController::class, 'publicationsByYear']);
+Route::get('/browse/types', [BrowseController::class, 'types'])->name('browse.types');
+Route::get('/browse/types/{id}', [BrowseController::class, 'publicationsByType'])->name('browse.publicationsByType');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

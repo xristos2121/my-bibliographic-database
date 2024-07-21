@@ -47,7 +47,7 @@ class StorePublicationRequest extends FormRequest
             'custom_fields.*.type_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
             'custom_fields.*.value' => 'required_with:custom_fields|string',
             'uris' => 'nullable|array',
-            'uris.*' => 'url',
+            'uris.*' => 'nullable|url',
         ];
     }
 }

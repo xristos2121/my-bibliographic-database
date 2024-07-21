@@ -104,6 +104,11 @@ class Publication extends Model
         return $this->categories->isNotEmpty();
     }
 
+    public function hasAuthors()
+    {
+        return $this->authors->isNotEmpty();
+    }
+
     public function customFields()
     {
         return $this->hasMany(CustomField::class);

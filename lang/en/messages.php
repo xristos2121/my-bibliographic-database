@@ -32,4 +32,6 @@ return [
     'search.type' => 'Type',
     'search.all' => 'All',
     'results.total_found' => 'Total found: :count',
+    'results.categories' => 'Categories:',
+
 ];
