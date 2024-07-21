@@ -49,12 +49,12 @@
                             </span>
                         </div>
                     @endif
-                    @if ($result->hasCategories())
+                    @if ($result->hasCollections())
                         <div class="publication-data-row">
                             <span class="publication-data-label">{{ __('messages.results.categories') }}</span>
                             <span class="publication-data-value">
-                                @foreach ($result->categories as $category)
-                                    <a href="{{ url('/browse/categories/' . $category->slug) }}">{{ $category->name }}</a>{{ !$loop->last ? ', ' : '' }}
+                                @foreach ($result->collections as $collection)
+                                    <a href="{{ url('/browse/categories/' . $collection->slug) }}">{{ $collection->name }}</a>{{ !$loop->last ? ', ' : '' }}
                                 @endforeach
                             </span>
                         </div>

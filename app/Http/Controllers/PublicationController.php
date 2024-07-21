@@ -9,7 +9,7 @@ use App\Models\Author;
 use App\Models\Type;
 use App\Models\Keyword;
 use App\Models\Publisher;
-use App\Models\Category;
+use App\Models\Collection;
 use App\Models\FieldDefinition;
 use App\Models\PublicationUri;
 use Illuminate\Http\RedirectResponse;
@@ -30,8 +30,8 @@ class PublicationController extends Controller
         $types = Type::all();
         $keywords = Keyword::all();
         $publishers = Publisher::all();
-        $categories = Category::all();
-        $categoriesWithPath = $this->buildCategoryPaths($categories);
+        $collections = Collection::all();
+        $collectionsWithPath = $this->buildCollectionPaths($collections);
 
         $publicationsQuery = Publication::query()
             ->when($request->input('search'), function ($query, $search) {
@@ -52,9 +52,9 @@ class PublicationController extends Controller
             ->when($request->input('type_id'), function ($query, $type_id) {
                 return $query->where('type_id', $type_id);
             })
-            ->when($request->input('categories'), function ($query, $categories) {
-                return $query->whereHas('categories', function ($query) use ($categories) {
-                    $query->whereIn('categories.id', $categories);
+            ->when($request->input('collections'), function ($query, $collections) {
+                return $query->whereHas('collections', function ($query) use ($collections) {
+                    $query->whereIn('collections.id', $collections);
                 });
             })
             ->when($request->input('authors'), function ($query, $authors) {
@@ -76,7 +76,7 @@ class PublicationController extends Controller
         $publications = $publicationsQuery->paginate(10);
         TitleView::share('pageTitle', 'Publications');
 
-        return view('admin.publications.index', compact('publications', 'authors', 'types', 'keywords', 'publishers', 'categories', 'categoriesWithPath', 'totalPublications'));
+        return view('admin.publications.index', compact('publications', 'authors', 'types', 'keywords', 'publishers', 'collections', 'collectionsWithPath', 'totalPublications'));
     }
 
     public function create(): View
@@ -85,10 +85,10 @@ class PublicationController extends Controller
         $types = Type::all();
         $keywords = Keyword::all();
         $publishers = Publisher::all();
-        $categories = Category::all();
+        $collections = Collection::all();
         $customFields = FieldDefinition::all();
         TitleView::share('pageTitle', 'Create Publication');
-        return view('admin.publications.create', compact('authors', 'types', 'keywords', 'publishers', 'categories', 'customFields'));
+        return view('admin.publications.create', compact('authors', 'types', 'keywords', 'publishers', 'collections', 'customFields'));
     }
 
     public function store(StorePublicationRequest $request): RedirectResponse
@@ -152,14 +152,14 @@ class PublicationController extends Controller
         $types = Type::all();
         $keywords = Keyword::all();
         $publishers = Publisher::all();
-        $categories = Category::all();
+        $collections = Collection::all();
         $customFields = FieldDefinition::all();
         $publicationCustomFields = $publication->customFields;
         $uris = $publication->uris;
-        $categoriesWithPath = $this->buildCategoryPaths($categories);
+        $collectionsWithPath = $this->buildCollectionPaths($collections);
 
         TitleView::share('pageTitle', 'Edit Publication');
-        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','categories', 'customFields', 'publicationCustomFields', 'uris', 'categoriesWithPath'));
+        return view('admin.publications.edit', compact('publication', 'authors', 'types', 'keywords','publishers','collections', 'customFields', 'publicationCustomFields', 'uris', 'collectionsWithPath'));
     }
 
     public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
@@ -277,18 +277,18 @@ class PublicationController extends Controller
 
         $publication->keywords()->sync($keywordIds);
 
-        // Sync categories
-        $categories = $request->input('categories', []);
-        $publication->categories()->sync($categories);
+        // Sync collections
+        $collections = $request->input('collections', []);
+        $publication->collections()->sync($collections);
     }
 
-    private function buildCategoryPaths($categories, $parentId = null, $prefix = '')
+    private function buildCollectionPaths($collections, $parentId = null, $prefix = '')
     {
         $result = [];
-        foreach ($categories->where('parent_id', $parentId) as $category) {
-            $category->full_path = $prefix . $category->name;
-            $result[] = $category;
-            $result = array_merge($result, $this->buildCategoryPaths($categories, $category->id, $category->full_path . ' > '));
+        foreach ($collections->where('parent_id', $parentId) as $collection) {
+            $collection->full_path = $prefix . $collection->name;
+            $result[] = $collection;
+            $result = array_merge($result, $this->buildCollectionPaths($collections, $collection->id, $collection->full_path . ' > '));
         }
         return $result;
     }

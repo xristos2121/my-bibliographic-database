@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
-class CategoriesTableSeeder extends Seeder
+class CollectionsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class CategoriesTableSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (range(1, 10) as $index) {
-            DB::table('categories')->insert([
+            DB::table('collections')->insert([
                 'name' => $faker->unique()->word,
             ]);
         }

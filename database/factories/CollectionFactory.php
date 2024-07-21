@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Models\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class CategoryFactory extends Factory
+class CollectionFactory extends Factory
 {
-    protected $model = Category::class;
+    protected $model = Collection::class;
 
     public function definition()
     {

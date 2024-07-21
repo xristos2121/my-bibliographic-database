@@ -7,7 +7,7 @@
             <div class="generic-container-border browse-main-wrapper">
                 <div class="browse-results-section">
                     <span class="browse-results-title">Publications for {{ $entityName }}: {{ $entityTitle }}</span>
-                    <x-publications-browse :results="$results"/>
+                    <x-publications-browse :results="$results" :entityName="$entityName" :entityTitle="$entityTitle"/>
                 </div>
             </div>
         </div>

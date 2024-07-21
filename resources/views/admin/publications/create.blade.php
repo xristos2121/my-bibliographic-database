@@ -87,15 +87,15 @@
                             <x-form.error :messages="$errors->get('type_id')" class="mt-2" />
                         </div>
 
-                        <!-- Categories -->
+                        <!-- Collections -->
                         <div class="mt-4">
-                            <x-form.label for="categories" :value="__('Categories')" />
-                            <select id="categories" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="categories[]" multiple="multiple">
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <x-form.label for="collections" :value="__('Collections')" />
+                            <select id="collections" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="collections[]" multiple="multiple">
+                                @foreach($collections as $collection)
+                                    <option value="{{ $collection->id }}">{{ $collection->name }}</option>
                                 @endforeach
                             </select>
-                            <x-form.error :messages="$errors->get('categories')" class="mt-2" />
+                            <x-form.error :messages="$errors->get('collections')" class="mt-2" />
                         </div>
 
                         <!-- Authors -->
@@ -165,7 +165,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $('#authors, #categories').select2({ allowClear: true });
+        $('#authors, #collections').select2({ allowClear: true });
 
         $('#keywords').select2({
             tags: true,

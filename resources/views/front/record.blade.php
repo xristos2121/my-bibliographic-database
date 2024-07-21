@@ -53,12 +53,12 @@
                             </span>
                         </div>
                     @endif
-                    @if ($result->hasCategories())
+                    @if ($result->hasCollections())
                         <div class="record-data-row">
                             <span class="record-data-label">{{ __('messages.record.categories') }}</span>
                             <span class="record-data-value">
-                                @foreach ($result->categories as $category)
-                                    {{ $category->name }}{{ !$loop->last ? ', ' : '' }}
+                                @foreach ($result->collections as $collection)
+                                    {{ $collection->name }}{{ !$loop->last ? ', ' : '' }}
                                 @endforeach
                             </span>
                         </div>

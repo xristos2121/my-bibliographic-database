@@ -7,31 +7,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Category extends Model
+class Collection extends Model
 {
     use HasFactory;
 
-    protected $table = 'categories';
+    protected $table = 'collections';
 
     protected $fillable = ['name', 'slug', 'description', 'parent_id'];
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(Collection::class, 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Collection::class, 'parent_id');
     }
 
     public function publications()
     {
-        return $this->belongsToMany(Publication::class, 'category_publication');
+        return $this->belongsToMany(Publication::class, 'collection_publication');
     }
 
     /**
-     * Scope a query to only include categories matching the search term.
+     * Scope a query to only include collection matching the search term.
      *
      * @param  Builder  $query
      * @param  string|null  $search
@@ -56,8 +56,8 @@ class Category extends Model
     {
         parent::boot();
 
-        static::creating(function ($category) {
-            $category->slug = $category->generateUniqueSlug($category->name);
+        static::creating(function ($collection) {
+            $collection->slug = $collection->generateUniqueSlug($collection->name);
         });
     }
 

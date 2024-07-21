@@ -9,7 +9,7 @@ class RecordController extends Controller
 {
     public function viewResult($slug)
     {
-        $result = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'categories'])
+        $result = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'collections'])
             ->where('slug', $slug)
             ->firstOrFail();
 

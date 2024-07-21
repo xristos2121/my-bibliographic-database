@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Category') }}
+            {{ __('Edit Collection') }}
         </h2>
     </x-slot>
 
@@ -11,37 +11,37 @@
                 <div class="px-6 py-4 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <div class="flex-1 min-w-0">
-                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Edit Category</h2>
+                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Edit Collection</h2>
                         </div>
                     </div>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('categories.update', $category->id) }}">
+                    <form method="POST" action="{{ route('collections.update', $collection->id) }}">
                         @csrf
                         @method('PUT')
 
                         <!-- Name -->
                         <div>
                             <x-form.label for="name" :value="__('Name')" />
-                            <x-form.input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $category->name)" required autofocus />
+                            <x-form.input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $collection->name)" required autofocus />
                             <x-form.error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <!-- Slug -->
                         <div class="mt-4">
                             <x-form.label for="slug" :value="__('Slug')" />
-                            <x-form.input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug', $category->slug)" />
+                            <x-form.input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug', $collection->slug)" />
                             <x-form.error :messages="$errors->get('slug')" class="mt-2" />
                         </div>
 
-                        <!-- Parent Category -->
+                        <!-- Parent Collection -->
                         <div class="mt-4">
-                            <x-form.label for="parent_id" :value="__('Parent Category')" />
+                            <x-form.label for="parent_id" :value="__('Parent Collection')" />
                             <select id="parent_id" name="parent_id" class="block mt-1 w-full rounded-md shadow-sm border-gray-300">
                                 <option value="">{{ __('None') }}</option>
-                                @foreach($categoriesWithPath as $parentCategory)
-                                    <option value="{{ $parentCategory->id }}" {{ old('parent_id', $category->parent_id) == $parentCategory->id ? 'selected' : '' }}>
-                                        {{ $parentCategory->full_path }}
+                                @foreach($collectionsWithPath as $parentCollection)
+                                    <option value="{{ $parentCollection->id }}" {{ old('parent_id', $collection->parent_id) == $parentCollection->id ? 'selected' : '' }}>
+                                        {{ $parentCollection->full_path }}
                                     </option>
                                 @endforeach
                             </select>

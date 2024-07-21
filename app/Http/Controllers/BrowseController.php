@@ -7,7 +7,7 @@ use App\Models\Publication;
 use App\Models\Keyword;
 use App\Models\Author;
 use App\Models\Publisher;
-use App\Models\Category;
+use App\Models\Collection;
 use App\Models\Type;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class BrowseController extends Controller
 {
     public function index(): View
     {
-        $results = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'categories'])
+        $results = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'collections'])
             ->orderBy('publication_date', 'desc')
             ->paginate(10);
         $totalResults = Publication::count();
@@ -78,38 +78,38 @@ class BrowseController extends Controller
         return view('front.browse.publications_by_publisher', compact('results', 'publisher'));
     }
 
-    public function categories()
+    public function collections()
     {
-        $categories = Category::with('children')->whereNull('parent_id')->paginate(20);
-        $totalCategories = $categories->count();
-        return view('front.browse.categories', compact('categories', 'totalCategories'));
+        $collections = Collection::with('children')->whereNull('parent_id')->paginate(20);
+        $totalCollections = $collections->count();
+        return view('front.browse.collections', compact('collections', 'totalCollections'));
     }
 
-    public function childCategories($slug)
+    public function childCollections($slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $subcategories = $category->children()->paginate(10);
+        $collection = Collection::where('slug', $slug)->firstOrFail();
+        $subcollections = $collection->children()->paginate(10);
 
-        if ($subcategories->count() == 0) {
-            $publications = $category->publications()
+        if ($subcollections->count() == 0) {
+            $publications = $collection->publications()
                 ->orderBy('publication_date', 'desc')
                 ->paginate(10);
-            return view('front.browse.publications_by_category', compact('category', 'publications'));
+            return view('front.browse.publications_by_collection', compact('collection', 'publications'));
         }
 
-        return view('front.browse.child_categories', compact('category', 'subcategories'));
+        return view('front.browse.child_collections', compact('collection', 'subcollections'));
     }
 
-    public function publicationsByCategory($slug)
+    public function publicationsByCollection($slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $results = Publication::whereHas('categories', function($query) use ($category) {
-            $query->where('categories.id', $category->id);
+        $collection = Collection::where('slug', $slug)->firstOrFail();
+        $results = Publication::whereHas('collections', function($query) use ($collection) {
+            $query->where('collections.id', $collection->id);
         })
             ->orderBy('publication_date', 'desc')
             ->paginate(10);
 
-        return view('front.browse.publications_by_category', compact('results', 'category'));
+        return view('front.browse.publications_by_collection', compact('results', 'collection'));
     }
 
     public function years(): View
