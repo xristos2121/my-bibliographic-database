@@ -19,6 +19,14 @@
                             </ul>
                         </div>
                     @endif
+                    @if($errors->has('file_or_link'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Whoops! Something went wrong.</strong>
+                            <ul class="mt-1 ml-2 list-disc list-inside">
+                                <li>{{ $errors->first('file_or_link') }}</li>
+                            </ul>
+                        </div>
+                    @endif
 
                     <form method="POST" action="{{ route('publications.update', $publication) }}" enctype="multipart/form-data" class="space-y-6">
                         @csrf
@@ -64,6 +72,13 @@
                                     <a href="{{ Storage::url($publication->file) }}" target="_blank" class="text-blue-500 hover:underline">View file</a>
                                 </div>
                             @endif
+                        </div>
+
+                        <!-- Link -->
+                        <div>
+                            <x-form.label for="link" :value="__('Link')" />
+                            <x-form.input id="link" class="block mt-1 w-full" type="url" name="link" :value="old('link', $publication->link)" />
+                            <x-form.error :messages="$errors->get('link')" class="mt-2" />
                         </div>
 
                         <!-- Publisher -->
@@ -315,4 +330,3 @@
         });
     });
 </script>
-

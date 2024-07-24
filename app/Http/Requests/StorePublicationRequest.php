@@ -17,7 +17,7 @@ class StorePublicationRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'active' => $this->has('active')
+            'active' => $this->has('active'),
         ]);
     }
 
@@ -42,12 +42,22 @@ class StorePublicationRequest extends FormRequest
             'keywords.*' => 'string|max:255',
             'collection_publication' => 'nullable|array',
             'collection_publication.*' => 'integer|exists:collections,id',
-            'file' => 'required|file|mimes:pdf',
+            'file' => 'nullable|file|mimes:pdf',
+            'link' => 'nullable|url',
             'custom_fields' => 'nullable|array',
             'custom_fields.*.type_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
             'custom_fields.*.value' => 'required_with:custom_fields|string',
             'uris' => 'nullable|array',
             'uris.*' => 'nullable|url',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!$this->file('file') && !$this->input('link')) {
+                $validator->errors()->add('file_or_link', 'Either a file or a link must be provided.');
+            }
+        });
     }
 }

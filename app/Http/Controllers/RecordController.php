@@ -16,4 +16,10 @@ class RecordController extends Controller
         return view('front.record', compact('result'));
     }
 
+    public function showBibtex($slug)
+    {
+
+        $result = Publication::where('slug', $slug)->firstOrFail();
+        return view('front.browse.bibtex', compact('result'));
+    }
 }

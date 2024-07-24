@@ -26,6 +26,7 @@ class Publication extends Model
         'collection_id',
         'publisher_id',
         'file',
+        'link',
         'slug',
         'active',
     ];

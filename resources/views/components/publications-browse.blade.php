@@ -72,7 +72,7 @@
                         </div>
                     @endif
                     @if ($result->abstract)
-                        <p class="abstract">{{ \Illuminate\Support\Str::limit($result->abstract, 200) }}</p>
+                        <p class="abstract">{{ Str::limit($result->abstract, 200) }}</p>
                     @endif
                     @if ($result->highlighted_text)
                         <p><b>Excerpt:</b> {!! $result->highlighted_text !!}</p>

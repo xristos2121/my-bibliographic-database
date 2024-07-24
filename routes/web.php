@@ -37,6 +37,7 @@ Route::get('/advanced-search', [SearchController::class, 'index'])->name('advanc
 Route::get('/advanced-search/results', [SearchController::class, 'advanced_search']);
 Route::get('/record/{slug}', [RecordController::class, 'viewResult']);
 Route::get('/browse', [BrowseController::class,'index'])->name('browse.index');
+Route::get('/record/{slug}/bibtex', [RecordController::class,'showBibtex'])->name('record.bibtex');
 Route::get('/browse/keywords', [BrowseController::class, 'keywords'])->name('browse.keywords');
 Route::get('/browse/keywords/{slug}', [BrowseController::class, 'publicationsByKeyword'])->name('browse.publicationsByKeyword');
 Route::get('/browse/authors', [BrowseController::class, 'authors'])->name('browse.authors');

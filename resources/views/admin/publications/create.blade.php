@@ -19,6 +19,14 @@
                             </ul>
                         </div>
                     @endif
+                    @if($errors->has('file_or_link'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Whoops! Something went wrong.</strong>
+                            <ul class="mt-2">
+                                <li>{{ $errors->first('file_or_link') }}</li>
+                            </ul>
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('publications.store') }}" enctype="multipart/form-data">
                         @csrf
 
@@ -56,6 +64,13 @@
                             <x-form.label for="file" :value="__('Upload File')" />
                             <input id="file" class="block mt-1 w-full" type="file" name="file" accept="application/pdf">
                             <x-form.error :messages="$errors->get('file')" class="mt-2" />
+                        </div>
+
+                        <!-- Link -->
+                        <div class="mt-4">
+                            <x-form.label for="link" :value="__('Link')" />
+                            <x-form.input id="link" class="block mt-1 w-full" type="url" name="link" :value="old('link')" />
+                            <x-form.error :messages="$errors->get('link')" class="mt-2" />
                         </div>
 
                         <!-- Publisher -->

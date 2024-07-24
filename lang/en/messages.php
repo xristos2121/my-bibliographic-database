@@ -33,5 +33,6 @@ return [
     'search.all' => 'All',
     'results.total_found' => 'Total found: :count',
     'results.categories' => 'Categories:',
-
+    'results.related_files' => 'Related Files:',
+    'results.preview' => 'Preview',
 ];

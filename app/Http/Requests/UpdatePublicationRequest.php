@@ -17,7 +17,7 @@ class UpdatePublicationRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'active' => $this->has('active')
+            'active' => $this->has('active'),
         ]);
     }
 
@@ -43,6 +43,7 @@ class UpdatePublicationRequest extends FormRequest
             'collection_publication' => 'nullable|array',
             'collection_publication.*' => 'integer|exists:collections,id',
             'file' => 'nullable|file|mimes:pdf|max:51200',
+            'link' => 'nullable|url',
             'custom_fields' => 'nullable|array',
             'custom_fields.*.field_definition_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
             'custom_fields.*.value' => 'required_with:custom_fields|string',
@@ -51,5 +52,12 @@ class UpdatePublicationRequest extends FormRequest
         ];
     }
 
-
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!$this->file && !$this->link) {
+                $validator->errors()->add('file_or_link', 'Either a file or a link must be provided.');
+            }
+        });
+    }
 }
