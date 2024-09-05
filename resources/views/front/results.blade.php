@@ -114,7 +114,84 @@
             <div class="search-results-section">
                 <div class="search-results-wrapper">
                     <span class="search-results-title">{{ __('messages.results.title') }}</span>
-                    <x-publications :results="$results"/>
+                    <p><b>{{ __('messages.results.total_found', ['count' => $totalResults]) }}</b></p>
+
+                    @if ($results->count() > 0)
+                        <div class="search-results">
+                            @foreach ($results as $result)
+                                <div class="search-results-item">
+                                    <a href="{{ url('/record/' . $result->slug) }}">
+                                        <h1>{{ $result->title }}</h1>
+                                    </a>
+                                    <div class="publication-data-wrapper">
+                                        <div class="publication-data-row">
+                                            <span class="publication-data-label">{{ __('messages.results.author') }}</span>
+                                            <span class="publication-data-value">
+                                                @foreach ($result->authors as $author)
+                                                    {{ $author->first_name }} {{ $author->last_name }}{{ !$loop->last ? ', ' : '' }}
+                                                @endforeach
+                                            </span>
+                                        </div>
+                                        <div class="publication-data-row">
+                                            <span class="publication-data-label">{{ __('messages.results.date') }}</span>
+                                            <span class="publication-data-value">
+                                                <span>{{ $result->publication_date }}</span>
+                                            </span>
+                                        </div>
+                                        <div class="publication-data-row">
+                                            <span class="publication-data-label">{{ __('messages.results.document_type') }}</span>
+                                            <span class="publication-data-value">
+                                                @if($result->types)
+                                                    <span>{{ $result->types->name }}</span>
+                                                @else
+                                                    <span>N/A</span>
+                                                @endif
+                                            </span>
+                                        </div>
+                                        @if ($result->hasPublisher())
+                                            <div class="publication-data-row">
+                                                <span class="publication-data-label">{{ __('messages.results.publisher') }}</span>
+                                                <span class="publication-data-value">
+                                                    {{ $result->publisher->name }}
+                                                </span>
+                                            </div>
+                                        @endif
+                                        @if ($result->hasKeywords())
+                                            <div class="publication-data-row">
+                                                <span class="publication-data-label">{{ __('messages.results.keywords') }}</span>
+                                                <span class="publication-data-value">
+                                                    @foreach ($result->keywords as $keyword)
+                                                        {{ $keyword->keyword }}{{ !$loop->last ? ', ' : '' }}
+                                                    @endforeach
+                                                </span>
+                                            </div>
+                                        @endif
+                                        @if ($result->file)
+                                            <div class="publication-data-row">
+                                                <span class="publication-data-label">{{ __('messages.results.file') }}</span>
+                                                <span class="publication-data-value">
+                                                    <a href="{{ Storage::url($result->file) }}" class="preview-publication" target="_blank">
+                                                        {{ __('messages.results.preview_publication') }}
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        @endif
+                                        <p class="abstract">{{ $result->abstract }}</p>
+                                        @if ($result->highlighted_text)
+                                            <p><b>Excerpt:</b> {!! $result->highlighted_text !!}</p>
+                                        @endif
+                                        <div>
+                                            <a href="{{ url('/record/' . $result->slug) }}">{{ __('messages.results.view_more') }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- Pagination links -->
+                        {{ $results->appends(request()->input())->links('vendor.pagination.default') }}
+                    @else
+                        <p>{{ __('messages.results.no_results') }}</p>
+                    @endif
                 </div>
             </div>
         </div>

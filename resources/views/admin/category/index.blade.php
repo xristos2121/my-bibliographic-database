@@ -5,20 +5,20 @@
                 <div class="px-6 py-4 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <div class="flex-1 min-w-0">
-                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Collections</h2>
+                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Categories</h2>
                         </div>
-                        <a href="{{ route('collections.create') }}" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">Add New Collection</a>
+                        <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700">Add New Category</a>
                     </div>
                 </div>
                 <div class="px-6 py-4 bg-white border-b border-gray-200">
-                    <form action="{{ route('collections.index') }}" method="GET" class="flex items-center">
+                    <form action="{{ route('categories.index') }}" method="GET" class="flex items-center">
                         <input type="text" name="search" value="{{ $search ?? '' }}"
-                               placeholder="Search collections..."
+                               placeholder="Search categories..."
                                class="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                         <button type="submit"
                                 class="px-4 ml-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">Search
                         </button>
-                        <a href="{{ route('collections.index') }}"
+                        <a href="{{ route('categories.index') }}"
                            class="ml-2 px-4 py-2 bg-white text-black rounded-md shadow hover:bg-gray-200">Clear
                             all</a>
                     </form>
@@ -53,15 +53,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($collections as $collection)
+                        @foreach($categories as $category)
                             <tr>
                                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                <td class="border px-4 py-2">{{ $collection->name }}</td>
+                                <td class="border px-4 py-2">{{ $category->name }}</td>
                                 <td class="border px-4 py-2">
                                     <div class="flex items-center space-x-2">
-                                        <a href="{{ route('collections.children', $collection->id) }}" class="inline-flex items-center px-3 py-1 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-600 focus:outline-none focus:border-green-700 focus:ring ring-green-200 transition ease-in-out duration-150">View Children</a>
-                                        <a href="{{ route('collections.edit', $collection->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring ring-blue-200 transition ease-in-out duration-150">Edit</a>
-                                        <form action="{{ route('collections.destroy', $collection->id) }}" method="POST" class="inline-flex">
+                                        <a href="{{ route('categories.children', $category->id) }}" class="inline-flex items-center px-3 py-1 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-600 focus:outline-none focus:border-green-700 focus:ring ring-green-200 transition ease-in-out duration-150">View Children</a>
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring ring-blue-200 transition ease-in-out duration-150">Edit</a>
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline-flex">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center px-3 py-1 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-600 active:bg-red-700 focus:outline-none focus:border-red-800 focus:ring ring-red-300 transition ease-in-out duration-150" onclick="return confirm('Are you sure?')">Delete</button>
@@ -74,7 +74,7 @@
                     </table>
                     <!-- Pagination Links -->
                     <div class="mt-4">
-                        {{ $collections->appends(request()->query())->links() }}
+                        {{ $categories->appends(request()->query())->links() }}
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 
-class UpdateCollectionRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,34 +27,34 @@ class UpdateCollectionRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                Rule::unique('collections')->ignore($this->collection),
+                Rule::unique('categories')->ignore($this->category),
             ],
            'slug' => [
                 'required',
                 'string',
-                Rule::unique('collections')->ignore($this->collection),
+                Rule::unique('categories')->ignore($this->category),
             ],
             'parent_id' => [
                 'nullable',
-                'exists:collections,id',
+                'exists:categories,id',
                 function ($attribute, $value, $fail) {
-                    if ($value && $this->collection->id == $value) {
-                        $fail('The collection cannot be its own parent.');
+                    if ($value && $this->category->id == $value) {
+                        $fail('The category cannot be its own parent.');
                     }
-                    if ($value && $this->isDescendant($this->collection, $value)) {
-                        $fail('The collection cannot be a descendant of itself.');
+                    if ($value && $this->isDescendant($this->category, $value)) {
+                        $fail('The category cannot be a descendant of itself.');
                     }
                 },
             ],
         ];
     }
 
-    protected function isDescendant($collection, $parentId)
+    protected function isDescendant($category, $parentId)
     {
-        $parent = \App\Models\Collection::find($parentId);
+        $parent = \App\Models\Category::find($parentId);
 
         while ($parent) {
-            if ($parent->id == $collection->id) {
+            if ($parent->id == $category->id) {
                 return true;
             }
             $parent = $parent->parent;

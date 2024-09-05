@@ -54,12 +54,12 @@
                                 </select>
                             </div>
 
-                            <!-- Collections -->
+                            <!-- Categories -->
                             <div>
-                                <x-form.label for="collections" :value="__('Collections')" />
-                                <select id="collections" name="collections[]" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" multiple>
-                                    @foreach($collectionsWithPath as $collection)
-                                        <option value="{{ $collection->id }}" {{ collect(request('collection'))->contains($collection->id) ? 'selected' : '' }}>{{ $collection->full_path }}</option>
+                                <x-form.label for="categories" :value="__('Categories')" />
+                                <select id="categories" name="categories[]" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" multiple>
+                                    @foreach($categoriesWithPath as $category)
+                                        <option value="{{ $category->id }}" {{ collect(request('categories'))->contains($category->id) ? 'selected' : '' }}>{{ $category->full_path }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -176,7 +176,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            $('#authors, #keywords, #collections, #type_id, #publisher_id').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true, width: '100%'});
+            $('#authors, #keywords, #categories, #type_id, #publisher_id').select2({tags: true, tokenSeparators: [',', ' '], allowClear: true, width: '100%'});
         });
     </script>
 </x-app-layout>

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('abstract')->nullable();
             $table->date('publication_date')->nullable();
             $table->text('keywords')->nullable();
-            $table->text('link')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

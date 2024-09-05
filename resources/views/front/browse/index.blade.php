@@ -2,7 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <x-browse-sidebar />
+                <div class="generic-container-border side-navigation-wrapper">
+                    <h3 class="side-navigation-title">Browse By</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="{{ url('/browse/categories') }}">Browse by Categories</a></li>
+                        <li class="list-group-item"><a href="{{ url('/browse/keywords') }}">Browse by Keywords</a></li>
+                        <li class="list-group-item"><a href="{{ url('/browse/authors') }}">Browse by Authors</a></li>
+                        <li class="list-group-item"><a href="{{ url('/browse/publishers') }}">Browse by Publishers</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="col-lg-9">
                 <div class="generic-container-border browse-main-wrapper">

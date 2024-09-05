@@ -7,23 +7,23 @@
             <div class="col-lg-9">
                 <div class="generic-container-border browse-main-wrapper">
                     <div class="browse-results-section">
-                        <h2 class="browse-results-title">Collections</h2>
-                        @if($collections->count() > 0)
+                        <h2 class="browse-results-title">Categories</h2>
+                        @if($categories->count() > 0)
                             <div class="list-group">
-                                @foreach ($collections as $collection)
-                                    <a href="{{ url('/browse/collections/' . $collection->slug) }}" class="list-group-item list-group-item-action">
-                                        <h5 class="mb-1">{{ $collection->name }}</h5>
-                                        <p class="mb-1">{{ $collection->description }}</p>
+                                @foreach ($categories as $category)
+                                    <a href="{{ url('/browse/categories/' . $category->slug) }}" class="list-group-item list-group-item-action">
+                                        <h5 class="mb-1">{{ $category->name }}</h5>
+                                        <p class="mb-1">{{ $category->description }}</p>
                                     </a>
                                 @endforeach
                             </div>
                             <!-- Pagination links -->
                             <div class="mt-3">
-                                {{ $collections->links('vendor.pagination.default') }}
+                                {{ $categories->links('vendor.pagination.default') }}
                             </div>
                         @else
                             <div class="alert alert-info" role="alert">
-                                No collections found.
+                                No categories found. Please check back later.
                             </div>
                         @endif
                     </div>

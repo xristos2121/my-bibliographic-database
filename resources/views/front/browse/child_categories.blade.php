@@ -7,13 +7,13 @@
             <div class="col-lg-9">
                 <div class="generic-container-border browse-main-wrapper">
                     <div class="browse-results-section">
-                        <h2 class="browse-results-title">{{ $collection->name }}</h2>
-                        <p>{{ $collection->description }}</p>
-                        <p class="text-muted">You are viewing the collections of <strong>{{ $collection->name }}</strong></p>
-                        @if($subcollections->count() > 0)
+                        <h2 class="browse-results-title">{{ $category->name }}</h2>
+                        <p>{{ $category->description }}</p>
+                        <p class="text-muted">You are viewing the subcategories of <strong>{{ $category->name }}</strong></p>
+                        @if($subcategories->count() > 0)
                             <div class="list-group">
-                                @foreach ($subcollections as $child)
-                                    <a href="{{ url('/browse/collections/' . $child->slug) }}" class="list-group-item list-group-item-action">
+                                @foreach ($subcategories as $child)
+                                    <a href="{{ url('/browse/categories/' . $child->slug) }}" class="list-group-item list-group-item-action">
                                         <h5 class="mb-1">{{ $child->name }}</h5>
                                         <p class="mb-1">{{ $child->description }}</p>
                                     </a>
@@ -21,11 +21,11 @@
                             </div>
                             <!-- Pagination links -->
                             <div class="mt-3">
-                                {{ $subcollections->links('vendor.pagination.default') }}
+                                {{ $subcategories->links('vendor.pagination.default') }}
                             </div>
                         @else
                             <div class="alert alert-info" role="alert">
-                                No collections found.
+                                No subcategories found. Showing publications for this category instead.
                             </div>
                             <div class="list-group">
                                 @foreach ($publications as $publication)

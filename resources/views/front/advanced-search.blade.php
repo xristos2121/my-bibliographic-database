@@ -71,7 +71,7 @@
             </div>
             <div class="form-group">
                 <label for="date">{{__('messages.search.type')}}</label>
-                <select name="document_type">
+                <select name="document_type" class="form-control">
                     <option value="all">{{__('messages.search.all')}}</option> <!-- Add the 'All' option -->
                     @foreach($types as $type)
                         <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -81,16 +81,16 @@
 
             <div class="form-group">
                 <label for="fromYear">From</label>
-                <input type="text" name="fromYear" id="fromYear" placeholder="yyy-mm" class="form-control">
+                <input type="text" name="fromYear" id="fromYear" class="form-control">
             </div>
             <div class="form-group">
                 <label for="toYear">Until</label>
-                <input type="text" name="untilYear" id="untilYear" placeholder="yyy-mm" class="form-control">
+                <input type="text" name="untilYear" id="untilYear" class="form-control">
             </div>
 
             <div class="form-group">
                 <label for="date">Hits per page</label>
-                <select name="hits_per_page">
+                <select name="hits_per_page" class="form-control">
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>

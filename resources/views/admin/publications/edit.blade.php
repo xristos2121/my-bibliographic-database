@@ -19,14 +19,6 @@
                             </ul>
                         </div>
                     @endif
-                    @if($errors->has('file_or_link'))
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            <strong class="font-bold">Whoops! Something went wrong.</strong>
-                            <ul class="mt-1 ml-2 list-disc list-inside">
-                                <li>{{ $errors->first('file_or_link') }}</li>
-                            </ul>
-                        </div>
-                    @endif
 
                     <form method="POST" action="{{ route('publications.update', $publication) }}" enctype="multipart/form-data" class="space-y-6">
                         @csrf
@@ -74,13 +66,6 @@
                             @endif
                         </div>
 
-                        <!-- Link -->
-                        <div>
-                            <x-form.label for="link" :value="__('Link')" />
-                            <x-form.input id="link" class="block mt-1 w-full" type="url" name="link" :value="old('link', $publication->link)" />
-                            <x-form.error :messages="$errors->get('link')" class="mt-2" />
-                        </div>
-
                         <!-- Publisher -->
                         <div>
                             <label for="enable_publisher" class="inline-flex items-center">
@@ -111,17 +96,17 @@
                             <x-form.error :messages="$errors->get('type_id')" class="mt-2" />
                         </div>
 
-                        <!-- Collections -->
+                        <!-- Categories -->
                         <div>
-                            <x-form.label for="collections" :value="__('Collections')" />
-                            <select id="collections" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="collections[]" multiple="multiple">
-                                @foreach($collectionsWithPath as $collection)
-                                    <option value="{{ $collection->id }}" {{ $publication->collections->contains($collection->id) ? 'selected' : '' }}>
-                                        {{ $collection->full_path }}
+                            <x-form.label for="categories" :value="__('Categories')" />
+                            <select id="categories" class="block mt-1 w-full rounded-md shadow-sm border-gray-300" name="categories[]" multiple="multiple">
+                                @foreach($categoriesWithPath as $category)
+                                    <option value="{{ $category->id }}" {{ $publication->categories->contains($category->id) ? 'selected' : '' }}>
+                                        {{ $category->full_path }}
                                     </option>
                                 @endforeach
                             </select>
-                            <x-form.error :messages="$errors->get('collection')" class="mt-2" />
+                            <x-form.error :messages="$errors->get('categories')" class="mt-2" />
                         </div>
 
                         <!-- Authors -->
@@ -205,7 +190,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $('#authors, #collections').select2({ allowClear: true });
+        $('#authors, #categories').select2({ allowClear: true });
 
         $('#keywords').select2({
             tags: true,
@@ -330,3 +315,4 @@
         });
     });
 </script>
+

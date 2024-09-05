@@ -23,10 +23,9 @@ class Publication extends Model
         'abstract',
         'publication_date',
         'type_id',
-        'collection_id',
+        'category_id',
         'publisher_id',
         'file',
-        'link',
         'slug',
         'active',
     ];
@@ -50,11 +49,11 @@ class Publication extends Model
     }
 
     /**
-     * Get the collection associated with the publication.
+     * Get the category associated with the publication.
      */
-    public function collection(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Collection::class);
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -80,9 +79,9 @@ class Publication extends Model
         return $this->belongsTo(Publisher::class);
     }
 
-    public function collections(): BelongsToMany
+    public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Collection::class, 'collection_publication');
+        return $this->belongsToMany(Category::class, 'category_publication');
     }
 
     public function uris()
@@ -100,14 +99,9 @@ class Publication extends Model
         return $this->keywords->isNotEmpty();
     }
 
-    public function hasCollections()
+    public function hasCategories()
     {
-        return $this->collections->isNotEmpty();
-    }
-
-    public function hasAuthors()
-    {
-        return $this->authors->isNotEmpty();
+        return $this->categories->isNotEmpty();
     }
 
     public function customFields()
