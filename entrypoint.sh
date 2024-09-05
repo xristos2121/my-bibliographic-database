@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z /var/www/storage/framework ]; then
+    mkdir -p /var/www/storage/framework/{sessions,views,cache} && \
+        chmod -R 775 /var/www/storage/framework;
+fi
+
 # Wait for the database to be ready
 while ! nc -z db 3306; do
   echo "Waiting for database connection..."
