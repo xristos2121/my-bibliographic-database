@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Category') }}
+            {{ __('Create Collection') }}
         </h2>
     </x-slot>
 
@@ -11,12 +11,12 @@
                 <div class="px-6 py-4 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <div class="flex-1 min-w-0">
-                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Create Category</h2>
+                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Create Collection</h2>
                         </div>
                     </div>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('categories.store') }}">
+                    <form method="POST" action="{{ route('collections.store') }}">
                         @csrf
 
                         <!-- Name -->
@@ -26,14 +26,14 @@
                             <x-form.error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
-                        <!-- Parent Category -->
+                        <!-- Parent Collection -->
                         <div class="mt-4">
-                            <x-form.label for="parent_id" :value="__('Parent Category')" />
+                            <x-form.label for="parent_id" :value="__('Parent Collection')" />
                             <select id="parent_id" name="parent_id" class="block mt-1 w-full rounded-md shadow-sm border-gray-300">
                                 <option value="">{{ __('None') }}</option>
-                                @foreach($categoriesWithPath as $parentCategory)
-                                    <option value="{{ $parentCategory->id }}" {{ old('parent_id') == $parentCategory->id ? 'selected' : '' }}>
-                                        {{ $parentCategory->full_path }}
+                                @foreach($collectionsWithPath as $parentCollection)
+                                    <option value="{{ $parentCollection->id }}" {{ old('parent_id') == $parentCollection->id ? 'selected' : '' }}>
+                                        {{ $parentCollection->full_path }}
                                     </option>
                                 @endforeach
                             </select>

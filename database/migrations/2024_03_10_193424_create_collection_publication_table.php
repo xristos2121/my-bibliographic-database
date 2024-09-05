@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_publication', function (Blueprint $table) {
+        Schema::create('collection_publication', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('publication_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('collection_id');
             $table->timestamps();
             $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->unique(['publication_id', 'category_id']);
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');
+            $table->unique(['publication_id', 'collection_id']);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_publication');
+        Schema::dropIfExists('collection_publication');
     }
 };

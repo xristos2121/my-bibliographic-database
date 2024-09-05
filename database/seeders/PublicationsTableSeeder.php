@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use App\Models\Type;
-use App\Models\Category;
+use App\Models\Collection;
 use App\Models\Publisher;
 use Illuminate\Support\Facades\DB;
 
