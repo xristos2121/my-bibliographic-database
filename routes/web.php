@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationTypeController;
@@ -37,15 +37,20 @@ Route::get('/advanced-search', [SearchController::class, 'index'])->name('advanc
 Route::get('/advanced-search/results', [SearchController::class, 'advanced_search']);
 Route::get('/record/{slug}', [RecordController::class, 'viewResult']);
 Route::get('/browse', [BrowseController::class,'index'])->name('browse.index');
+Route::get('/record/{slug}/bibtex', [RecordController::class,'showBibtex'])->name('record.bibtex');
 Route::get('/browse/keywords', [BrowseController::class, 'keywords'])->name('browse.keywords');
 Route::get('/browse/keywords/{slug}', [BrowseController::class, 'publicationsByKeyword'])->name('browse.publicationsByKeyword');
 Route::get('/browse/authors', [BrowseController::class, 'authors'])->name('browse.authors');
 Route::get('/browse/authors/{id}', [BrowseController::class, 'publicationsByAuthor'])->name('browse.publicationsByAuthor');
 Route::get('/browse/publishers', [BrowseController::class, 'publishers'])->name('browse.publishers');
 Route::get('/browse/publishers/{id}', [BrowseController::class, 'publicationsByPublisher'])->name('browse.publicationsByPublisher');
-Route::get('/browse/categories', [BrowseController::class, 'categories'])->name('browse.categories');
-Route::get('/browse/categories/{slug}', [BrowseController::class, 'childCategories'])->name('browse.childCategories');
-Route::get('/browse/categories/{slug}/publications', [BrowseController::class, 'publicationsByCategory'])->name('browse.publicationsByCategory');
+Route::get('/browse/collections', [BrowseController::class, 'collections'])->name('browse.collections');
+Route::get('/browse/collections/{slug}', [BrowseController::class, 'childCollections'])->name('browse.childCollections');
+Route::get('/browse/collections/{slug}/publications', [BrowseController::class, 'publicationsByCollection'])->name('browse.publicationsByCollection');
+Route::get('/browse/years', [BrowseController::class, 'years'])->name('browse.years');
+Route::get('/browse/years/{year}', [BrowseController::class, 'publicationsByYear']);
+Route::get('/browse/types', [BrowseController::class, 'types'])->name('browse.types');
+Route::get('/browse/types/{id}', [BrowseController::class, 'publicationsByType'])->name('browse.publicationsByType');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -55,8 +60,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('categories', CategoryController::class);
-    Route::get('categories/{category}/children', [CategoryController::class, 'children'])->name('categories.children');
+    Route::resource('collections', CollectionController::class);
+    Route::get('collections/{collection}/children', [CollectionController::class, 'children'])->name('collections.children');
     Route::resource('author', AuthorController::class);
     Route::resource('publications', PublicationController::class);
     Route::resource('publications_types', PublicationTypeController::class)->parameters([

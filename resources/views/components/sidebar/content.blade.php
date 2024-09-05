@@ -17,7 +17,7 @@
 
 
     <x-sidebar.link title="Keywords" href="{{ route('keywords.index') }}"  :isActive="request()->routeIs('keywords.*')"/>
-    <x-sidebar.link title="Categories" href="{{ route('categories.index') }}"  :isActive="request()->routeIs('categories.*')"/>
+    <x-sidebar.link title="Collections" href="{{ route('collections.index') }}"  :isActive="request()->routeIs('collections.*')"/>
     <x-sidebar.link title="Publications" href="{{ route('publications.index') }}"  :isActive="request()->routeIs('publications.*')"/>
     <x-sidebar.link title="Publications Types" href="{{ route('publications_types.index') }}"  :isActive="request()->routeIs('publications_types.*')"/>
     <x-sidebar.link title="Custom Fields" href="{{ route('custom_fields.index') }}"  :isActive="request()->routeIs('custom_fields.*')"/>

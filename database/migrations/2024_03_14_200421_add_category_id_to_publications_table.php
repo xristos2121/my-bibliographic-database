@@ -12,9 +12,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('publications', function (Blueprint $table) {
-            // Ensure the category_id column allows null values if a publication might not have a category
-            $table->unsignedBigInteger('category_id')->nullable()->after('id');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            // Ensure the collection_id column allows null values if a publication might not have a collection
+            $table->unsignedBigInteger('collection_id')->nullable()->after('id');
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('set null');
         });
     }
 
@@ -24,8 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('publications', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
-            $table->dropColumn('category_id');
+            $table->dropForeign(['collection_id']);
+            $table->dropColumn('collection_id');
         });
     }
 };

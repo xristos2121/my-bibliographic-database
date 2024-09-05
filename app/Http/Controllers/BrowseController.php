@@ -7,20 +7,20 @@ use App\Models\Publication;
 use App\Models\Keyword;
 use App\Models\Author;
 use App\Models\Publisher;
-use App\Models\Category;
+use App\Models\Collection;
+use App\Models\Type;
 use Illuminate\View\View;
-
-
+use Illuminate\Support\Facades\DB;
 
 class BrowseController extends Controller
 {
     public function index(): View
     {
-        $results = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'categories'])
+        $results = Publication::with(['customFields.definition', 'authors', 'types', 'publisher', 'keywords', 'collections'])
             ->orderBy('publication_date', 'desc')
             ->paginate(10);
         $totalResults = Publication::count();
-        return view('front.browse.index', compact('results','totalResults'));
+        return view('front.browse.index', compact('results', 'totalResults'));
     }
 
     public function keywords(): View
@@ -35,7 +35,9 @@ class BrowseController extends Controller
         $keyword = Keyword::where('slug', $slug)->firstOrFail();
         $results = Publication::whereHas('keywords', function($query) use ($keyword) {
             $query->where('keywords.id', $keyword->id);
-        })->paginate(10);
+        })
+            ->orderBy('publication_date', 'desc')
+            ->paginate(10);
 
         return view('front.browse.publications_by_keyword', compact('results', 'keyword'));
     }
@@ -52,7 +54,9 @@ class BrowseController extends Controller
         $author = Author::findOrFail($id);
         $results = Publication::whereHas('authors', function($query) use ($author) {
             $query->where('authors.id', $author->id);
-        })->paginate(10);
+        })
+            ->orderBy('publication_date', 'desc')
+            ->paginate(10);
 
         return view('front.browse.publications_by_author', compact('results', 'author'));
     }
@@ -61,45 +65,87 @@ class BrowseController extends Controller
     {
         $publishers = Publisher::paginate(20);
         $totalPublishers = $publishers->count();
-        return view('front.browse.publishers', compact('publishers','totalPublishers'));
+        return view('front.browse.publishers', compact('publishers', 'totalPublishers'));
     }
 
     public function publicationsByPublisher($id): View
     {
         $publisher = Publisher::findOrFail($id);
-        $results = Publication::where('publisher_id', $publisher->id)->paginate(10);
+        $results = Publication::where('publisher_id', $publisher->id)
+            ->orderBy('publication_date', 'desc')
+            ->paginate(10);
 
         return view('front.browse.publications_by_publisher', compact('results', 'publisher'));
     }
 
-    public function categories()
+    public function collections()
     {
-        $categories = Category::with('children')->whereNull('parent_id')->paginate(20);
-        $totalCategories = $categories->count();
-        return view('front.browse.categories', compact('categories', 'totalCategories'));
+        $collections = Collection::with('children')->whereNull('parent_id')->paginate(20);
+        $totalCollections = $collections->count();
+        return view('front.browse.collections', compact('collections', 'totalCollections'));
     }
 
-    public function childCategories($slug)
+    public function childCollections($slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $subcategories = $category->children()->paginate(10);
+        $collection = Collection::where('slug', $slug)->firstOrFail();
+        $subcollections = $collection->children()->paginate(10);
 
-        if ($subcategories->count() == 0) {
-            $publications = $category->publications()->paginate(10);
-            return view('front.browse.publications_by_category', compact('category', 'publications'));
+        if ($subcollections->count() == 0) {
+            $publications = $collection->publications()
+                ->orderBy('publication_date', 'desc')
+                ->paginate(10);
+            return view('front.browse.publications_by_collection', compact('collection', 'publications'));
         }
 
-        return view('front.browse.child_categories', compact('category', 'subcategories'));
+        return view('front.browse.child_collections', compact('collection', 'subcollections'));
     }
 
-
-    public function publicationsByCategory($slug)
+    public function publicationsByCollection($slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $results = Publication::whereHas('categories', function($query) use ($category) {
-            $query->where('categories.id', $category->id);
-        })->paginate(10);
+        $collection = Collection::where('slug', $slug)->firstOrFail();
+        $results = Publication::whereHas('collections', function($query) use ($collection) {
+            $query->where('collections.id', $collection->id);
+        })
+            ->orderBy('publication_date', 'desc')
+            ->paginate(10);
 
-        return view('front.browse.publications_by_category', compact('results', 'category'));
+        return view('front.browse.publications_by_collection', compact('results', 'collection'));
+    }
+
+    public function years(): View
+    {
+        $years = Publication::select(DB::raw('YEAR(publication_date) as year'))
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->paginate(20);
+
+        return view('front.browse.years', compact('years'));
+    }
+
+    public function publicationsByYear($year): View
+    {
+        $results = Publication::whereYear('publication_date', $year)
+            ->orderBy('publication_date', 'desc')
+            ->paginate(10);
+        $totalResults = $results->total();
+
+        return view('front.browse.publications_by_year', compact('results', 'year', 'totalResults'));
+    }
+
+    public function types(): View
+    {
+        $types = Type::paginate(10);
+
+        return view('front.browse.types', compact('types'));
+    }
+
+    public function publicationsByType($id): View
+    {
+        $type = Type::findOrFail($id);
+        $results = Publication::where('type_id', $id)
+            ->orderBy('publication_date', 'desc')
+            ->paginate(10);
+
+        return view('front.browse.publications_by_type', compact('results', 'type'));
     }
 }

@@ -17,7 +17,7 @@ class StorePublicationRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'active' => $this->has('active')
+            'active' => $this->has('active'),
         ]);
     }
 
@@ -34,20 +34,30 @@ class StorePublicationRequest extends FormRequest
             'publication_date' => 'nullable|date_format:Y-m',
             'active' => 'nullable|boolean',
             'type_id' => 'required|exists:publication_types,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'collection_id' => 'nullable|exists:collections,id',
             'publisher_id' => 'nullable|exists:publishers,id',
             'authors' => 'required|array',
             'authors.*' => 'integer|exists:authors,id',
             'keywords' => 'nullable|array',
             'keywords.*' => 'string|max:255',
-            'category_publication' => 'nullable|array',
-            'category_publication.*' => 'integer|exists:categories,id',
-            'file' => 'required|file|mimes:pdf',
+            'collection_publication' => 'nullable|array',
+            'collection_publication.*' => 'integer|exists:collections,id',
+            'file' => 'nullable|file|mimes:pdf',
+            'link' => 'nullable|url',
             'custom_fields' => 'nullable|array',
             'custom_fields.*.type_id' => 'required_with:custom_fields|integer|exists:field_definitions,id',
             'custom_fields.*.value' => 'required_with:custom_fields|string',
             'uris' => 'nullable|array',
-            'uris.*' => 'url',
+            'uris.*' => 'nullable|url',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!$this->file('file') && !$this->input('link')) {
+                $validator->errors()->add('file_or_link', 'Either a file or a link must be provided.');
+            }
+        });
     }
 }
