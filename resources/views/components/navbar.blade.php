@@ -8,26 +8,7 @@
     }">
 
     <div class="flex items-center gap-3">
-        <x-button
-            type="button"
-            class="md:hidden"
-            icon-only
-            variant="secondary"
-            sr-text="Toggle dark mode"
-            x-on:click="toggleTheme"
-        >
-            <x-heroicon-o-moon
-                x-show="!isDarkMode"
-                aria-hidden="true"
-                class="w-6 h-6"
-            />
 
-            <x-heroicon-o-sun
-                x-show="isDarkMode"
-                aria-hidden="true"
-                class="w-6 h-6"
-            />
-        </x-button>
     </div>
 
     <div class="flex items-center gap-3">
@@ -56,12 +37,6 @@
             </x-slot>
 
             <x-slot name="content">
-                <!-- Profile -->
-                <x-dropdown-link
-                    :href="route('profile.edit')"
-                >
-                    {{ __('Profile') }}
-                </x-dropdown-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
