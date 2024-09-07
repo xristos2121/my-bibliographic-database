@@ -1,37 +1,33 @@
 #!/bin/sh
+set -e
 
-if [ -z /var/www/storage/framework ]; then
-    mkdir -p /var/www/storage/framework/{sessions,views,cache} && \
-        chmod -R 775 /var/www/storage/framework;
+# Create Laravel directories if they don't exist
+mkdir -p /var/www/storage/app /var/www/storage/framework/cache /var/www/storage/framework/sessions /var/www/storage/framework/views /var/www/storage/logs /var/www/bootstrap/cache
+
+# Fix storage permissions
+chown -R laravel:www-data /var/www/storage /var/www/bootstrap/cache
+chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+# Ensure .env file exists and is writable
+if [ ! -f /var/www/.env ]; then
+    cp /var/www/.env.example /var/www/.env
+fi
+chown laravel:www-data /var/www/.env
+chmod 664 /var/www/.env
+
+# Run composer install as laravel user
+su -c "composer install --no-interaction --no-plugins --no-scripts" -s /bin/sh laravel
+
+# Generate application key if not set
+if [ -z "$(grep '^APP_KEY=' /var/www/.env)" ] || [ "$(grep '^APP_KEY=' /var/www/.env)" = 'APP_KEY=' ]; then
+    su -c "php artisan key:generate" -s /bin/sh laravel
 fi
 
-# Wait for the database to be ready
-while ! nc -z db 3306; do
-  echo "Waiting for database connection..."
-  sleep 1
-done
-
-# Check if the database exists, and create it if it doesn't
-echo "Checking if the database exists..."
-if ! php -r "exit((new mysqli(getenv('DB_HOST'), getenv('DB_USERNAME'), getenv('DB_PASSWORD')))->select_db(getenv('DB_DATABASE')) ? 0 : 1);" ; then
-  echo "Database does not exist. Creating database..."
-  php -r "exit((new mysqli(getenv('DB_HOST'), getenv('DB_USERNAME'), getenv('DB_PASSWORD')))->query('CREATE DATABASE ' . getenv('DB_DATABASE')) ? 0 : 1);"
-else
-  echo "Database exists."
-fi
-
-# Ensure the memory limit is set
-if [ -n "$PHP_MEMORY_LIMIT" ]; then
-    echo "memory_limit = $PHP_MEMORY_LIMIT" > /usr/local/etc/php/conf.d/memory-limit.ini
-fi
-
-# Run the command passed as arguments
-exec "$@"
+# Cache configuration
+su -c "php artisan config:cache" -s /bin/sh laravel
 
 # Run database migrations
-echo "Running migrations..."
-php artisan queue:table
-php artisan migrate --force
+su -c "php artisan migrate --force" -s /bin/sh laravel
 
-# Start Supervisor to manage PHP-FPM and Laravel Queue Worker
-exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
+# Start PHP-FPM
+exec "$@"

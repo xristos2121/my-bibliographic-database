@@ -1,6 +1,7 @@
+version: '3'
 services:
+
     app:
-        user: "1000:1000"
         build:
             context: .
             dockerfile: Dockerfile
@@ -14,34 +15,28 @@ services:
             DB_DATABASE: books
             DB_USERNAME: root
             DB_PASSWORD: ""
-            PHP_MEMORY_LIMIT: "1024M"
         working_dir: /var/www
         volumes:
+            - ./:/var/www:delegated
+            - /var/www/vendor
             - ./storage:/var/www/storage
             - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
             - laravel
-        depends_on:
-            - db
-        deploy:
-            resources:
-                limits:
-                    memory: 2G
 
     nginx:
-        image: nginx:alpine
+        image: nginx:stable-alpine
         container_name: nginx
         restart: unless-stopped
         tty: true
         ports:
             - "8082:80"
         volumes:
-            - ./:/var/www
-            - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ./:/var/www:delegated
+            - ./storage:/var/www/storage
+            - ./nginx/conf.d:/etc/nginx/conf.d
         networks:
             - laravel
-        depends_on:
-            - app
 
     db:
         image: mysql:5.7
@@ -51,7 +46,6 @@ services:
         ports:
             - "3307:3306"
         environment:
-            MYSQL_ROOT_PASSWORD: ""
             MYSQL_DATABASE: books
             MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
         volumes:
