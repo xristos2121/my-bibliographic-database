@@ -506,3 +506,13 @@ body, html {
         }
     }
 }
+.w-m-15 {
+    @media screen and (min-width: 992px) {
+        width: 15%;
+    }
+}
+.w-m-50 {
+    @media screen and (max-width: 991px) {
+        width: 50%;
+    }
+}

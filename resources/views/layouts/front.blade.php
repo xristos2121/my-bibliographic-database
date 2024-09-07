@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="header">
-    <h1>Academic Research Portal</h1>
+    <h1><img src="/logo.png" class="w-m-15 w-m-50"/></h1>
     <div class="menu">
         <a href="{{ route('home') }}">Simple Search</a>
         <a href="{{ route('advanced-search') }}">Advanced Search</a>

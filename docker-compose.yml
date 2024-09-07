@@ -30,7 +30,7 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "8082:80"
+            - "80:80"
         volumes:
             - ./:/var/www:delegated
             - ./storage:/var/www/storage
