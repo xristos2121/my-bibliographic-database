@@ -23,18 +23,18 @@
     ]
   },
   "resources/js/front.js": {
-    "file": "assets/front-BwHnhscp.js",
+    "file": "assets/front-8lLT8jHA.js",
     "src": "resources/js/front.js",
     "isEntry": true,
     "imports": [
       "_select2-CG2xirYA.js"
     ],
     "css": [
-      "assets/front-DLiY3BJm.css"
+      "assets/front-CIkyZWeh.css"
     ]
   },
   "resources/scss/front.scss": {
-    "file": "assets/front-4YYVw64J.css",
+    "file": "assets/front-bvjHp3l0.css",
     "src": "resources/scss/front.scss",
     "isEntry": true
   }
