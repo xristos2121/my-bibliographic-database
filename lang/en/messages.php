@@ -35,4 +35,5 @@ return [
     'results.categories' => 'Categories:',
     'results.related_files' => 'Related Files:',
     'results.preview' => 'Preview',
+    'results.bibtex' => 'BibTeX',
 ];
