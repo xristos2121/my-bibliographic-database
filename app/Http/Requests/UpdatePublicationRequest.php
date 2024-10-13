@@ -21,6 +21,8 @@ class UpdatePublicationRequest extends FormRequest
         ]);
     }
 
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -55,9 +57,18 @@ class UpdatePublicationRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!$this->file && !$this->link) {
+            $publication = $this->route('publication');
+            
+            if (!$this->hasFile('file') && $publication->link && !$this->input('link')) {
+                $validator->errors()->add('link', 'The link cannot be empty when there is no file.');
+            }
+
+            if (!$this->hasFile('file') && !$this->input('link') && !$publication->file && !$publication->link) {
                 $validator->errors()->add('file_or_link', 'Either a file or a link must be provided.');
             }
         });
     }
+
+
+
 }
